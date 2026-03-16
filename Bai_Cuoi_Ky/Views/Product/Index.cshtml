@@ -1,0 +1,317 @@
+﻿@model IEnumerable<Bai_Cuoi_Ky.Models.Product>
+@{
+    ViewData["Title"] = "Sản Phẩm";
+}
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+    
+    :root {
+        --gold: #c9a84c;
+        --gold-light: #e8d5a3;
+        --cream: #faf8f4;
+        --dark: #1a1410;
+        --muted: #8a7968;
+    }
+
+    body { background: var(--cream); font-family: 'Jost', sans-serif; }
+
+    .page-header {
+        text-align: center;
+        padding: 48px 0 32px;
+    }
+    .page-header::before {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 1px;
+        background: var(--gold);
+        margin: 0 auto 16px;
+    }
+    .page-header h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        font-weight: 300;
+        color: var(--dark);
+        letter-spacing: 6px;
+        text-transform: uppercase;
+    }
+
+    .filter-bar {
+        background: white;
+        border-top: 1px solid #ede8e0;
+        border-bottom: 1px solid #ede8e0;
+        padding: 16px 0;
+        margin-bottom: 40px;
+    }
+    .filter-bar .container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .filter-label {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+    }
+    .cat-btn {
+        padding: 6px 18px;
+        border: 1px solid #ddd;
+        background: white;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 1px;
+        color: var(--dark);
+        cursor: pointer;
+        transition: all 0.25s;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .cat-btn:hover, .cat-btn.active {
+        background: var(--dark);
+        color: white;
+        border-color: var(--dark);
+        text-decoration: none;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 0;
+        margin-left: auto;
+    }
+    .search-form input {
+        border: 1px solid #ddd;
+        border-right: none;
+        padding: 7px 16px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.82rem;
+        outline: none;
+        width: 200px;
+        background: white;
+    }
+    .search-form button {
+        background: var(--gold);
+        border: 1px solid var(--gold);
+        color: white;
+        padding: 7px 16px;
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+
+    .btn-add {
+        background: var(--dark);
+        color: white;
+        padding: 10px 28px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-block;
+        margin-bottom: 32px;
+    }
+    .btn-add:hover { background: var(--gold); color: white; text-decoration: none; }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 28px;
+        padding-bottom: 60px;
+    }
+
+    .product-card {
+        background: white;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+    }
+    .product-card:hover .card-actions { opacity: 1; transform: translateY(0); }
+
+    .card-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+        background: #f0ece4;
+    }
+    .card-img-placeholder {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(135deg, #f5f0e8, #ede8de);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: var(--gold);
+    }
+
+    .card-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: var(--gold);
+        color: white;
+        font-size: 0.65rem;
+        letter-spacing: 1.5px;
+        padding: 4px 10px;
+        text-transform: uppercase;
+    }
+    .card-badge.out-of-stock { background: #999; }
+
+    .card-body { padding: 20px; }
+    .card-category {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+    }
+    .card-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+    .card-price { display: flex; align-items: center; gap: 10px; }
+    .price-main { font-size: 1rem; font-weight: 500; color: var(--dark); }
+    .price-original { font-size: 0.82rem; color: #bbb; text-decoration: line-through; }
+
+    .card-footer {
+        padding: 12px 20px;
+        border-top: 1px solid #f0ece4;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .stock-info { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.5px; }
+
+    .card-actions {
+        display: flex;
+        gap: 0;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.25s;
+    }
+    .action-btn {
+        padding: 7px 14px;
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-family: 'Jost', sans-serif;
+        transition: background 0.2s;
+        display: inline-block;
+    }
+    .action-btn.view  { background: var(--dark); color: white; }
+    .action-btn.edit  { background: var(--gold); color: white; }
+    .action-btn.del   { background: #c0392b; color: white; }
+    .action-btn:hover { opacity: 0.85; text-decoration: none; color: white; }
+
+    .alert-success {
+        background: #f0faf0;
+        border-left: 3px solid #4caf50;
+        padding: 14px 20px;
+        margin-bottom: 24px;
+        font-size: 0.88rem;
+        color: #2e7d32;
+    }
+
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
+    .empty-state p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
+</style>
+
+<div class="page-header">
+    <h1>Quản Lý Sản Phẩm</h1>
+</div>
+
+<div class="filter-bar">
+    <div class="container">
+        <span class="filter-label">Danh mục:</span>
+        <a href="@Url.Action("Index")" class="cat-btn @(ViewBag.CurrentCategory == null ? "active" : "")">Tất cả</a>
+        @foreach (var cat in (List<string>)ViewBag.Categories)
+        {
+            <a href="@Url.Action("Index", new { category = cat })"
+               class="cat-btn @(ViewBag.CurrentCategory == cat ? "active" : "")">@cat</a>
+        }
+        <form class="search-form" method="get" action="@Url.Action("Index")">
+            <input type="text" name="search" placeholder="Tìm sản phẩm..." value="@ViewBag.Search" />
+            <button type="submit">🔍</button>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert-success">✓ @TempData["Success"]</div>
+    }
+
+    <a href="@Url.Action("Create")" class="btn-add">+ Thêm Sản Phẩm</a>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="icon">💎</div>
+            <p>Chưa có sản phẩm nào</p>
+        </div>
+    }
+    else
+    {
+        <div class="product-grid">
+            @foreach (var item in Model)
+            {
+                <div class="product-card">
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img class="card-img" src="@item.ImageUrl" alt="@item.Name"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                        <div class="card-img-placeholder" style="display:none;">💎</div>
+                    }
+                    else
+                    {
+                        <div class="card-img-placeholder">💎</div>
+                    }
+
+                    <span class="card-badge @(!item.IsAvailable ? "out-of-stock" : "")">
+                        @(item.IsAvailable? item.Category: "Hết hàng")
+                    </span>
+
+                    <div class="card-body">
+                        <div class="card-category">@item.Material</div>
+                        <div class="card-name">@item.Name</div>
+                        <div class="card-price">
+                            <span class="price-main">@item.Price.ToString("N0")₫</span>
+                            @if (item.DiscountPrice.HasValue)
+                            {
+                                <span class="price-original">@item.DiscountPrice.Value.ToString("N0")₫</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="stock-info">Kho: @item.Stock sản phẩm</span>
+                        <div class="card-actions">
+                            <a class="action-btn view" href="@Url.Action("Details", new { id = item.Id })">Xem</a>
+                            <a class="action-btn edit" href="@Url.Action("Edit", new { id = item.Id })">Sửa</a>
+                            <a class="action-btn del" href="@Url.Action("Delete", new { id = item.Id })">Xóa</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
