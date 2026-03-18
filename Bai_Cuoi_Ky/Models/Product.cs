@@ -27,6 +27,7 @@ namespace Bai_Cuoi_Ky.Models
 
         [Display(Name = "Hình ảnh")]
         public string ImageUrl { get; set; }
+        public string? ImageUrl2 { get; set; }
 
         [Display(Name = "Danh mục")]
         public string Category { get; set; }
@@ -40,7 +41,6 @@ namespace Bai_Cuoi_Ky.Models
         [Display(Name = "Còn hàng")]
         public bool IsAvailable { get; set; } = true;
 
-        [Display(Name = "Ngày tạo")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+       
     }
 }

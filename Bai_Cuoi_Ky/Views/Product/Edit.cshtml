@@ -208,12 +208,12 @@
 
 <div class="container">
     <div class="form-card">
-        <div class="id-badge">ID: #@Model.Id · Tạo ngày @Model.CreatedAt.ToString("dd/MM/yyyy")</div>
+        
 
         <form asp-action="Edit" method="post">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CreatedAt" />
+   
 
             <div class="form-section-title">Thông Tin Cơ Bản</div>
 
