@@ -16,4 +16,11 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Categories\" />
+    <Folder Include="wwwroot\images\Favorite\" />
+    <Folder Include="wwwroot\images\Discount\" />
+    <Folder Include="wwwroot\images\NewProducts\" />
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,1052 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang Chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --red: #c0392b;
+        --gold: #c9a84c;
+        --dark: #1a1410;
+        --gray: #f5f5f5;
+        --muted: #888;
+        --border: #e8e8e8;
+    }
+
+    /* ===== HERO SLIDER ===== */
+    .hero-slider {
+        position: relative;
+        overflow: hidden;
+        height: 520px;
+        background: #1a0a05;
+    }
+
+    .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+    .slide-1 {
+        background: linear-gradient(135deg, #8b1a0a 0%, #c0392b 40%, #6b2d0a 100%);
+    }
+
+    .slide-2 {
+        background: linear-gradient(135deg, #1a1410 0%, #3d2b1a 40%, #c9a84c 100%);
+    }
+
+    .slide-3 {
+        background: linear-gradient(135deg, #0a1a2b 0%, #1a3a5c 40%, #c9a84c 100%);
+    }
+
+    /* Nếu có ảnh nền */
+    .slide-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .slide-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 1;
+    }
+
+    .slide-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 600px;
+        padding: 0 40px;
+    }
+
+    .slide-tag {
+        font-size: 0.7rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.7);
+        margin-bottom: 16px;
+    }
+
+    .slide-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3.8rem;
+        font-weight: 300;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+        .slide-title span {
+            color: white;
+        }
+
+    .slide-desc {
+        font-size: 0.9rem;
+        color: white;
+        line-height: 1.7;
+        margin-bottom: 32px;
+    }
+
+    .slide-btn {
+        display: inline-block;
+        padding: 13px 38px;
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+        .slide-btn:hover {
+            background: white;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+    .slide-deco {
+        position: absolute;
+        right: 80px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12rem;
+        opacity: 0.12;
+        filter: blur(1px);
+        z-index: 1;
+    }
+
+    .slider-prev, .slider-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.4rem;
+        z-index: 10;
+        transition: background 0.2s;
+    }
+
+    .slider-prev {
+        left: 20px;
+    }
+
+    .slider-next {
+        right: 20px;
+    }
+
+        .slider-prev:hover, .slider-next:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+    .slider-dots {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.4);
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+    }
+
+        .dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+    /* ===== SECTIONS ===== */
+    .section {
+        padding: 60px 40px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+        .section-header::before, .section-header::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: calc(50% - 160px);
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-header::before {
+            left: 0;
+        }
+
+        .section-header::after {
+            right: 0;
+        }
+
+    .section-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 400;
+        color: var(--dark);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 0 24px;
+        background: white;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ===== CATEGORY GRID ===== */
+    .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+    }
+
+    .cat-card {
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.25s;
+        text-decoration: none;
+    }
+
+        .cat-card:hover {
+            transform: translateY(-4px);
+            text-decoration: none;
+        }
+
+    .cat-img {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #f5f0e8, #ede8de);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin-bottom: 10px;
+        transition: box-shadow 0.25s;
+        overflow: hidden;
+    }
+
+    .cat-card:hover .cat-img {
+        box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    .cat-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .cat-name {
+        font-size: 0.72rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--dark);
+        font-weight: 500;
+    }
+
+    /* ===== PRODUCT GRID ===== */
+    .trending-bg {
+        background: var(--gray);
+        padding: 40px 0 0 0;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .p-card {
+        background: white;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .p-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+        }
+
+            .p-card:hover .p-actions {
+                opacity: 1;
+                bottom: 0;
+            }
+
+    .p-img {
+        width: 100%;
+        height: 240px;
+        background: linear-gradient(135deg, #f5f0e8, #ede8de);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+    }
+
+        .p-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .p-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: var(--red);
+        color: white;
+        font-size: 0.62rem;
+        letter-spacing: 1px;
+        padding: 3px 10px;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+
+        .p-badge.new-badge {
+            background: var(--gold);
+        }
+
+    .p-body {
+        padding: 16px;
+    }
+
+    .p-cat {
+        font-size: 0.62rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+
+    .p-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+
+    .p-price {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--red);
+    }
+
+    .p-price-old {
+        font-size: 0.78rem;
+        color: #bbb;
+        text-decoration: line-through;
+        margin-left: 8px;
+    }
+
+    .p-actions {
+        position: absolute;
+        bottom: -48px;
+        left: 0;
+        right: 0;
+        background: var(--dark);
+        padding: 12px;
+        text-align: center;
+        opacity: 0;
+        transition: all 0.3s;
+    }
+
+        .p-actions a {
+            color: white;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+            .p-actions a:hover {
+                color: var(--gold);
+            }
+    /* ===== HOVER ĐỔI ẢNH ===== */
+    .p-img-wrap {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        overflow: hidden;
+        display: block;
+    }
+
+    .p-img-main, .p-img-hover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s ease;
+        display: block;
+    }
+
+    .p-img-main {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .p-img-hover {
+        opacity: 0;
+        z-index: 2;
+    }
+
+    .p-card:hover .p-img-main {
+        opacity: 0;
+    }
+
+    .p-card:hover .p-img-hover {
+        opacity: 1;
+    }
+
+    /* ===== BANNER STRIP ===== */
+    .banner-strip {
+        background: linear-gradient(135deg, var(--red) 0%, #8b1a0a 100%);
+        padding: 48px 40px;
+        text-align: center;
+    }
+
+    .strip-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.4rem;
+        font-weight: 300;
+        color: white;
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+    }
+
+    .strip-sub {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.75);
+        letter-spacing: 2px;
+        margin-bottom: 28px;
+    }
+
+    .strip-btn {
+        display: inline-block;
+        padding: 12px 36px;
+        background: white;
+        color: var(--red);
+        font-family: 'Jost', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+        .strip-btn:hover {
+            background: var(--gold);
+            color: white;
+            text-decoration: none;
+        }
+    /* ===== SALE BADGE ===== */
+    .sale-badge-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: var(--red);
+        color: white;
+        width: 56px;
+        padding: 8px 6px;
+        text-align: center;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        z-index: 10;
+    }
+
+    .sale-tag {
+        display: block;
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .sale-pct {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .price-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .p-price-old-2 {
+        font-size: 0.8rem;
+        color: #aaa;
+        text-decoration: line-through;
+    }
+
+
+</style>
+
+<!-- HERO SLIDER -->
+<div class="hero-slider">
+    <div class="slide slide-1 active">
+        <img class="slide-bg" src="/images/Favorite/banner4.jpg" alt="Banner 4" />
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Top Sản Phẩm<br /><span>Yêu Thích</span></h1>
+            <a href="@Url.Action("Index", "Product")" class="slide-btn">Khám Phá Ngay</a>
+        </div>
+    </div>
+
+    <div class="slide slide-2 active">
+        <img class="slide-bg" src="/images/Favorite/banner3.jpg" alt="Banner 3" />
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Cùng Khám Phá<br /><span>BST những sản phẩm mới nhất của DKH</span></h1>         
+            <a href="@Url.Action("Index", "Product")" class="slide-btn">Khám Phá Ngay</a>
+        </div>
+    </div>
+    
+    <button class="slider-prev" onclick="changeSlide(-1)">‹</button>
+    <button class="slider-next" onclick="changeSlide(1)">›</button>
+    <div class="slider-dots">
+        <button class="dot active" onclick="goSlide(0)"></button>
+        <button class="dot" onclick="goSlide(1)"></button>
+    </div>
+</div>
+
+<!-- XU HƯỚNG TÌM KIẾM -->
+<div style="max-width:1400px;margin:0 auto;">
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Xu Hướng Tìm Kiếm</h2>
+        </div>
+        <div class="cat-grid">
+            <a href="@Url.Action("Index", "Product", new { category = "Vòng - Lắc" })" class="cat-card">
+                <div class="cat-img">
+                    <img src="/images/Categories/Vong-Lac.jpg" alt="Vòng - Lắc" />
+                </div>
+                <div class="cat-name">Vòng - Lắc</div>
+            </a>
+            <a href="@Url.Action("Index", "Product", new { category = "Nhẫn" })" class="cat-card">
+                <div class="cat-img">
+                    <img src="/images/Categories/Nhan.jpg" alt="Nhẫn" />
+                </div>
+                <div class="cat-name">Nhẫn</div>
+            </a>
+            <a href="@Url.Action("Index", "Product", new { category = "Dây Chuyền" })" class="cat-card">
+                <div class="cat-img">
+                    <img src="/images/Categories/Day-chuyen.jpg" alt="Dây Chuyền" />
+                </div>
+                <div class="cat-name">Dây Chuyền</div>
+            </a>
+            <a href="@Url.Action("Index", "Product", new { category = "Bông Tai" })" class="cat-card">
+                <div class="cat-img">
+                    <img src="/images/categories/Bong-tai.jpg" alt="Bông Tai" />
+                </div>
+                <div class="cat-name">Bông Tai</div>
+            </a>
+            <a href="@Url.Action("Index", "Product", new { category = "Trang Sức Đôi" })" class="cat-card">
+                <div class="cat-img">
+                    <img src="/images/Categories/Trang-suc-doi.jpg" alt="Trang Sức Đôi" />
+                </div>
+                <div class="cat-name">Trang Sức Đôi</div>
+            </a>
+            <a href="@Url.Action("Index", "Product", new { category = "Trang Sức Bộ" })" class="cat-card">
+                <div class="cat-img">
+                    <img src="/images/Categories/Trang-suc-bo.jpg" alt="Trang Sức Bộ" />
+                </div>
+                <div class="cat-name">Trang Sức Bộ</div>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- SẢN PHẨM YÊU THÍCH -->
+<div class="trending-bg">
+    <div class="section" style="padding-top:20px;padding-bottom:20px;">
+        <div class="section-header">
+            <h2 class="section-title" style="background:var(--gray);">Top Sản Phẩm Yêu Thích Nhất</h2>
+        </div>
+        <div class="product-grid">
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Day-chuyen-bac-nu-phong-cach-co-trang1.jpg" alt="Dây chuyền bạc nữ đính đá CZ cá tiên LILI_831944" />
+                    <img class="p-img-hover" src="/images/Favorite/Day-chuyen-bac-nu-phong-cach-co-trang2.jpg" alt="Dây chuyền bạc nữ đính đá CZ cá tiên LILI_831944" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Dây Chuyền</div>
+                    <div class="p-name">Dây chuyền bạc nữ đính đá CZ cá tiên LILI_831944</div>
+                    <div><span class="p-price">1.824.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan1.jpg" alt="Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168" />
+                    <img class="p-img-hover" src="/images/Favorite/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg" alt="Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Nhẫn</div>
+                    <div class="p-name">Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168</div>
+                    <div><span class="p-price">2.181.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Lac-chan-bac-nu-dinh-da-CZ-hinh-co-4-la-Mildred1.jpg" alt="Lắc chân bạc nữ đính đá CZ hình cỏ 4 lá Mildred LILI_763298" />
+                    <img class="p-img-hover" src="/images/Favorite/Lac-chan-bac-nu-dinh-da-CZ-hinh-co-4-la-Mildred-LILI2.jpg" alt="Lắc chân bạc nữ đính đá CZ hình cỏ 4 lá Mildred LILI_763298" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Lắc chân bạc nữ đính đá CZ hình cỏ 4 lá Mildred LILI_763298</div>
+                    <div><span class="p-price">2.299.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Day-chuyen-doi-bac-hinh-ca-heo-hong-Forever-Love-LILI1.jpg" alt="Dây chuyền đôi bạc tình yêu tình bạn thân BFF đính đá CZ Forever Love LILI_528145" />
+                    <img class="p-img-hover" src="/images/Favorite/Day-chuyen-doi-bac-dinh-da-CZ-Forever-Love-LILI2.jpg" alt="Dây chuyền đôi bạc tình yêu tình bạn thân BFF đính đá CZ Forever Love LILI_528145" />
+                </div>                
+                <div class="p-body">
+                    <div class="p-cat">Trang Sức Đôi</div>
+                    <div class="p-name">Dây chuyền đôi bạc tình yêu tình bạn thân BFF đính đá CZ Forever Love LILI_528145</div>
+                    <div><span class="p-price">3.467.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Nhan-cap-doi-bac-dinh-kim-cuong-Moissanite-Theophilus-LILI1.jpg" alt="Nhẫn cặp đôi bạc đính kim cương Moissanite Theophilus LILI_672438" />
+                    <img class="p-img-hover" src="/images/Favorite/Nhan-cap-doi-bac-dinh-kim-cuong-Moissanite-Theophilus-LILI2.jpg" alt="Nhẫn cặp đôi bạc đính kim cương Moissanite Theophilus LILI_672438" />
+                </div>           
+                <div class="p-body">
+                    <div class="p-cat">Trang Sức Đôi</div>
+                    <div class="p-name">Nhẫn cặp đôi bạc đính kim cương Moissanite Theophilus LILI_672438</div>
+                    <div><span class="p-price">2.914.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Bong-tai-bac-nu-tron-hinh-bong-hoa-5-canh-Cute-LILI1.jpg" alt="Bông tai bạc nữ tròn đính đá CZ hình bông hoa 5 cánh Cute LILI_749976" />
+                    <img class="p-img-hover" src="/images/Favorite/Bong-tai-bac-nu-tron-hinh-bong-hoa-5-canh-Cute-LILI2.jpg" alt="Bông tai bạc nữ tròn đính đá CZ hình bông hoa 5 cánh Cute LILI_749976" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Bông Tai</div>
+                    <div class="p-name">Bông tai bạc nữ tròn đính đá CZ hình bông hoa 5 cánh Cute LILI_749976</div>
+                    <div><span class="p-price">1.484.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Lac-tay-bac-nu-dinh-da-pha-le-hinh-trai-tim-LILI1.jpg" alt="Lắc tay bạc nữ đính đá CZ hình trái tim Heart Of The Sea LILI_427425"/>
+                    <img class="p-img-hover" src="/images/Favorite/Lac-tay-bac-nu-dinh-da-pha-le-hinh-trai-tim-LILI2.jpg" alt="Lắc tay bạc nữ đính đá CZ hình trái tim Heart Of The Sea LILI_427425" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Lắc tay bạc nữ đính đá CZ hình trái tim Heart Of The Sea LILI_427425</div>
+                    <div><span class="p-price">3.328.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Favorite/Lac-tay-bac-nam-day-ben-du-sap-dinh-da-CZ-hinh-rong-Dragon-LILI1.jpg" alt="Lắc tay bạc nam dây bện dù sáp đính đá CZ hình rồng Dragon LILI_103676" />
+                    <img class="p-img-hover" src="/images/Favorite/Lac-tay-bac-nam-day-ben-du-sap-dinh-da-CZ-hinh-rong-Dragon-LILI2.jpg" alt="Lắc tay bạc nam dây bện dù sáp đính đá CZ hình rồng Dragon LILI_103676" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Lắc tay bạc nam dây bện dù sáp đính đá CZ hình rồng Dragon LILI_103676</div>
+                    <div><span class="p-price">2.730.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:36px;">
+            <a href="@Url.Action("Index", "Product")"
+               style="display:inline-block;padding:13px 48px;background:#1a1410;color:white;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;"
+               onmouseover="this.style.background='#c9a84c'"
+               onmouseout="this.style.background='#1a1410'">
+                Xem Tất Cả Sản Phẩm Yêu Thích Nhất
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- SẢN PHẨM MỚI -->
+<div class="trending-bg">
+    <div class="section" style="padding-top:20px;padding-bottom:20px;">
+        <div class="section-header">
+            <h2 class="section-title" style="background:var(--gray);">Sản Phẩm Mới</h2>
+        </div>
+        <div class="product-grid">
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Nhan-bac-nu-dinh-da-CZ-hoa-buom-LILI1.jpg" alt="Nhẫn bạc nữ đính đá CZ hoa bướm LILI_661591" />
+                    <img class="p-img-hover" src="/images/NewProducts/Nhan-bac-nu-dinh-da-CZ-hoa-buom-LILI2.jpg" alt="Nhẫn bạc nữ đính đá CZ hoa bướm LILI_661591" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Nhẫn</div>
+                    <div class="p-name">Nhẫn bạc nữ đính đá CZ hoa bướm LILI_661591</div>
+                    <div><span class="p-price">1.520.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Nhan-doi-bac-hiep-si-va-cong-chua-dinh-da-CZ-LILI1.jpg" alt="Nhẫn đôi bạc free size đính đá CZ hiệp sĩ và công chúa LILI_819229" />
+                    <img class="p-img-hover" src="/images/NewProducts/Nhan-doi-bac-hiep-si-va-cong-chua-dinh-da-CZ-LILI2.jpg" alt="Nhẫn đôi bạc free size đính đá CZ hiệp sĩ và công chúa LILI_819229" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Trang Sức Đôi</div>
+                    <div class="p-name">Nhẫn đôi bạc free size đính đá CZ hiệp sĩ và công chúa LILI_819229</div>
+                    <div><span class="p-price">2.905.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Lac-tay-bac-cap-doi-tinh-yeu-tinh-ban-vinh-cuu-Forever-LILI1.jpg" alt="Lắc tay bạc cặp đôi tình yêu tình bạn vĩnh cửu Forever LILI_818622" />
+                    <img class="p-img-hover" src="/images/NewProducts/Lac-tay-bac-cap-doi-tinh-yeu-tinh-ban-vinh-cuu-Forever-LILI2.jpg" alt="Lắc tay bạc cặp đôi tình yêu tình bạn vĩnh cửu Forever LILI_818622" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Trang Sức Đôi</div>
+                    <div class="p-name">Lắc tay bạc cặp đôi tình yêu tình bạn vĩnh cửu Forever LILI_818622</div>
+                    <div><span class="p-price">3.669.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Bong-tai-bac-nu-dinh-da-CZ-hinh-trai-tim-Sofia-LILI1.jpg" alt="Bông tai bạc nữ đính đá CZ hình trái tim Sofia LILI_182061" />
+                    <img class="p-img-hover" src="/images/NewProducts/Bong-tai-bac-nu-dinh-da-CZ-hinh-trai-tim-Sofia-LILI2.jpg" alt="Bông tai bạc nữ đính đá CZ hình trái tim Sofia LILI_182061" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Bông Tai</div>
+                    <div class="p-name">Bông tai bạc nữ đính đá CZ hình trái tim Sofia LILI_182061</div>
+                    <div><span class="p-price">1.538.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Bong-tai-bac-nu-dinh-da-CZ-la-thu-tinh-yeu-Wrenlee-LILI1.jpg" alt="Bông tai bạc nữ đính đá CZ lá thư tình yêu Wrenlee LILI_182016" />
+                    <img class="p-img-hover" src="/images/NewProducts/Bong-tai-bac-nu-dinh-da-CZ-la-thu-tinh-yeu-Wrenlee-LILI2.jpg" alt="Bông tai bạc nữ đính đá CZ lá thư tình yêu Wrenlee LILI_182016" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Bông Tai</div>
+                    <div class="p-name">Bông tai bạc nữ đính đá CZ lá thư tình yêu Wrenlee LILI_182016</div>
+                    <div><span class="p-price">1.485.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Day-chuyen-bac-doi-dinh-da-CZ-Juniper-LILI1.jpg" alt="Dây chuyền bạc đôi đính đá CZ Juniper LILI_181462" />
+                    <img class="p-img-hover" src="/images/NewProducts/Day-chuyen-bac-doi-dinh-da-CZ-Juniper-LILI2.jpg" alt="Dây chuyền bạc đôi đính đá CZ Juniper LILI_181462" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Trang Sức Đôi</div>
+                    <div class="p-name">Dây chuyền bạc đôi đính đá CZ Juniper LILI_181462</div>
+                    <div><span class="p-price">4.111.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Lac-tay-bac-nu-dinh-kim-cuong-Moissanite-co-4-la-Maliyah-LILI1.jpg" alt="Lắc tay bạc nữ đính kim cương Moissanite cỏ 4 lá Maliyah LILI_176440" />
+                    <img class="p-img-hover" src="/images/NewProducts/Lac-tay-bac-nu-dinh-kim-cuong-Moissanite-co-4-la-Maliyah-LILI1.jpg" alt="Lắc tay bạc nữ đính kim cương Moissanite cỏ 4 lá Maliyah LILI_176440" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Lắc tay bạc nữ đính kim cương Moissanite cỏ 4 lá Maliyah LILI_176440</div>
+                    <div><span class="p-price">6.039.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/NewProducts/Bong-tai-bac-nu-hinh-co-4-la-Celeste-LILI1.jpg" alt="Bông tai bạc nữ hình cỏ 4 lá Celeste LILI_181696" />
+                    <img class="p-img-hover" src="/images/NewProducts/Bong-tai-bac-nu-hinh-co-4-la-Celeste-LILI1.jpg" alt="Bông tai bạc nữ hình cỏ 4 lá Celeste LILI_181696" />
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Bông Tai</div>
+                    <div class="p-name">Bông tai bạc nữ hình cỏ 4 lá Celeste LILI_181696</div>
+                    <div><span class="p-price">1.412.000₫</span></div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:36px;">
+            <a href="@Url.Action("Index", "Product")"
+               style="display:inline-block;padding:13px 48px;background:#1a1410;color:white;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;"
+               onmouseover="this.style.background='#c9a84c'"
+               onmouseout="this.style.background='#1a1410'">
+                Xem Tất Cả Sản Phẩm Mới
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- SẢN PHẨM KHUYẾN MÃI -->
+<div class="trending-bg">
+    <div class="section" style="padding-top:20px;padding-bottom:20px;">
+        <div class="section-header">
+            <h2 class="section-title" style="background:var(--gray);">Sản Phẩm Khuyến Mãi</h2>
+        </div>
+        <div class="product-grid">
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Bong-tai-bac-nu-dinh-da-CZ-hinh-nhung-bong-hoa-Luu-ly-LILI1.jpg" alt="Bông tai bạc nữ đính đá CZ hình những bông hoa Lưu ly LILI_148289" />
+                    <img class="p-img-hover" src="/images/Discount/Bong-tai-bac-nu-dinh-da-CZ-hinh-nhung-bong-hoa-Luu-ly-LILI2.jpg" alt="Bông tai bạc nữ đính đá CZ hình những bông hoa Lưu ly LILI_148289" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">8%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Bông Tai</div>
+                    <div class="p-name">Bông tai bạc nữ đính đá CZ hình những bông hoa Lưu ly LILI_148289</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">1.676.000₫</span>
+                        <span class="p-price">1.541.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Lac-tay-bac-nu-ca-tinh-mat-xich-vuong-trai-tim-Strong-Heart-LILI1.jpg" alt="Lắc tay bạc nữ cá tính mắt xích vuông trái tim Strong Heart LILI_414788" />
+                    <img class="p-img-hover" src="/images/Discount/Lac-tay-bac-nu-ca-tinh-mat-xich-vuong-trai-tim-Strong-Heart-LILI2.jpg.jpg" alt="Lắc tay bạc nữ cá tính mắt xích vuông trái tim Strong Heart LILI_414788" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">5%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Lắc tay bạc nữ cá tính mắt xích vuông trái tim Strong Heart LILI_414788</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">3.063.000₫</span>
+                        <span class="p-price">2.905.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Lac-chan-bac-dang-hat-2-lop-dinh-meo-than-tai-LILI1.jpg" alt="Lắc chân bạc nữ dạng hạt 2 tầng đính mèo thần tài LILI_631735" />
+                    <img class="p-img-hover" src="/images/Discount/Lac-chan-bac-dang-hat-2-lop-dinh-meo-than-tai-LILI1.jpg" alt="Lắc chân bạc nữ dạng hạt 2 tầng đính mèo thần tài LILI_631735" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">6%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Lắc chân bạc nữ dạng hạt 2 tầng đính mèo thần tài LILI_631735</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">3.903.000₫</span>
+                        <span class="p-price">3.669.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Bong-tai-bac-ma-vang-dinh-da-Zircon-hoa-hong-do-LILI1.jpg" alt="Bông tai bạc nữ mạ vàng đính đá Garnet hình cỏ 4 lá LILI_762747" />
+                    <img class="p-img-hover" src="/images/Discount/Bong-tai-bac-nu-ma-vang-dinh-da-Garnet-hoa-hong-do-LILI2.jpg" alt="Bông tai bạc nữ mạ vàng đính đá Garnet hình cỏ 4 lá LILI_762747" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">6%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Bông Tai</div>
+                    <div class="p-name">Bông tai bạc nữ mạ vàng đính đá Garnet hình cỏ 4 lá LILI_762747</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">1.636.000₫</span>
+                        <span class="p-price">1.538.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Day-chuyen-Choker-bac-Magic-LILI1.jpg" alt="Dây chuyền Choker bạc nữ Magic LILI_366642" />
+                    <img class="p-img-hover" src="/images/Discount/Day-chuyen-Choker-bac-Magic-LILI2.jpg" alt="Dây chuyền Choker bạc nữ Magic LILI_366642" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">7%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Dây Chuyền</div>
+                    <div class="p-name">Dây chuyền Choker bạc nữ Magic LILI_366642</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">1.597.000₫</span>
+                        <span class="p-price">1.485.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Hop-dung-do-trang-suc-nam-nu-trang-dang-ngan-boc-da-cao-cap-LILI1.jpg" alt="Tủ hộp đựng đồ trang sức nam/nữ trang bọc da, nhung cao cấp LILI_611947" />
+                    <img class="p-img-hover" src="/images/Discount/Hop-dung-do-trang-suc-nam-nu-trang-dang-ngan-boc-da-cao-cap-LILI2.jpg" alt="Tủ hộp đựng đồ trang sức nam/nữ trang bọc da, nhung cao cấp LILI_611947" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">5%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Phụ Kiện</div>
+                    <div class="p-name">
+                        Tủ hộp đựng đồ trang sức nam/nữ trang bọc da, nhung cao cấp LILI_611947
+                    </div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">4.327.000₫</span>
+                        <span class="p-price">4.111.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Vong-pandora-bac-nu-dang-chuoi-xoan-Sabrina-LILI1.jpg" alt="Vòng pandora bạc nữ DIY dạng chuỗi xoắn Sabrina LILI_090215" />
+                    <img class="p-img-hover" src="/images/Discount/Vong-pandora-bac-nu-dang-chuoi-xoan-Sabrina-LILI2.jpg" alt="Vòng pandora bạc nữ DIY dạng chuỗi xoắn Sabrina LILI_090215" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">8%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Vòng - Lắc</div>
+                    <div class="p-name">Vòng pandora bạc nữ DIY dạng chuỗi xoắn Sabrina LILI_090215</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">6.564.000₫</span>
+                        <span class="p-price">6.039.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+            <div class="p-card">
+                <div class="p-img-wrap">
+                    <img class="p-img-main" src="/images/Discount/Day-chuyen-bac-nu-trai-tim-hoa-la-dinh-pha-le-Aurora-LILI1.jpg" alt="Dây chuyền bạc nữ đẹp đính pha lê Aurora trái tim hoa lá LILI_866671" />
+                    <img class="p-img-hover" src="/images/Discount/Day-chuyen-bac-nu-trai-tim-hoa-la-dinh-pha-le-Aurora-LILI2.jpg" alt="Dây chuyền bạc nữ đẹp đính pha lê Aurora trái tim hoa lá LILI_866671" />
+                </div>
+                <div class="sale-badge-wrap">
+                    <span class="sale-tag">GIẢM</span>
+                    <span class="sale-pct">6%</span>
+                </div>
+                <div class="p-body">
+                    <div class="p-cat">Dây chuyền</div>
+                    <div class="p-name">Dây chuyền bạc nữ đẹp đính pha lê Aurora trái tim hoa lá LILI_866671</div>
+                    <div class="price-row">
+                        <span class="p-price-old-2">1.502.000₫</span>
+                        <span class="p-price">1.412.000₫</span>
+                    </div>
+                </div>
+                <div class="p-actions"><a href="@Url.Action("Index", "Product")">Xem Chi Tiết →</a></div>
+            </div>
+
+        </div>
+        <div style="text-align:center;margin-top:36px;">
+            <a href="@Url.Action("Index", "Product")"
+               style="display:inline-block;padding:13px 48px;background:#1a1410;color:white;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;"
+               onmouseover="this.style.background='#c9a84c'"
+               onmouseout="this.style.background='#1a1410'">
+                Xem Tất Cả Sản Phẩm Khuyến Mãi
+            </a>
+        </div>
+    </div>
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function goSlide(n) {
+            slides[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = (n + slides.length) % slides.length;
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+        }
+
+        function changeSlide(dir) { goSlide(current + dir); }
+        setInterval(() => changeSlide(1), 4000);
+    </script>
 </div>

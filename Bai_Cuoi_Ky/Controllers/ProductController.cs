@@ -5,14 +5,38 @@ namespace Bai_Cuoi_Ky.Controllers
 {
     public class ProductController : Controller
     {
-        // Dữ liệu mẫu (thay bằng DbContext nếu dùng database)
+        
         private static List<Product> _products = new List<Product>
         {
-            new Product { Id = 1, Name = "Vòng Tay Mặt Trăng", Price = 350000, Category = "Vòng - Lắc", Material = "Bạc 925", Stock = 10, IsAvailable = true, ImageUrl = "/images/vong1.jpg", CreatedAt = DateTime.Now },
-            new Product { Id = 2, Name = "Nhẫn Đôi Tình Yêu", Price = 450000, Category = "Nhẫn", Material = "Bạc 925", Stock = 5, IsAvailable = true, ImageUrl = "/images/nhan1.jpg", CreatedAt = DateTime.Now },
-            new Product { Id = 3, Name = "Dây Chuyền Mặt Nguyệt", Price = 520000, Category = "Dây Chuyền", Material = "Bạc 925", Stock = 8, IsAvailable = true, ImageUrl = "/images/daychuyen1.jpg", CreatedAt = DateTime.Now },
-            new Product { Id = 4, Name = "Bông Tai Pha Lê", Price = 280000, Category = "Bông Tai", Material = "Bạc 925", Stock = 15, IsAvailable = true, ImageUrl = "/images/bongtai1.jpg", CreatedAt = DateTime.Now },
-            new Product { Id = 5, Name = "Charm Pandora Hoa", Price = 620000, Category = "Charm Pandora", Material = "Bạc 925", Stock = 3, IsAvailable = true, ImageUrl = "/images/charm1.jpg", CreatedAt = DateTime.Now },
+            new Product { Id = 1, Name = "Lắc tay bạc nữ Tennis chuỗi đá CZ dạng dây rút thắt nơ LILI_869163",
+                Price = 2578000, Category = "Vòng - Lắc", Material = "Bạc", Stock = 10, IsAvailable = true, 
+                ImageUrl = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no1.jpg",
+                ImageUrl2 = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no2.jpg",},
+
+            new Product { Id = 2, Name = "Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168", Price = 2181000, Category = "Nhẫn", Material = "Bạc", Stock = 5, IsAvailable = true, 
+                ImageUrl = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan1.jpg",
+                ImageUrl2="/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg"},
+
+            new Product { Id = 3, Name = "Dây chuyền đôi bạc đính đá CZ hình cá voi và bướm Brenna LILI_123985", Price = 520000, Category = "Dây Chuyền", Material = "Bạc", Stock = 8, IsAvailable = true, 
+                ImageUrl = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom1.jpg",
+                ImageUrl2="/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom2.jpg"},
+
+            new Product { Id = 4, Name = "Bông tai bạc nữ đính đá CZ hình chiếc nơ sang trọng LILI_698154", Price = 1918000, Category = "Bông Tai", Material = "Bạc", Stock = 15, IsAvailable = true, 
+                ImageUrl = "/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da1.jpg",
+                ImageUrl2="/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da2.jpg"},
+
+             new Product { Id = 5, Name = "Lắc tay bạc cặp đôi tình yêu Forever Love LILI_986852", Price = 3458000, Category = "Trang Sức Đôi", Material = "Bạc", Stock = 15, IsAvailable = true,
+                ImageUrl = "/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love1.jpg",
+                ImageUrl2="/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love2.jpg"},
+
+             new Product { Id = 6, Name = "Bộ trang sức bạc nữ đính đá Garnet, CZ hoa hồng tình yêu LILI_727966", Price = 1408000, Category = "Trang Sức Bộ", Material = "Bạc", Stock = 15, IsAvailable = true,
+                ImageUrl = "/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu1.jpg",
+                ImageUrl2="/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu2.jpg"},
+
+              new Product { Id = 7, Name = "Tủ hộp đựng đồ trang sức phụ kiện có khóa gỗ óc chó Holly LILI_161276", Price = 1809000, Category = "Phụ Kiện", Stock = 15, IsAvailable = true,
+                ImageUrl = "/images/Products/Tu-hop-dung-do-trang-suc-phu-kien-dep-go-oc-cho1.jpg",
+                ImageUrl2="/images/Products/Tu-hop-dung-do-trang-suc-phu-kien-dep-go-oc-cho2.jpg"},
+
         };
 
         // ===== INDEX - Danh sách sản phẩm =====
@@ -52,7 +76,7 @@ namespace Bai_Cuoi_Ky.Controllers
             ViewBag.Categories = new List<string>
             {
                 "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                "Bông Tai", "Charm Pandora", "Khuyên Xỏ"
+                "Bông Tai","Trang Sức Đôi","Trang Sức Bộ","Phụ Kiện"
             };
             return View();
         }
@@ -67,16 +91,14 @@ namespace Bai_Cuoi_Ky.Controllers
                 ViewBag.Categories = new List<string>
                 {
                     "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                    "Bông Tai", "Charm Pandora", "Khuyên Xỏ"
+                "Bông Tai","Trang Sức Đôi","Trang Sức Bộ","Phụ Kiện"
                 };
                 return View(product);
             }
 
             product.Id = _products.Any() ? _products.Max(p => p.Id) + 1 : 1;
-            product.CreatedAt = DateTime.Now;
             product.IsAvailable = product.Stock > 0;
             _products.Add(product);
-
             TempData["Success"] = "Thêm sản phẩm thành công!";
             return RedirectToAction(nameof(Index));
         }
@@ -92,7 +114,7 @@ namespace Bai_Cuoi_Ky.Controllers
             ViewBag.Categories = new List<string>
             {
                 "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                "Bông Tai", "Charm Pandora", "Khuyên Xỏ"
+                "Bông Tai", "Trang Sức Đôi" , "Trang Sức Bộ" , "Phụ Kiện"
             };
             return View(product);
         }
@@ -110,7 +132,7 @@ namespace Bai_Cuoi_Ky.Controllers
                 ViewBag.Categories = new List<string>
                 {
                     "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                    "Bông Tai", "Charm Pandora", "Khuyên Xỏ"
+                    "Bông Tai", "Trang Sức Đôi" , "Trang Sức Bộ" , "Phụ Kiện"
                 };
                 return View(product);
             }
