@@ -5,42 +5,115 @@ namespace Bai_Cuoi_Ky.Controllers
 {
     public class ProductController : Controller
     {
-        
         private static List<Product> _products = new List<Product>
         {
-            new Product { Id = 1, Name = "Lắc tay bạc nữ Tennis chuỗi đá CZ dạng dây rút thắt nơ LILI_869163",
-                Price = 2578000, Category = "Vòng - Lắc", Material = "Bạc", Stock = 10, IsAvailable = true, 
-                ImageUrl = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no1.jpg",
-                ImageUrl2 = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no2.jpg",},
+            // ===== VÒNG - LẮC =====
+            new Product { Id = 1, Name = "Lắc tay bạc nữ Tennis chuỗi đá CZ dạng dây rút thắt nơ LILI_869163", Price = 2578000,
+                Category = "Vong-Lac", Material = "Bạc", Stock = 10, IsAvailable = true,
+                ImageUrl = "/images/vong1.jpg" },
 
-            new Product { Id = 2, Name = "Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168", Price = 2181000, Category = "Nhẫn", Material = "Bạc", Stock = 5, IsAvailable = true, 
-                ImageUrl = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan1.jpg",
-                ImageUrl2="/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg"},
+            new Product { Id = 2, Name = "Lắc chân bạc nữ đính đá CZ hình cỏ 4 lá Mildred LILI_763298", Price = 2299000,
+                Category = "Vong-Lac", Material = "Bạc", Stock = 8, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Lac-chan-bac-nu-dinh-da-CZ-hinh-co-4-la-Mildred1.jpg",
+                ImageUrl2 = "/images/Favorite/Lac-chan-bac-nu-dinh-da-CZ-hinh-co-4-la-Mildred-LILI2.jpg" },
 
-            new Product { Id = 3, Name = "Dây chuyền đôi bạc đính đá CZ hình cá voi và bướm Brenna LILI_123985", Price = 520000, Category = "Dây Chuyền", Material = "Bạc", Stock = 8, IsAvailable = true, 
-                ImageUrl = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom1.jpg",
-                ImageUrl2="/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom2.jpg"},
+            new Product { Id = 3, Name = "Lắc tay bạc nữ đính đá CZ hình trái tim Heart Of The Sea LILI_427425", Price = 3328000,
+                Category = "Vong-Lac", Material = "Bạc", Stock = 5, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Lac-tay-bac-nu-dinh-da-pha-le-hinh-trai-tim-LILI1.jpg",
+                ImageUrl2 = "/images/Favorite/Lac-tay-bac-nu-dinh-da-pha-le-hinh-trai-tim-LILI2.jpg" },
 
-            new Product { Id = 4, Name = "Bông tai bạc nữ đính đá CZ hình chiếc nơ sang trọng LILI_698154", Price = 1918000, Category = "Bông Tai", Material = "Bạc", Stock = 15, IsAvailable = true, 
-                ImageUrl = "/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da1.jpg",
-                ImageUrl2="/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da2.jpg"},
+            new Product { Id = 4, Name = "Lắc tay bạc nam dây bện dù sáp đính đá CZ hình rồng Dragon LILI_103676", Price = 2730000,
+                Category = "Vong-Lac", Material = "Bạc", Stock = 6, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Lac-tay-bac-nam-day-ben-du-sap-dinh-da-CZ-hinh-rong-Dragon-LILI1.jpg",
+                ImageUrl2 = "/images/Favorite/Lac-tay-bac-nam-day-ben-du-sap-dinh-da-CZ-hinh-rong-Dragon-LILI2.jpg" },
 
-             new Product { Id = 5, Name = "Lắc tay bạc cặp đôi tình yêu Forever Love LILI_986852", Price = 3458000, Category = "Trang Sức Đôi", Material = "Bạc", Stock = 15, IsAvailable = true,
-                ImageUrl = "/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love1.jpg",
-                ImageUrl2="/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love2.jpg"},
+            new Product { Id = 5, Name = "Lắc tay bạc nữ cá tính mắt xích vuông trái tim Strong Heart LILI_414788", Price = 2685000,
+                Category = "Vong-Lac", Material = "Bạc", Stock = 7, IsAvailable = true,
+                ImageUrl = "/images/Discount/Lac-tay-bac-nu-ca-tinh-mat-xich-vuong-trai-tim-Strong-Heart-LILI1.jpg" },
 
-             new Product { Id = 6, Name = "Bộ trang sức bạc nữ đính đá Garnet, CZ hoa hồng tình yêu LILI_727966", Price = 1408000, Category = "Trang Sức Bộ", Material = "Bạc", Stock = 15, IsAvailable = true,
-                ImageUrl = "/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu1.jpg",
-                ImageUrl2="/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu2.jpg"},
+            new Product { Id = 6, Name = "Vòng pandora bạc nữ DIY dạng chuỗi xoắn Sabrina LILI_090215", Price = 6039000,
+                Category = "Vong-Lac", Material = "Bạc", Stock = 4, IsAvailable = true,
+                ImageUrl = "/images/Discount/Vong-pandora-bac-nu-dang-chuoi-xoan-Sabrina-LILI1.jpg",
+                ImageUrl2 = "/images/Discount/Vong-pandora-bac-nu-dang-chuoi-xoan-Sabrina-LILI2.jpg" },
 
-              new Product { Id = 7, Name = "Tủ hộp đựng đồ trang sức phụ kiện có khóa gỗ óc chó Holly LILI_161276", Price = 1809000, Category = "Phụ Kiện", Stock = 15, IsAvailable = true,
-                ImageUrl = "/images/Products/Tu-hop-dung-do-trang-suc-phu-kien-dep-go-oc-cho1.jpg",
-                ImageUrl2="/images/Products/Tu-hop-dung-do-trang-suc-phu-kien-dep-go-oc-cho2.jpg"},
+            // ===== NHẪN =====
+            new Product { Id = 7, Name = "Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168", Price = 2181000,
+                Category = "Nhan", Material = "Bạc", Stock = 5, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan1.jpg",
+                ImageUrl2 = "/images/Favorite/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg" },
 
+            new Product { Id = 8, Name = "Nhẫn bạc nữ đính đá CZ hoa bướm LILI_661591", Price = 1520000,
+                Category = "Nhan", Material = "Bạc", Stock = 8, IsAvailable = true,
+                ImageUrl = "/images/NewProducts/Nhan-bac-nu-dinh-da-CZ-hoa-buom-LILI1.jpg",
+                ImageUrl2 = "/images/NewProducts/Nhan-bac-nu-dinh-da-CZ-hoa-buom-LILI2.jpg" },
+
+            // ===== DÂY CHUYỀN =====
+            new Product { Id = 9, Name = "Dây chuyền bạc nữ đính đá CZ cá tiên LILI_831944", Price = 1824000,
+                Category = "Day-Chuyen", Material = "Bạc", Stock = 6, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Day-chuyen-bac-nu-phong-cach-co-trang1.jpg",
+                ImageUrl2 = "/images/Favorite/Day-chuyen-bac-nu-phong-cach-co-trang2.jpg" },
+
+            new Product { Id = 10, Name = "Dây chuyền Choker bạc nữ Magic LILI_366642", Price = 1485000,
+                Category = "Day-Chuyen", Material = "Bạc", Stock = 9, IsAvailable = true,
+                ImageUrl = "/images/Discount/Day-chuyen-Choker-bac-Magic-LILI1.jpg",
+                ImageUrl2 = "/images/Discount/Day-chuyen-Choker-bac-Magic-LILI2.jpg" },
+
+            new Product { Id = 11, Name = "Dây chuyền bạc nữ đẹp đính pha lê Aurora trái tim hoa lá LILI_866671", Price = 1412000,
+                Category = "Day-Chuyen", Material = "Bạc", Stock = 7, IsAvailable = true,
+                ImageUrl = "/images/Discount/Day-chuyen-bac-nu-trai-tim-hoa-la-dinh-pha-le-Aurora-LILI1.jpg",
+                ImageUrl2 = "/images/Discount/Day-chuyen-bac-nu-trai-tim-hoa-la-dinh-pha-le-Aurora-LILI2.jpg" },
+
+            // ===== BÔNG TAI =====
+            new Product { Id = 12, Name = "Bông tai bạc nữ tròn đính đá CZ hình bông hoa 5 cánh Cute LILI_749976", Price = 1484000,
+                Category = "Bong-Tai", Material = "Bạc", Stock = 15, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Bong-tai-bac-nu-tron-hinh-bong-hoa-5-canh-Cute-LILI1.jpg",
+                ImageUrl2 = "/images/Favorite/Bong-tai-bac-nu-tron-hinh-bong-hoa-5-canh-Cute-LILI2.jpg" },
+
+            new Product { Id = 13, Name = "Bông tai bạc nữ đính đá CZ hình những bông hoa Lưu ly LILI_148289", Price = 1541000,
+                Category = "Bong-Tai", Material = "Bạc", Stock = 10, IsAvailable = true,
+                ImageUrl = "/images/Discount/Bong-tai-bac-nu-dinh-da-CZ-hinh-nhung-bong-hoa-Luu-ly-LILI1.jpg",
+                ImageUrl2 = "/images/Discount/Bong-tai-bac-nu-dinh-da-CZ-hinh-nhung-bong-hoa-Luu-ly-LILI2.jpg" },
+
+            new Product { Id = 14, Name = "Bông tai bạc nữ đính đá CZ hình trái tim Sofia LILI_182061", Price = 1538000,
+                Category = "Bong-Tai", Material = "Bạc", Stock = 8, IsAvailable = true,
+                ImageUrl = "/images/NewProducts/Bong-tai-bac-nu-dinh-da-CZ-hinh-trai-tim-Sofia-LILI1.jpg",
+                ImageUrl2 = "/images/NewProducts/Bong-tai-bac-nu-dinh-da-CZ-hinh-trai-tim-Sofia-LILI2.jpg" },
+
+            // ===== TRANG SỨC ĐÔI =====
+            new Product { Id = 15, Name = "Dây chuyền đôi bạc tình yêu tình bạn thân BFF đính đá CZ Forever Love LILI_528145", Price = 3467000,
+                Category = "Trang-Suc-Doi", Material = "Bạc", Stock = 5, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Day-chuyen-doi-bac-hinh-ca-heo-hong-Forever-Love-LILI1.jpg",
+                ImageUrl2 = "/images/Favorite/Day-chuyen-doi-bac-dinh-da-CZ-Forever-Love-LILI2.jpg" },
+
+            new Product { Id = 16, Name = "Nhẫn cặp đôi bạc đính kim cương Moissanite Theophilus LILI_672438", Price = 2914000,
+                Category = "Trang-Suc-Doi", Material = "Bạc", Stock = 4, IsAvailable = true,
+                ImageUrl = "/images/Favorite/Nhan-cap-doi-bac-dinh-kim-cuong-Moissanite-Theophilus-LILI1.jpg",
+                ImageUrl2 = "/images/Favorite/Nhan-cap-doi-bac-dinh-kim-cuong-Moissanite-Theophilus-LILI2.jpg" },
+
+            new Product { Id = 17, Name = "Nhẫn đôi bạc free size đính đá CZ hiệp sĩ và công chúa LILI_819229", Price = 2905000,
+                Category = "Trang-Suc-Doi", Material = "Bạc", Stock = 6, IsAvailable = true,
+                ImageUrl = "/images/NewProducts/Nhan-doi-bac-hiep-si-va-cong-chua-dinh-da-CZ-LILI1.jpg",
+                ImageUrl2 = "/images/NewProducts/Nhan-doi-bac-hiep-si-va-cong-chua-dinh-da-CZ-LILI2.jpg" },
+
+            new Product { Id = 18, Name = "Lắc tay bạc cặp đôi tình yêu tình bạn vĩnh cửu Forever LILI_818622", Price = 3669000,
+                Category = "Trang-Suc-Doi", Material = "Bạc", Stock = 5, IsAvailable = true,
+                ImageUrl = "/images/NewProducts/Lac-tay-bac-cap-doi-tinh-yeu-tinh-ban-vinh-cuu-Forever-LILI1.jpg",
+                ImageUrl2 = "/images/NewProducts/Lac-tay-bac-cap-doi-tinh-yeu-tinh-ban-vinh-cuu-Forever-LILI2.jpg" },
+
+            // ===== TRANG SỨC BỘ =====
+            new Product { Id = 19, Name = "Dây chuyền bạc đôi đính đá CZ Juniper LILI_181462", Price = 4111000,
+                Category = "Trang-Suc-Bo", Material = "Bạc", Stock = 3, IsAvailable = true,
+                ImageUrl = "/images/NewProducts/Day-chuyen-bac-doi-dinh-da-CZ-Juniper-LILI1.jpg",
+                ImageUrl2 = "/images/NewProducts/Day-chuyen-bac-doi-dinh-da-CZ-Juniper-LILI2.jpg" },
+
+            // ===== PHỤ KIỆN =====
+            new Product { Id = 20, Name = "Tủ hộp đựng đồ trang sức nam/nữ trang bọc da nhung cao cấp LILI_611947", Price = 4111000,
+                Category = "Phu-Kien", Material = "Da", Stock = 10, IsAvailable = true,
+                ImageUrl = "/images/Discount/Hop-dung-do-trang-suc-nam-nu-trang-dang-ngan-boc-da-cao-cap-LILI1.jpg",
+                ImageUrl2 = "/images/Discount/Hop-dung-do-trang-suc-nam-nu-trang-dang-ngan-boc-da-cao-cap-LILI2.jpg" },
         };
 
-        // ===== INDEX - Danh sách sản phẩm =====
-        // GET: /Product
+        // ===== INDEX =====
         public IActionResult Index(string category = null, string search = null)
         {
             var products = _products.AsQueryable();
@@ -51,134 +124,18 @@ namespace Bai_Cuoi_Ky.Controllers
             if (!string.IsNullOrEmpty(search))
                 products = products.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
 
-            ViewBag.Categories = _products.Select(p => p.Category).Distinct().ToList();
             ViewBag.CurrentCategory = category;
             ViewBag.Search = search;
 
             return View(products.ToList());
         }
 
-        // ===== DETAILS - Chi tiết sản phẩm =====
-        // GET: /Product/Details/5
+        // ===== DETAILS =====
         public IActionResult Details(int id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
-
+            if (product == null) return NotFound();
             return View(product);
-        }
-
-        // ===== CREATE - Tạo sản phẩm mới =====
-        // GET: /Product/Create
-        public IActionResult Create()
-        {
-            ViewBag.Categories = new List<string>
-            {
-                "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                "Bông Tai","Trang Sức Đôi","Trang Sức Bộ","Phụ Kiện"
-            };
-            return View();
-        }
-
-        // POST: /Product/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Product product)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Categories = new List<string>
-                {
-                    "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                "Bông Tai","Trang Sức Đôi","Trang Sức Bộ","Phụ Kiện"
-                };
-                return View(product);
-            }
-
-            product.Id = _products.Any() ? _products.Max(p => p.Id) + 1 : 1;
-            product.IsAvailable = product.Stock > 0;
-            _products.Add(product);
-            TempData["Success"] = "Thêm sản phẩm thành công!";
-            return RedirectToAction(nameof(Index));
-        }
-
-        // ===== EDIT - Chỉnh sửa sản phẩm =====
-        // GET: /Product/Edit/5
-        public IActionResult Edit(int id)
-        {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
-
-            ViewBag.Categories = new List<string>
-            {
-                "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                "Bông Tai", "Trang Sức Đôi" , "Trang Sức Bộ" , "Phụ Kiện"
-            };
-            return View(product);
-        }
-
-        // POST: /Product/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Product product)
-        {
-            if (id != product.Id)
-                return BadRequest();
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Categories = new List<string>
-                {
-                    "Vòng - Lắc", "Nhẫn", "Dây Chuyền",
-                    "Bông Tai", "Trang Sức Đôi" , "Trang Sức Bộ" , "Phụ Kiện"
-                };
-                return View(product);
-            }
-
-            var existing = _products.FirstOrDefault(p => p.Id == id);
-            if (existing == null)
-                return NotFound();
-
-            existing.Name = product.Name;
-            existing.Description = product.Description;
-            existing.Price = product.Price;
-            existing.DiscountPrice = product.DiscountPrice;
-            existing.ImageUrl = product.ImageUrl;
-            existing.Category = product.Category;
-            existing.Material = product.Material;
-            existing.Stock = product.Stock;
-            existing.IsAvailable = product.Stock > 0;
-
-            TempData["Success"] = "Cập nhật sản phẩm thành công!";
-            return RedirectToAction(nameof(Index));
-        }
-
-        // ===== DELETE - Xóa sản phẩm =====
-        // GET: /Product/Delete/5
-        public IActionResult Delete(int id)
-        {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
-
-            return View(product);
-        }
-
-        // POST: /Product/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
-
-            _products.Remove(product);
-
-            TempData["Success"] = "Xóa sản phẩm thành công!";
-            return RedirectToAction(nameof(Index));
         }
     }
 }

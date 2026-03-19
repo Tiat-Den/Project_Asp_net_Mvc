@@ -353,6 +353,7 @@
 
     .p-body {
         padding: 16px;
+      
     }
 
     .p-cat {
@@ -386,14 +387,12 @@
     }
 
     .p-actions {
-        position: absolute;
-        bottom: -48px;
-        left: 0;
-        right: 0;
         background: var(--dark);
         padding: 12px;
         text-align: center;
         opacity: 0;
+        max-height: 0;
+        overflow: hidden;
         transition: all 0.3s;
     }
 
@@ -405,9 +404,15 @@
             text-decoration: none;
         }
 
-            .p-actions a:hover {
-                color: var(--gold);
-            }
+        .p-actions:hover {
+            background: var(--gold);
+        }
+
+
+    .p-card:hover .p-actions {
+        opacity: 1;
+        max-height: 60px;
+    }
     /* ===== HOVER ĐỔI ẢNH ===== */
     .p-img-wrap {
         position: relative;
@@ -544,7 +549,7 @@
         </div>
     </div>
 
-    <div class="slide slide-2 active">
+    <div class="slide slide-2">
         <img class="slide-bg" src="/images/Favorite/banner3.jpg" alt="Banner 3" />
         <div class="slide-overlay"></div>
         <div class="slide-content">
