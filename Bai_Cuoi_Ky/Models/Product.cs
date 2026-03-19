@@ -29,8 +29,12 @@ namespace Bai_Cuoi_Ky.Models
         public string ImageUrl { get; set; }
         public string? ImageUrl2 { get; set; }
 
-        [Display(Name = "Danh mục")]
-        public string Category { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn danh mục")] 
+        [Display(Name = "Danh mục")] 
+        public int CategoryId { get; set; } 
+
+        [ForeignKey("CategoryId")] 
+        public virtual Category Category { get; set; } 
 
         [Display(Name = "Chất liệu")]
         public string Material { get; set; }

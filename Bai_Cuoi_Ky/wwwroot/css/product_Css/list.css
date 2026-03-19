@@ -1,0 +1,232 @@
+﻿:root {
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --cream: #faf8f4;
+    --dark: #1a1410;
+    --muted: #8a7968;
+}
+
+body {
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+}
+
+.page-header {
+    text-align: center;
+    padding: 48px 0 32px;
+}
+
+    .page-header::before {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 1px;
+        background: var(--gold);
+        margin: 0 auto 16px;
+    }
+
+    .page-header h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        font-weight: 300;
+        color: var(--dark);
+        letter-spacing: 6px;
+        text-transform: uppercase;
+    }
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+    padding-bottom: 60px;
+}
+
+.product-card {
+    background: white;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+    }
+
+        .product-card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+.card-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #f0ece4;
+}
+
+    .card-img-wrap .card-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s ease;
+    }
+
+.img-main {
+    opacity: 1;
+    z-index: 1;
+}
+
+.img-hover {
+    opacity: 0;
+    z-index: 2;
+}
+
+.product-card:hover .img-main {
+    opacity: 0;
+}
+
+.product-card:hover .img-hover {
+    opacity: 1;
+}
+
+.card-img-placeholder {
+    width: 100%;
+    height: 220px;
+    background: linear-gradient(135deg, #f5f0e8, #ede8de);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--gold);
+}
+
+.card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--gold);
+    color: white;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
+    .card-badge.out-of-stock {
+        background: #999;
+    }
+
+.card-body {
+    padding: 20px;
+}
+
+.card-category {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+}
+
+.card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 10px;
+    line-height: 1.3;
+    height: 3.4em; /* Giới hạn độ cao tên */
+    overflow: hidden;
+}
+
+.card-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.price-main {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.price-original {
+    font-size: 0.82rem;
+    color: #bbb;
+    text-decoration: line-through;
+}
+
+.card-footer {
+    padding: 12px 20px;
+    border-top: 1px solid #f0ece4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stock-info {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 2px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.25s;
+}
+
+.action-btn {
+    padding: 7px 10px;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+    .action-btn.view {
+        background: var(--dark);
+        color: white !important;
+    }
+
+    .action-btn.edit {
+        background: var(--gold);
+        color: white !important;
+    }
+
+    .action-btn.del {
+        background: #c0392b;
+        color: white !important;
+    }
+
+    .action-btn:hover {
+        opacity: 0.85;
+    }
+
+.alert-success {
+    background: #f0faf0;
+    border-left: 3px solid #4caf50;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    font-size: 0.88rem;
+    color: #2e7d32;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+}
