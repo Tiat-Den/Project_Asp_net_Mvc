@@ -13,9 +13,6 @@ namespace Bai_Cuoi_Ky
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-
-            builder.Services.AddControllersWithViews(); 
-
             builder.Services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer( 
                     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -29,6 +26,13 @@ namespace Bai_Cuoi_Ky
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             var app = builder.Build();
+
+            // Tự động áp dụng migration và seed data khi khởi chạy
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

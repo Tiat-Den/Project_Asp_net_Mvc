@@ -1,10 +1,9 @@
-﻿@model IEnumerable<Bai_Cuoi_Ky.Models.Product>
+@model IEnumerable<Bai_Cuoi_Ky.Models.Product>
 @{
     ViewData["Title"] = "Trang Chủ - DKH Premium Jewelry";
 }
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/css/home.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/home.css" />
 
 <div class="hero-slider">
     <div class="slide slide-1 active">
@@ -15,8 +14,9 @@
             <a asp-controller="Product" asp-action="Index" class="slide-btn">Khám Phá Ngay</a>
         </div>
     </div>
+
     <div class="slide slide-2">
-        <img class="slide-bg" src="/images/Favorite/banner3.jpg" alt="Banner 2" />
+        <img class="slide-bg" src="/images/Favorite/banner3.jpg" alt="Banner 3" />
         <div class="slide-overlay"></div>
         <div class="slide-content">
             <h1 class="slide-title">BST Mới Nhất<br /><span>Trang Sức DKH</span></h1>

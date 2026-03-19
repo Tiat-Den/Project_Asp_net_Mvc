@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bai_Cuoi_Ky.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260319060526_UpdateCategoryAndSeedData")]
-    partial class UpdateCategoryAndSeedData
+    [Migration("20260319164408_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,6 +124,7 @@ namespace Bai_Cuoi_Ky.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Description = "Đang cập nhật",
+                            DiscountPrice = 3000000m,
                             ImageUrl = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no1.jpg",
                             ImageUrl2 = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no2.jpg",
                             IsAvailable = true,
@@ -137,6 +138,7 @@ namespace Bai_Cuoi_Ky.Migrations
                             Id = 2,
                             CategoryId = 2,
                             Description = "Đang cập nhật",
+                            DiscountPrice = 2500000m,
                             ImageUrl = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan1.jpg",
                             ImageUrl2 = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg",
                             IsAvailable = true,
@@ -150,6 +152,7 @@ namespace Bai_Cuoi_Ky.Migrations
                             Id = 3,
                             CategoryId = 3,
                             Description = "Đang cập nhật",
+                            DiscountPrice = 2000000m,
                             ImageUrl = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom1.jpg",
                             ImageUrl2 = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom2.jpg",
                             IsAvailable = true,
