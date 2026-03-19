@@ -62,21 +62,38 @@ namespace Bai_Cuoi_Ky.Controllers // Khai báo không gian tên cho Controllers
         // ===== CREATE (POST): Xử lý thêm sản phẩm mới vào CSDL =====
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(Product product, IFormFile? ImageFile1, IFormFile? ImageFile2)
         {
             // Loại bỏ Category khỏi validation vì nó là navigation property
             ModelState.Remove("Category");
 
             if (ModelState.IsValid)
             {
-                _context.Products.Add(product); // Thêm sản phẩm vào DbSet
-                await _context.SaveChangesAsync(); // Lưu thay đổi vào CSDL
-                return RedirectToAction(nameof(Index)); // Quay về danh sách
+                // Nếu có file upload từ máy → chuyển thành base64 lưu vào SQL
+                if (ImageFile1 != null && ImageFile1.Length > 0)
+                    product.ImageUrl = await ConvertToBase64DataUri(ImageFile1);
+
+                if (ImageFile2 != null && ImageFile2.Length > 0)
+                    product.ImageUrl2 = await ConvertToBase64DataUri(ImageFile2);
+
+                // Nếu không upload file thì giữ nguyên URL đã nhập (cũng lưu vào SQL)
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            // Nếu validation thất bại, hiển thị lại form với dữ liệu đã nhập
             ViewBag.CategoryId = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);
+        }
+
+        // ===== CHUYỂN FILE UPLOAD THÀNH BASE64 DATA URI ĐỂ LƯU VÀO SQL =====
+        private async Task<string> ConvertToBase64DataUri(IFormFile file)
+        {
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            var base64 = Convert.ToBase64String(ms.ToArray());
+            var contentType = file.ContentType ?? "image/jpeg";
+            return $"data:{contentType};base64,{base64}";
         }
 
         // ===== EDIT (GET): Hiển thị form chỉnh sửa sản phẩm =====

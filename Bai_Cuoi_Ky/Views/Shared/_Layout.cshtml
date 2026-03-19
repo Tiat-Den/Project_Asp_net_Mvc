@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
@@ -377,13 +377,14 @@
     <!-- NAVBAR DANH MỤC -->
     <nav class="main-nav">
         <div class="nav-inner">
-            <a href="@Url.Action("Index", "Product", new { category = "Vong-Lac" })" class="nav-link-item">Vòng - Lắc</a>
-            <a href="@Url.Action("Index", "Product", new { category = "Nhan" })" class="nav-link-item">Nhẫn</a>
-            <a href="@Url.Action("Index", "Product", new { category = "Day Chuyen" })" class="nav-link-item">Dây Chuyền</a>
-            <a href="@Url.Action("Index", "Product", new { category = "Bong Tai" })" class="nav-link-item">Bông Tai</a>
-            <a href="@Url.Action("Index", "Product", new { category = "Trang Suc Doi" })" class="nav-link-item">Trang Sức Đôi</a>
-            <a href="@Url.Action("Index", "Product", new { category = "Trang Suc Bo" })" class="nav-link-item">Trang Sức Bộ</a>
-            <a href="@Url.Action("Index", "Product", new { category = "Phu Kien" })" class="nav-link-item">Phụ Kiện</a>
+            <a asp-controller="Product" asp-action="Index" class="nav-link-item">Tất Cả</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="1" class="nav-link-item">Vòng - Lắc</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="2" class="nav-link-item">Nhẫn</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="3" class="nav-link-item">Dây Chuyền</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="4" class="nav-link-item">Bông Tai</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="5" class="nav-link-item">Trang Sức Đôi</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="6" class="nav-link-item">Trang Sức Bộ</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="7" class="nav-link-item">Phụ Kiện</a>
         </div>
     </nav>
 
@@ -407,13 +408,13 @@
             <!-- Cột 2: Danh Mục -->
             <div class="footer-col">
                 <h4>Danh Mục</h4>
-                <a href="@Url.Action("Index", "Product", new { category = "Vong-Lac" })">Vòng - Lắc</a>
-                <a href="@Url.Action("Index", "Product", new { category = "Nhan" })">Nhẫn</a>
-                <a href="@Url.Action("Index", "Product", new { category = "Day Chuyen" })">Dây Chuyền</a>
-                <a href="@Url.Action("Index", "Product", new { category = "Bong Tai" })">Bông Tai</a>
-                <a href="@Url.Action("Index", "Product", new { category = "Trang Suc Doi" })">Trang Sức Đôi</a>
-                <a href="@Url.Action("Index", "Product", new { category = "Trang Suc Bo" })">Trang Sức Bộ</a>
-                <a href="@Url.Action("Index", "Product", new { category = "Phu Kien" })">Phụ Kiện</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="1">Vòng - Lắc</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="2">Nhẫn</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="3">Dây Chuyền</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="4">Bông Tai</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="5">Trang Sức Đôi</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="6">Trang Sức Bộ</a>
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="7">Phụ Kiện</a>
             </div>
 
             <!-- Cột 3: Hỗ Trợ -->

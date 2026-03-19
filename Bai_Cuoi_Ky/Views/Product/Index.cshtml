@@ -202,10 +202,34 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.4rem;
         }
+
+    .btn-add-product {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 32px;
+        background: var(--gold);
+        color: white;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+        .btn-add-product:hover {
+            background: var(--dark);
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
 </style>
 
 <div class="page-header">
     <h1>Bộ Sưu Tập</h1>
+    <a asp-action="Create" class="btn-add-product">+ Thêm Sản Phẩm</a>
 </div>
 
 <div style="max-width:1400px;margin:0 auto;padding:0 40px;">

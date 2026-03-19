@@ -1,4 +1,4 @@
-﻿@model Bai_Cuoi_Ky.Models.Product
+@model Bai_Cuoi_Ky.Models.Product
 @{
     ViewData["Title"] = "Thêm Sản Phẩm";
 }
@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="form-card">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
             <div class="form-section-title">Thông Tin Cơ Bản</div>
@@ -45,7 +45,7 @@
             </div>
 
             <hr class="form-divider" />
-            <div class="form-section-title">Giá & Tồn Kho</div>
+            <div class="form-section-title">Giá &amp; Tồn Kho</div>
 
             <div class="form-row">
                 <div class="form-group">
@@ -75,15 +75,37 @@
 
             <hr class="form-divider" />
             <div class="form-section-title">Hình Ảnh</div>
+            <p class="img-hint">Dán URL hoặc nhấn <strong>Chọn tệp</strong> để upload ảnh từ máy.</p>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label asp-for="ImageUrl">URL Hình ảnh 1</label>
-                    <input asp-for="ImageUrl" class="form-control" placeholder="/images/product1.jpg" />
+            <!-- HÌNH ẢNH 1 -->
+            <div class="form-group">
+                <label>Hình ảnh 1</label>
+                <div class="img-input-row">
+                    <input asp-for="ImageUrl" class="form-control" id="imgUrl1"
+                           placeholder="https://example.com/hinh-san-pham.jpg"
+                           oninput="previewUrl(this.value, 'preview1')" />
+                    <label for="fileInput1" class="btn-choose-file">Chọn tệp</label>
+                    <input type="file" name="ImageFile1" id="fileInput1" accept="image/*"
+                           class="hidden-file-input" onchange="handleFileSelect(this, 'imgUrl1', 'preview1')" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="ImageUrl2">URL Hình ảnh 2</label>
-                    <input asp-for="ImageUrl2" class="form-control" placeholder="/images/product2.jpg" />
+                <div id="preview1" class="img-preview-box">
+                    <span class="placeholder-text">Xem trước hình ảnh</span>
+                </div>
+            </div>
+
+            <!-- HÌNH ẢNH 2 -->
+            <div class="form-group">
+                <label>Hình ảnh 2 (tùy chọn)</label>
+                <div class="img-input-row">
+                    <input asp-for="ImageUrl2" class="form-control" id="imgUrl2"
+                           placeholder="https://example.com/hinh-san-pham-2.jpg"
+                           oninput="previewUrl(this.value, 'preview2')" />
+                    <label for="fileInput2" class="btn-choose-file" >Chọn tệp</label>
+                    <input type="file" name="ImageFile2" id="fileInput2" accept="image/*"
+                           class="hidden-file-input" onchange="handleFileSelect(this, 'imgUrl2', 'preview2')" />
+                </div>
+                <div id="preview2" class="img-preview-box">
+                    <span class="placeholder-text">Xem trước hình ảnh</span>
                 </div>
             </div>
 
@@ -95,8 +117,149 @@
     </div>
 </div>
 
+<style>
+    .img-hint {
+        font-size: 0.82rem;
+        color: #8a7968;
+        margin-bottom: 16px;
+    }
+
+    .img-input-row {
+        display: flex;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .img-input-row .form-control {
+        flex: 1;
+        height: 46px;
+        border-radius: 6px;
+        border: 1px solid #d5d0c8;
+        padding: 0 16px;
+        margin: 0;
+        font-size: 0.9rem;
+        font-family: 'Jost', sans-serif;
+        color: #1a1410;
+        background: white;
+        box-sizing: border-box;
+    }
+
+    .img-input-row .form-control:focus {
+        border-color: #c9a84c;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.15);
+    }
+
+    .btn-choose-file {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 46px;
+        line-height: 46px;
+        padding: 0 22px;
+        background: #c9a84c;
+        color: white;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        cursor: pointer;
+        border-radius: 6px;
+        border: 1px solid #c9a84c;
+        transition: all 0.25s ease;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .btn-choose-file:hover {
+        background: #b8943f;
+        border-color: #b8943f;
+    }
+
+    .hidden-file-input {
+        display: none;
+    }
+
+    .img-preview-box {
+        margin-top: 10px;
+        border: 2px dashed #e8e8e8;
+        border-radius: 6px;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #faf8f4;
+        transition: all 0.3s;
+    }
+
+    .img-preview-box img {
+        max-width: 100%;
+        max-height: 220px;
+        object-fit: contain;
+    }
+
+    .img-preview-box .placeholder-text {
+        font-size: 0.78rem;
+        color: #bbb;
+        letter-spacing: 1px;
+    }
+
+    .img-preview-box.has-image {
+        border-color: #c9a84c;
+        background: white;
+    }
+</style>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        // Khi chọn file từ máy → hiển thị tên file vào ô input + preview ảnh
+        function handleFileSelect(fileInput, urlInputId, previewId) {
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                const urlInput = document.getElementById(urlInputId);
+                urlInput.value = '📁 ' + file.name;
+                urlInput.setAttribute('readonly', true);
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const box = document.getElementById(previewId);
+                    box.innerHTML = '<img src="' + e.target.result + '" />';
+                    box.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Preview khi dán URL
+        let debounceTimers = {};
+        function previewUrl(url, previewId) {
+            clearTimeout(debounceTimers[previewId]);
+            const box = document.getElementById(previewId);
+            if (!url || url.trim() === '') {
+                box.innerHTML = '<span class="placeholder-text">Xem trước hình ảnh</span>';
+                box.classList.remove('has-image');
+                return;
+            }
+            debounceTimers[previewId] = setTimeout(() => {
+                box.innerHTML = '<span class="placeholder-text">Đang tải...</span>';
+                const img = new Image();
+                img.onload = function () {
+                    box.innerHTML = '';
+                    box.appendChild(img);
+                    box.classList.add('has-image');
+                };
+                img.onerror = function () {
+                    box.innerHTML = '<span class="placeholder-text" style="color:#c0392b;">Không thể tải ảnh</span>';
+                    box.classList.remove('has-image');
+                };
+                img.src = url;
+            }, 500);
+        }
+    </script>
 }
