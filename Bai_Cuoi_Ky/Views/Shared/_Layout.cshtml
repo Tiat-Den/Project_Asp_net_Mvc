@@ -9,318 +9,6 @@
     <link rel="stylesheet" href="~/Bai_Cuoi_Ky.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        :root {
-            --red: #c0392b;
-            --red-dark: #962d22;
-            --gold: #c9a84c;
-            --dark: #1a1410;
-            --muted: #888;
-            --border: #e8e8e8;
-        }
-
-        body {
-            font-family: 'Jost', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Ẩn navbar & footer mặc định Bootstrap */
-        .navbar {
-            display: none !important;
-        }
-
-        footer.border-top {
-            display: none !important;
-        }
-
-        .container > main {
-            padding: 0 !important;
-        }
-
-        .container {
-            max-width: 100% !important;
-            padding: 0 !important;
-        }
-
-        /* ===== TOP BAR ===== */
-        .top-bar {
-            background: var(--red);
-            color: white;
-            text-align: center;
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
-            padding: 7px 0;
-            font-weight: 500;
-        }
-
-        /* ===== HEADER ===== */
-        .site-header {
-            background: white;
-            border-bottom: 1px solid var(--border);
-            padding: 0 40px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        }
-
-        .header-inner {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            height: 70px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Logo */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--red);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: 700;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .logo-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: var(--red);
-            letter-spacing: 1px;
-            line-height: 1.1;
-            display: block;
-        }
-
-        .logo-sub {
-            font-size: 0.56rem;
-            letter-spacing: 3px;
-            color: var(--red);
-            text-transform: uppercase;
-            display: block;
-        }
-
-        /* Search */
-        .search-bar {
-            flex: 1;
-            max-width: 580px;
-            display: flex;
-            border-bottom: 2px solid var(--dark);
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 4px;
-        }
-
-            .search-bar input {
-                flex: 1;
-                border: none;
-                outline: none;
-                font-family: 'Jost', sans-serif;
-                font-size: 0.88rem;
-                color: var(--dark);
-                background: transparent;
-            }
-
-                .search-bar input::placeholder {
-                    color: #bbb;
-                }
-
-            .search-bar button {
-                background: none;
-                border: none;
-                cursor: pointer;
-                color: var(--dark);
-                font-size: 1rem;
-            }
-
-        /* Header Actions */
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            margin-left: auto;
-        }
-
-        .header-btn {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 16px;
-            border: 1.5px solid var(--dark);
-            background: white;
-            font-family: 'Jost', sans-serif;
-            font-size: 0.76rem;
-            color: var(--dark);
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-            .header-btn:hover {
-                background: white;
-                color: var(--dark);
-                text-decoration: none;
-            }
-        .cart-btn {
-            background: var(--red);
-            border-color: var(--red);
-            color: white;
-        }
-
-
-        .cart-badge {
-            background: var(--gold);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 0.62rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        /* ===== NAVBAR ===== */
-        .main-nav {
-            background: white;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .nav-inner {
-            display: flex;
-            justify-content: center;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 40px;
-            overflow-x: auto;
-        }
-
-        .nav-link-item {
-            padding: 14px 16px;
-            font-size: 0.75rem;
-            letter-spacing: 1.2px;
-            font-weight: 500;
-            text-transform: uppercase;
-            color: var(--dark) !important;
-            text-decoration: none !important;
-            position: relative;
-            transition: color 0.2s;
-            white-space: nowrap;
-        }
-
-            .nav-link-item::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 0;
-                height: 2px;
-                background: var(--red);
-                transition: width 0.25s;
-            }
-
-            .nav-link-item:hover {
-                color: var(--red) !important;
-            }
-
-                .nav-link-item:hover::after {
-                    width: 80%;
-                }
-
-            .nav-link-item.highlight {
-                color: var(--red) !important;
-            }
-
-        /* ===== FOOTER ===== */
-        .site-footer {
-            background: #000000;
-            color: rgba(255,255,255,0.7);
-            padding: 48px 40px 24px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr; /* giữ nguyên */
-            gap: 40px;
-            max-width: 1400px;
-            margin: 0 auto 40px;
-            align-items: start;
-        }
-
-        .footer-brand-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            color: white;
-            font-weight: 600;
-        }
-
-        .footer-brand-sub {
-            font-size: 0.56rem;
-            letter-spacing: 3px;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-        }
-
-        .footer-brand p {
-            font-size: 0.82rem;
-            line-height: 1.7;
-            margin-top: 12px;
-        }
-
-        .footer-col h4 {
-            font-size: 0.7rem;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: white;
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
-
-        .footer-col a {
-            display: block;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.82rem;
-            text-decoration: none;
-            margin-bottom: 8px;
-            transition: color 0.2s;
-        }
-
-            .footer-col a:hover {
-                color: var(--gold);
-            }
-
-        .footer-bottom {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-        }
-    </style>
 </head>
 <body>
 
@@ -345,7 +33,7 @@
             </div>
 
             <div class="header-actions">
-                <a href="#" class="header-btn" style="color:#000000 !important;">
+                <a href="javascript:void(0);" onclick="openAuthModal('register')" class="header-btn" style="color:#000000 !important;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
@@ -353,7 +41,7 @@
                     Đăng Ký
                 </a>
 
-                <a href="#" class="header-btn" style="color:#000000 !important;">
+                <a href="javascript:void(0);" onclick="openAuthModal('login')" class="header-btn" style="color:#000000 !important;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                         <polyline points="10 17 15 12 10 7"></polyline>
@@ -460,138 +148,59 @@
         </div>
     </div>
 
-    <style>
-        #ai-chat-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #c9a84c;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            font-family: 'Jost', sans-serif;
-            transition: 0.3s;
-        }
+    <!-- popup đăng nhập, đăng ký -->
+    <div id="auth-modal" class="auth-modal-overlay">
+        <div class="auth-modal-box">
+            <span class="auth-close-btn" onclick="closeAuthModal()">&times;</span>
 
-            #ai-chat-btn:hover {
-                background: #1a1410;
-            }
+            <div class="auth-tabs">
+                <button id="btn-tab-login" class="auth-tab-btn active" onclick="switchAuthTab('login')">ĐĂNG NHẬP</button>
+                <button id="btn-tab-register" class="auth-tab-btn" onclick="switchAuthTab('register')">ĐĂNG KÝ</button>
+            </div>
 
-        #ai-chat-box {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 320px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid #e8e8e8;
-        }
+            <form id="form-login" class="auth-form active-form" asp-controller="Account" asp-action="Login" method="post">
+                <div class="form-group">
+                    <input type="text" name="Username" class="auth-input" placeholder="Tên đăng nhập hoặc Email" required />
+                </div>
+                <div class="form-group">
+                    <input type="password" name="Password" class="auth-input" placeholder="Mật khẩu" required />
+                </div>
+                <div class="auth-options">
+                    <label><input type="checkbox" name="RememberMe" /> Nhớ mật khẩu</label>
+                    <a href="#" class="forgot-pw">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="auth-submit-btn">ĐĂNG NHẬP</button>
+                <div style="text-align:center; margin-top: 15px;">
+                    <p style="font-size: 0.85rem; color: #888;">Hoặc đăng nhập bằng</p>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                        <a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google" class="btn-google">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="google-icon" />
+                            Google
+                        </a>
+                    </div>
+                </div>
+            </form>
 
-        .chat-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(20px);
-        }
-
-        .chat-active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .chat-header {
-            background: #1a1410;
-            color: #c9a84c;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Jost', sans-serif;
-        }
-
-        .close-chat {
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .chat-messages {
-            height: 350px;
-            padding: 16px;
-            overflow-y: auto;
-            background: #faf8f4;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .msg {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .bot-msg {
-            background: white;
-            border: 1px solid #e8e8e8;
-            align-self: flex-start;
-            border-bottom-left-radius: 0;
-        }
-
-        .user-msg {
-            background: #c9a84c;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 0;
-        }
-
-        .chat-input-area {
-            display: flex;
-            border-top: 1px solid #e8e8e8;
-        }
-
-            .chat-input-area input {
-                flex: 1;
-                border: none;
-                padding: 12px 16px;
-                outline: none;
-            }
-
-            .chat-input-area button {
-                background: #1a1410;
-                color: white;
-                border: none;
-                padding: 0 16px;
-                cursor: pointer;
-                font-family: 'Jost', sans-serif;
-            }
-
-                .chat-input-area button:hover {
-                    color: #c9a84c;
-                }
-
-        .typing {
-            font-style: italic;
-            color: #888;
-            font-size: 0.8rem;
-            align-self: flex-start;
-        }
-    </style>
+            <form id="form-register" class="auth-form" asp-controller="Account" asp-action="Register" method="post">
+                <div class="form-group">
+                    <input type="text" name="Email" class="auth-input" placeholder="Email" required />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="Username" class="auth-input" placeholder="Tên đăng nhập" required />
+                </div>
+                <div class="form-group">
+                    <input type="password" name="Password" class="auth-input" placeholder="Mật khẩu" required />
+                </div>
+                <div class="form-group">
+                    <input type="password" name="ConfirmPassword" class="auth-input" placeholder="Nhập lại mật khẩu" required />
+                </div>
+                <button type="submit" class="auth-submit-btn">TẠO TÀI KHOẢN</button>
+            </form>
+        </div>
+    </div>
 
     <script>
-        // Ẩn/Hiện khung chat
+        // ===== CHAT BOX =====
         function toggleChat() {
             const chatBox = document.getElementById('ai-chat-box');
             if (chatBox.classList.contains('chat-hidden')) {
@@ -603,12 +212,10 @@
             }
         }
 
-        // Gửi tin nhắn khi nhấn Enter
         function handleEnter(e) {
             if (e.key === 'Enter') sendMessage();
         }
 
-        // Hàm xử lý gửi tin nhắn
         async function sendMessage() {
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
@@ -616,18 +223,15 @@
 
             const chatMessages = document.getElementById('chat-messages');
 
-            // 1. Hiển thị tin nhắn của User
             chatMessages.innerHTML += `<div class="msg user-msg">${message}</div>`;
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // 2. Hiển thị "AI đang gõ..."
             const typingId = 'typing-' + Date.now();
             chatMessages.innerHTML += `<div id="${typingId}" class="msg typing">AI đang suy nghĩ...</div>`;
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             try {
-                // 3. Gửi dữ liệu lên Controller bằng AJAX (Fetch API)
                 const response = await fetch('/Home/GetAiResponse', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -636,7 +240,6 @@
 
                 const data = await response.json();
 
-                // 4. Xóa chữ "đang gõ" và hiện câu trả lời của AI
                 document.getElementById(typingId).remove();
                 chatMessages.innerHTML += `<div class="msg bot-msg">${data.reply}</div>`;
                 chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -646,9 +249,39 @@
                 chatMessages.innerHTML += `<div class="msg bot-msg" style="color:red;">Lỗi kết nối đến AI!</div>`;
             }
         }
+
+        // ===== ĐĂNG NHẬP / ĐĂNG KÝ POPUP =====
+        function openAuthModal(tab) {
+            document.getElementById('auth-modal').classList.add('show');
+            switchAuthTab(tab);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('show');
+        }
+
+        function switchAuthTab(tab) {
+            document.getElementById('btn-tab-login').classList.remove('active');
+            document.getElementById('btn-tab-register').classList.remove('active');
+            document.getElementById('form-login').classList.remove('active-form');
+            document.getElementById('form-register').classList.remove('active-form');
+
+            if (tab === 'login') {
+                document.getElementById('btn-tab-login').classList.add('active');
+                document.getElementById('form-login').classList.add('active-form');
+            } else {
+                document.getElementById('btn-tab-register').classList.add('active');
+                document.getElementById('form-register').classList.add('active-form');
+            }
+        }
+
+        // Đóng popup khi click ra ngoài vùng xám
+        window.onclick = function (event) {
+            const modal = document.getElementById('auth-modal');
+            if (event.target == modal) {
+                closeAuthModal();
+            }
+        }
     </script>
 </body>
 </html>
-
-
-
