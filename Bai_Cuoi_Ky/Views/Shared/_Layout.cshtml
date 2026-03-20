@@ -440,6 +440,213 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- CHAT BOX-->
+    <button id="ai-chat-btn" onclick="toggleChat()">
+        💬 Chat AI
+    </button>
+
+    <div id="ai-chat-box" class="chat-hidden">
+        <div class="chat-header">
+            <strong>Trợ lý AI - DKH Jewelry</strong>
+            <span class="close-chat" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="msg bot-msg">Xin chào! Tôi là trợ lý AI của DKH. Tôi có thể giúp gì cho bạn hôm nay?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)" />
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <style>
+        #ai-chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #c9a84c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-family: 'Jost', sans-serif;
+            transition: 0.3s;
+        }
+
+            #ai-chat-btn:hover {
+                background: #1a1410;
+            }
+
+        #ai-chat-box {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #e8e8e8;
+        }
+
+        .chat-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        .chat-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            background: #1a1410;
+            color: #c9a84c;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .close-chat {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chat-messages {
+            height: 350px;
+            padding: 16px;
+            overflow-y: auto;
+            background: #faf8f4;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .bot-msg {
+            background: white;
+            border: 1px solid #e8e8e8;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .user-msg {
+            background: #c9a84c;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .chat-input-area {
+            display: flex;
+            border-top: 1px solid #e8e8e8;
+        }
+
+            .chat-input-area input {
+                flex: 1;
+                border: none;
+                padding: 12px 16px;
+                outline: none;
+            }
+
+            .chat-input-area button {
+                background: #1a1410;
+                color: white;
+                border: none;
+                padding: 0 16px;
+                cursor: pointer;
+                font-family: 'Jost', sans-serif;
+            }
+
+                .chat-input-area button:hover {
+                    color: #c9a84c;
+                }
+
+        .typing {
+            font-style: italic;
+            color: #888;
+            font-size: 0.8rem;
+            align-self: flex-start;
+        }
+    </style>
+
+    <script>
+        // Ẩn/Hiện khung chat
+        function toggleChat() {
+            const chatBox = document.getElementById('ai-chat-box');
+            if (chatBox.classList.contains('chat-hidden')) {
+                chatBox.classList.remove('chat-hidden');
+                chatBox.classList.add('chat-active');
+            } else {
+                chatBox.classList.remove('chat-active');
+                chatBox.classList.add('chat-hidden');
+            }
+        }
+
+        // Gửi tin nhắn khi nhấn Enter
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        // Hàm xử lý gửi tin nhắn
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatMessages = document.getElementById('chat-messages');
+
+            // 1. Hiển thị tin nhắn của User
+            chatMessages.innerHTML += `<div class="msg user-msg">${message}</div>`;
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // 2. Hiển thị "AI đang gõ..."
+            const typingId = 'typing-' + Date.now();
+            chatMessages.innerHTML += `<div id="${typingId}" class="msg typing">AI đang suy nghĩ...</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                // 3. Gửi dữ liệu lên Controller bằng AJAX (Fetch API)
+                const response = await fetch('/Home/GetAiResponse', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: message })
+                });
+
+                const data = await response.json();
+
+                // 4. Xóa chữ "đang gõ" và hiện câu trả lời của AI
+                document.getElementById(typingId).remove();
+                chatMessages.innerHTML += `<div class="msg bot-msg">${data.reply}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (error) {
+                document.getElementById(typingId).remove();
+                chatMessages.innerHTML += `<div class="msg bot-msg" style="color:red;">Lỗi kết nối đến AI!</div>`;
+            }
+        }
+    </script>
 </body>
 </html>
 
