@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Nhập mã xác nhận";
+}
+
+<div style="max-width: 500px; margin: 50px auto; padding: 20px; font-family: Arial, sans-serif;">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #1a1410; text-transform: uppercase; letter-spacing: 2px;">NHẬP MÃ XÁC NHẬN</h2>
+
+    <form asp-controller="Account" asp-action="VerifyResetCode" method="post" style="background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #eaeaea; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div style="color: red; margin-bottom: 20px; text-align: center; font-size: 14px;">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+        }
+
+        <input type="hidden" name="Email" value="@ViewBag.Email" />
+
+        <div style="margin-bottom: 25px;">
+            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">MÃ XÁC NHẬN (6 SỐ)</label>
+            <input type="text" name="Code" required style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; outline: none; text-align: center; font-size: 20px; letter-spacing: 5px;" />
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button type="submit" style="width: 100%; background-color: #1a1410; color: white; padding: 14px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; letter-spacing: 1px; transition: background-color 0.2s;">XÁC NHẬN</button>
+        </div>
+    </form>
+</div>

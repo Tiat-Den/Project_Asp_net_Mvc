@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using System.Net;
+using System.Net.Mail;
 
 namespace Bai_Cuoi_Ky.Controllers 
 {
@@ -18,37 +20,55 @@ namespace Bai_Cuoi_Ky.Controllers
 
         // === XỬ LÝ FORM ĐĂNG KÝ ===
         [HttpPost]
-        public async Task<IActionResult> Register(string Email, string Username, string Password, string ConfirmPassword) 
-        { 
-            if (Password != ConfirmPassword) return BadRequest("Mật khẩu không khớp!"); 
+        public async Task<IActionResult> Register(string Email, string Username, string Password, string ConfirmPassword)
+        {
+            if (Password != ConfirmPassword) return BadRequest("Mật khẩu nhập lại không khớp!");
 
-            var user = new IdentityUser { UserName = Username, Email = Email }; 
-            var result = await _userManager.CreateAsync(user, Password); 
+            var user = new IdentityUser { UserName = Username, Email = Email };
+            var result = await _userManager.CreateAsync(user, Password);
 
-            if (result.Succeeded) 
-            { 
-                await _signInManager.SignInAsync(user, isPersistent: false); 
-                return RedirectToAction("Index", "Home"); 
-            } 
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok();
+            }
 
-            return BadRequest("Lỗi hệ thống: Tên tài khoản hoặc Email đã tồn tại, hoặc mật khẩu quá yếu!"); 
+            // Lấy lỗi đầu tiên từ hệ thống Identity (ví dụ: Password quá ngắn)
+            var error = result.Errors.FirstOrDefault()?.Description ?? "Lỗi đăng ký!";
+            return BadRequest(error);
         }
 
         // === XỬ LÝ FORM ĐĂNG NHẬP ===
-        [HttpPost] 
-        public async Task<IActionResult> Login(string Username, string Password, string RememberMe) 
-        { 
-            bool isRemember = RememberMe == "on"; 
+        [HttpPost]
+        public async Task<IActionResult> Login(string Username, string Password, string RememberMe)
+        {
+            bool isRemember = RememberMe == "on";
+            string loginUsername = Username;
 
-            var result = await _signInManager.PasswordSignInAsync(Username, Password, isRemember, lockoutOnFailure: false); 
+            // Kiểm tra xem người dùng nhập vào là Email hay Username
+            if (Username.Contains("@"))
+            {
+                var user = await _userManager.FindByEmailAsync(Username);
+                if (user != null)
+                {
+                    loginUsername = user.UserName; // Lấy Username thật từ Email
+                }
+                else
+                {
+                    return BadRequest("Email không tồn tại!");
+                }
+            }
 
-            if (result.Succeeded) 
-            { 
-                return RedirectToAction("Index", "Home");
+            // Thực hiện đăng nhập bằng Username đã xác định
+            var result = await _signInManager.PasswordSignInAsync(loginUsername, Password, isRemember, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                return Ok(); // Trả về mã thành công 200
             }
 
             return BadRequest("Sai tài khoản hoặc mật khẩu!");
-        } 
+        }
         // === XỬ LÝ ĐĂNG XUẤT ===
         public async Task<IActionResult> Logout()
         { 
@@ -107,6 +127,188 @@ namespace Bai_Cuoi_Ky.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        // TÀI KHOẢN
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(user);
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(string PhoneNumber)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            user.PhoneNumber = PhoneNumber;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Profile");
+            }
+
+            return View(user);
+        }
+
+        // THAY ĐỔI MK 
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string OldPassword, string NewPassword, string ConfirmPassword)
+        {
+            if (NewPassword != ConfirmPassword)
+            {
+                ModelState.AddModelError("", "Mật khẩu mới không khớp!");
+                return View();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, OldPassword, NewPassword);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                return RedirectToAction("Profile");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View();
+        }
+
+        // QUÊN MK
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string Email)
+        {
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user != null)
+            {
+                var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("datpham14563@gmail.com"),
+                    Subject = "Mã xác nhận khôi phục mật khẩu",
+                    Body = $"Mã xác nhận của bạn là: {code}",
+                    IsBodyHtml = false,
+                };
+                mailMessage.To.Add(Email);
+
+                using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtpClient.Credentials = new NetworkCredential("datpham14563@gmail.com", "qvfb jbcn rzwq xzyk");
+                    smtpClient.EnableSsl = true;
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+
+                return RedirectToAction("VerifyResetCode", new { email = Email });
+            }
+
+            ModelState.AddModelError("", "Email không tồn tại trong hệ thống.");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult VerifyResetCode(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyResetCode(string Email, string Code)
+        {
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user != null)
+            {
+                var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, "Email", Code);
+                if (isValid)
+                {
+                    var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    return RedirectToAction("ResetPassword", new { email = Email, token = resetToken });
+                }
+            }
+
+            ModelState.AddModelError("", "Mã xác nhận không hợp lệ hoặc đã hết hạn.");
+            ViewBag.Email = Email;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            ViewBag.Email = email;
+            ViewBag.Token = token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string Email, string Token, string NewPassword, string ConfirmPassword)
+        {
+            if (NewPassword != ConfirmPassword)
+            {
+                ModelState.AddModelError("", "Mật khẩu không khớp.");
+                ViewBag.Email = Email;
+                ViewBag.Token = Token;
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, Token, NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            ViewBag.Email = Email;
+            ViewBag.Token = Token;
+            return View();
         }
     } 
 }

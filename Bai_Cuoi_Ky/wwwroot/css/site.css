@@ -598,3 +598,72 @@ footer.border-top {
     height: 20px;
     margin-right: 10px;
 }
+
+/*tài khoản */
+
+.header-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border: 1px solid #000;
+    text-decoration: none;
+    font-size: 14px;
+    background-color: transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+}
+
+    .header-btn:hover {
+        background-color: #f5f5f5;
+    }
+
+.user-menu-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 220px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    z-index: 9999;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    margin-top: 10px;
+}
+
+    .user-dropdown::before {
+        content: "";
+        position: absolute;
+        top: -15px;
+        left: 0;
+        width: 100%;
+        height: 15px;
+        background-color: transparent;
+    }
+
+.user-menu-container:hover .user-dropdown {
+    display: block;
+}
+
+.user-dropdown a {
+    color: #333333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+    .user-dropdown a:hover {
+        background-color: #f9f9f9;
+        color: #c9a84c;
+    }

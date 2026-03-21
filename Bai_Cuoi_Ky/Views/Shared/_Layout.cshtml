@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
@@ -33,22 +37,50 @@
             </div>
 
             <div class="header-actions">
-                <a href="javascript:void(0);" onclick="openAuthModal('register')" class="header-btn" style="color:#000000 !important;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    Đăng Ký
-                </a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var currentUser = await UserManager.GetUserAsync(User);
 
-                <a href="javascript:void(0);" onclick="openAuthModal('login')" class="header-btn" style="color:#000000 !important;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                        <polyline points="10 17 15 12 10 7"></polyline>
-                        <line x1="15" y1="12" x2="3" y2="12"></line>
-                    </svg>
-                    Đăng Nhập
-                </a>
+                    <div class="user-menu-container">
+                        <a href="javascript:void(0);" class="header-btn" style="color:#000000 !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            @currentUser?.Email
+                        </a>
+
+                        <div class="user-dropdown">
+                            <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
+                            <a href="#">Đơn hàng của tôi</a>
+                            <a href="#">Sản phẩm yêu thích</a>
+                            <a asp-controller="Account" asp-action="Logout" style="border-top: 1px solid #eee; color: red;">Đăng xuất</a>
+                        </div>
+                    </div>
+                }
+
+                else
+
+                {
+                    <div style="display: flex; gap: 10px;">
+                        <a href="javascript:void(0);" onclick="openAuthModal('register')" class="header-btn" style="color:#000000 !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Đăng Ký
+                        </a>
+
+                        <a href="javascript:void(0);" onclick="openAuthModal('login')" class="header-btn" style="color:#000000 !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            Đăng Nhập
+                        </a>
+                    </div>
+                }
                 <a href="#" class="header-btn dark-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                          stroke="#1a1410" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -131,7 +163,7 @@
 
     <!-- CHAT BOX-->
     <button id="ai-chat-btn" onclick="toggleChat()">
-        💬 Chat AI
+        💬 Chat
     </button>
 
     <div id="ai-chat-box" class="chat-hidden">
@@ -159,15 +191,19 @@
             </div>
 
             <form id="form-login" class="auth-form active-form" asp-controller="Account" asp-action="Login" method="post">
+                <div id="login-summary" style="color:red; font-size: 0.8rem; margin-bottom: 10px;"></div>
                 <div class="form-group">
                     <input type="text" name="Username" class="auth-input" placeholder="Tên đăng nhập hoặc Email" required />
                 </div>
-                <div class="form-group">
-                    <input type="password" name="Password" class="auth-input" placeholder="Mật khẩu" required />
+                <div class="form-group" style="position: relative;">
+                    <input type="password" id="loginPassword" name="Password" class="auth-input" placeholder="Mật khẩu" required />
+                    <span onclick="toggleAuthPassword('loginPassword', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </span>
                 </div>
                 <div class="auth-options">
                     <label><input type="checkbox" name="RememberMe" /> Nhớ mật khẩu</label>
-                    <a href="#" class="forgot-pw">Quên mật khẩu?</a>
+                    <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-pw">Quên mật khẩu?</a>
                 </div>
                 <button type="submit" class="auth-submit-btn">ĐĂNG NHẬP</button>
                 <div style="text-align:center; margin-top: 15px;">
@@ -182,22 +218,85 @@
             </form>
 
             <form id="form-register" class="auth-form" asp-controller="Account" asp-action="Register" method="post">
+                <div id="register-summary" style="color:red; font-size: 0.8rem; margin-bottom: 10px;"></div>
                 <div class="form-group">
                     <input type="text" name="Email" class="auth-input" placeholder="Email" required />
                 </div>
                 <div class="form-group">
                     <input type="text" name="Username" class="auth-input" placeholder="Tên đăng nhập" required />
                 </div>
-                <div class="form-group">
-                    <input type="password" name="Password" class="auth-input" placeholder="Mật khẩu" required />
+                <div class="form-group" style="position: relative;">
+                    <input type="password" id="regPassword" name="Password" class="auth-input" placeholder="Mật khẩu" required />
+                    <span onclick="toggleAuthPassword('regPassword', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </span>
                 </div>
-                <div class="form-group">
-                    <input type="password" name="ConfirmPassword" class="auth-input" placeholder="Nhập lại mật khẩu" required />
+                <div class="form-group" style="position: relative;">
+                    <input type="password" id="regConfirmPassword" name="ConfirmPassword" class="auth-input" placeholder="Nhập lại mật khẩu" required />
+                    <span onclick="toggleAuthPassword('regConfirmPassword', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </span>
                 </div>
                 <button type="submit" class="auth-submit-btn">TẠO TÀI KHOẢN</button>
             </form>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            // XỬ LÝ ĐĂNG NHẬP
+            $("#form-login").on("submit", function (e) {
+                e.preventDefault(); // Chặn tuyệt đối việc load lại trang
+
+                var form = $(this);
+                var summary = $("#login-summary");
+                summary.text("Đang kiểm tra..."); // Hiển thị trạng thái chờ
+
+                $.post(form.attr("action"), form.serialize())
+                    .done(function (response) {
+                        // Nếu đúng, mới cho chuyển trang
+                        window.location.href = "/Home/Index";
+                    })
+                    .fail(function (xhr) {
+                        // Nếu sai, ở lại trang và hiện lỗi vào div
+                        summary.text(xhr.responseText || "Sai tài khoản hoặc mật khẩu!");
+                    });
+
+                return false; // Thêm dòng này để chắc chắn không nhảy trang
+            });
+
+            // XỬ LÝ ĐĂNG KÝ
+            $("#form-register").on("submit", function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var summary = $("#register-summary");
+
+                $.post(form.attr("action"), form.serialize())
+                    .done(function (response) {
+                        alert("Đăng ký thành công!");
+                        window.location.reload();
+                    })
+                    .fail(function (xhr) {
+                        summary.text(xhr.responseText || "Lỗi đăng ký, vui lòng thử lại!");
+                    });
+
+                return false;
+            });
+        });
+
+        // Hàm con mắt mật khẩu (giữ nguyên cái này)
+        function toggleAuthPassword(inputId, iconSpan) {
+            var input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconSpan.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+            } else {
+                input.type = "password";
+                iconSpan.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+            }
+        }
+    </script>
 
     <script>
         // ===== CHAT BOX =====
@@ -228,7 +327,7 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             const typingId = 'typing-' + Date.now();
-            chatMessages.innerHTML += `<div id="${typingId}" class="msg typing">AI đang suy nghĩ...</div>`;
+            chatMessages.innerHTML += `<div id="${typingId}" class="msg typing">...</div>`;
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             try {
