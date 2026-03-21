@@ -6,6 +6,7 @@ namespace Bai_Cuoi_Ky.Models
     public class Product
     {
         [Key]
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
@@ -38,6 +39,7 @@ namespace Bai_Cuoi_Ky.Models
 
         [Display(Name = "Chất liệu")]
         public string Material { get; set; }
+        public string? Gender { get; set; }
 
         [Display(Name = "Tồn kho")]
         public int Stock { get; set; }

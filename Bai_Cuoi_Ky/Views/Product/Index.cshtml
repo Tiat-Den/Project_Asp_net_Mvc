@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "Danh Sách Sản Phẩm";
 }
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant Garamond:wght@300;400;500&display=swap" rel="stylesheet" />
+
 <style>
     :root {
         --gold: #c9a84c;
@@ -15,7 +16,7 @@
 
     body {
         background: var(--cream);
-        font-family: 'Jost', sans-serif;
+        font-family: 'Cormorant Garamond', serif;
     }
 
     .page-header {
@@ -34,8 +35,8 @@
 
         .page-header h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
-            font-weight: 300;
+            font-size: 2rem;
+            font-weight: 800;
             color: var(--dark);
             letter-spacing: 6px;
             text-transform: uppercase;
@@ -139,10 +140,11 @@
     }
 
     .card-category {
-        font-size: 0.62rem;
+        font-size: 0.7rem;
+        font-weight: 1000;
         letter-spacing: 2px;
         text-transform: uppercase;
-        color: var(--muted);
+        color: var(--red);
         margin-bottom: 4px;
     }
 
@@ -156,13 +158,16 @@
     }
 
     .price-main {
-        font-size: 0.95rem;
-        font-weight: 600;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.3rem;
+        font-weight: 800;
         color: var(--red);
     }
 
     .price-original {
-        font-size: 0.78rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.3rem;
+        font-weight: 500;
         color: #bbb;
         text-decoration: line-through;
         margin-left: 8px;
@@ -207,9 +212,9 @@
         display: inline-block;
         margin-top: 20px;
         padding: 12px 32px;
-        background: var(--gold);
+        background: var(--dark);
         color: white;
-        font-family: 'Jost', sans-serif;
+        font-family: 'Cormorant Garamond', serif;
         font-size: 0.75rem;
         letter-spacing: 2.5px;
         text-transform: uppercase;
@@ -220,75 +225,306 @@
     }
 
         .btn-add-product:hover {
-            background: var(--dark);
+            background: var(--gold);
             color: white;
             transform: translateY(-2px);
             text-decoration: none;
         }
-</style>
+    /* ===== LAYOUT 2 CỘT ===== */
+    .page-layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 32px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 32px 40px 60px;
+        align-items: start;
+    }
 
+    /* ===== SIDEBAR LỌC ===== */
+    .sidebar {
+        background: white;
+        padding: 24px;
+        border: 1px solid var(--border);
+    }
+
+    .sidebar-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .filter-group {
+        margin-bottom: 28px;
+        padding-bottom: 28px;
+        border-bottom: 1px solid var(--border);
+    }
+
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+
+    .filter-group-title {
+        font-size: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 14px;
+    }
+
+    .filter-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 1rem;
+        color: var(--dark);
+        font-weight: 800;
+    }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            accent-color: var(--gold);
+        }
+
+        .filter-checkbox:hover {
+            color: var(--gold);
+        }
+
+    .filter-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 1rem;
+        color: var(--dark);
+        font-weight: 800;
+    }
+
+        .filter-radio:hover {
+            color: var(--gold); 
+        }
+        .filter-radio input[type="radio"] {
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+
+    .filter-btn {
+        display: block;
+        width: 100%;
+        padding: 11px;
+        background: var(--dark);
+        color: white;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 8px;
+    }
+
+        .filter-btn:hover {
+            background: var(--gold);
+        }
+
+    .filter-reset {
+        display: block;
+        width: 100%;
+        padding: 11px;
+        background: white;
+        color: var(--dark);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+        text-align: center;
+        text-decoration: none;
+    }
+
+        .filter-reset:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+    
+</style>
 <div class="page-header">
     <h1>Bộ Sưu Tập</h1>
     <a asp-action="Create" class="btn-add-product">+ Thêm Sản Phẩm</a>
 </div>
+<div class="page-layout">
 
-<div style="max-width:1400px;margin:0 auto;padding:0 40px;">
-    @if (!Model.Any())
-    {
-        <div class="empty-state">
-            <p>Chưa có sản phẩm nào</p>
-        </div>
-    }
-    else
-    {
-        <div class="product-grid">
-            @foreach (var item in Model)
-            {
-                <div class="product-card">
-                    <!-- BADGE -->
-                    @if (!item.IsAvailable)
+    <!-- SIDEBAR BỘ LỌC -->
+    <form method="get" action="@Url.Action("Index", "Product")">
+        <input type="hidden" name="categoryId" value="@ViewBag.CurrentCategory" />
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                @{
+                    var catName = (ViewBag.CurrentCategory as int?) switch
                     {
-                        <span class="card-badge out-of-stock">Hết hàng</span>
-                    }
-                    else
-                    {
-                        <span class="card-badge">@(item.Category != null ? item.Category.Name : "Jewelry")</span>
-                    }
+                        1 => "Vòng - Lắc",
+                        2 => "Nhẫn",
+                        3 => "Dây Chuyền",
+                        4 => "Bông Tai",
+                        5 => "Trang Sức Đôi",
+                        6 => "Trang Sức Bộ",
+                        7 => "Phụ Kiện",
+                        _ => "Tất Cả"
+                    };
+                }
+                @catName
+            </div>
 
-                    <!-- ẢNH -->
-                    @if (!string.IsNullOrEmpty(item.ImageUrl))
-                    {
-                        <div class="card-img-wrap">
-                            <img class="card-img img-main" src="@item.ImageUrl" alt="@item.Name" />
-                            <img class="card-img img-hover"
-                                 src="@(!string.IsNullOrEmpty(item.ImageUrl2) ? item.ImageUrl2 : item.ImageUrl)"
-                                 alt="@item.Name" />
+            <!-- CHẤT LIỆU -->
+            <div class="filter-group">
+                <div class="filter-group-title">Chất Liệu</div>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="material" value="Bạc" /> Bạc
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="material" value="Vàng" /> Vàng
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="material" value="Da" /> Da
+                </label>
+            </div>
+
+            <!-- GIỚI TÍNH -->
+            <div class="filter-group">
+                <div class="filter-group-title">Giới Tính</div>
+                <label class="filter-radio">
+                    <input type="radio" name="gender" value="" checked /> Tất cả
+                </label>
+                <label class="filter-radio">
+                    <input type="radio" name="gender" value="nu" /> Nữ
+                </label>
+                <label class="filter-radio">
+                    <input type="radio" name="gender" value="nam" /> Nam
+                </label>
+                <label class="filter-radio">
+                    <input type="radio" name="gender" value="cap-doi" /> Cặp Đôi
+                </label>
+            </div>
+
+            <!-- MỨC GIÁ -->
+            <div class="filter-group">
+                <div class="filter-group-title">Mức Giá</div>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="0-1000000" /> Dưới 1.000.000₫
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="1000000-2000000" /> 1 - 2 triệu
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="2000000-3000000" /> 2 - 3 triệu
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="3000000-5000000" /> 3 - 5 triệu
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="price" value="5000000-999999999" /> Trên 5 triệu
+                </label>
+            </div>
+
+            <!-- SẮP XẾP -->
+            <div class="filter-group">
+                <div class="filter-group-title">Sắp Xếp</div>
+                <label class="filter-radio">
+                    <input type="radio" name="sort" value="" checked /> Mặc định
+                </label>
+                <label class="filter-radio">
+                    <input type="radio" name="sort" value="price-asc" /> Giá tăng dần
+                </label>
+                <label class="filter-radio">
+                    <input type="radio" name="sort" value="price-desc" /> Giá giảm dần
+                </label>
+            </div>
+
+            <!-- TÌM KIẾM -->
+            <div class="filter-group">
+                <div class="filter-group-title">Tìm Kiếm</div>
+                <input type="text" name="search" placeholder="Tên sản phẩm..."
+                       value="@ViewBag.Search"
+                       style="width:100%;padding:9px 12px;border:1px solid var(--border);font-family: 'Cormorant Garamond', serif;font-size:1rem;font-weight:600;color:var(--dark);" />
+            </div>
+
+            <button type="submit" class="filter-btn">Áp Dụng</button>
+            <a href="/Product?categoryId=@ViewBag.CurrentCategory" class="filter-reset">Xóa Bộ Lọc</a>
+        </aside>
+    </form>
+
+    <!-- DANH SÁCH SẢN PHẨM -->
+    <div>
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <p>Chưa có sản phẩm nào</p>
+            </div>
+        }
+        else
+        {
+            <div class="product-grid">
+                @foreach (var item in Model)
+                {
+                    <div class="product-card">
+                        @if (!item.IsAvailable)
+                        {
+                            <span class="card-badge out-of-stock">Hết hàng</span>
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <div class="card-img-wrap">
+                                <img class="card-img img-main" src="@item.ImageUrl" alt="@item.Name" />
+                                <img class="card-img img-hover"
+                                     src="@(!string.IsNullOrEmpty(item.ImageUrl2) ? item.ImageUrl2 : item.ImageUrl)"
+                                     alt="@item.Name" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-img-placeholder">💎</div>
+                        }
+
+                        <div class="card-body">
+                            <div class="card-category">@item.Material</div>
+                            <div class="card-name">@item.Name</div>
+                            <div>
+                                <span class="price-main">@item.Price.ToString("N0")₫</span>
+                                @if (item.DiscountPrice.HasValue)
+                                {
+                                    <span class="price-original">@item.DiscountPrice.Value.ToString("N0")₫</span>
+                                }
+                            </div>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="card-img-placeholder">💎</div>
-                    }
 
-                    <!-- THÔNG TIN -->
-                    <div class="card-body">
-                        <div class="card-category">@item.Material</div>
-                        <div class="card-name">@item.Name</div>
-                        <div>
-                            <span class="price-main">@item.Price.ToString("N0")₫</span>
-                            @if (item.DiscountPrice.HasValue && item.DiscountPrice > 0)
-                            {
-                                <span class="price-original">@item.DiscountPrice.Value.ToString("N0")₫</span>
-                            }
+                        <div class="p-actions">
+                            <a href="@Url.Action("Details", new { id = item.Id })">Xem Chi Tiết →</a>
                         </div>
                     </div>
-
-                    <!-- NÚT XEM CHI TIẾT -->
-                    <div class="p-actions">
-                        <a href="@Url.Action("Details", new { id = item.Id })">Xem Chi Tiết →</a>
-                    </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
+   
+    
 </div>
+</div>
+

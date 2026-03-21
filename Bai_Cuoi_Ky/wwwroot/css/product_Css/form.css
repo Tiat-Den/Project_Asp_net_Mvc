@@ -7,7 +7,7 @@
 
 body {
     background: var(--cream);
-    font-family: 'Jost', sans-serif;
+    font-family: 'Cormorant Garamond', serif;
 }
 
 .form-header {
@@ -24,14 +24,14 @@ body {
     margin: 0 auto 16px;
 }
 
-.form-header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    font-weight: 300;
-    color: var(--dark);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-}
+    .form-header h1 {
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        color: var(--dark);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
 
 .form-card {
     background: white;
@@ -42,7 +42,9 @@ body {
 }
 
 .form-section-title {
-    font-size: 0.68rem;
+    font-size: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 800;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--gold);
@@ -61,21 +63,24 @@ body {
     margin-bottom: 22px;
 }
 
-.form-group label {
-    display: block;
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-}
+    .form-group label {
+        display: block;
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+    }
 
 .form-control {
     width: 100%;
     border: 1px solid #e0dbd2;
     padding: 11px 14px;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.88rem;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
     color: var(--dark);
     background: white;
     outline: none;
@@ -101,7 +106,8 @@ textarea.form-control {
 }
 
 .text-danger {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
+    font-weight:800;
     color: #c62828;
     margin-top: 5px;
     display: block;
@@ -126,13 +132,15 @@ textarea.form-control {
     accent-color: var(--gold);
 }
 
-.checkbox-group label {
-    margin: 0;
-    text-transform: none;
-    letter-spacing: 0;
-    font-size: 0.88rem;
-    color: var(--dark);
-}
+    .checkbox-group label {
+        font-family: 'Cormorant Garamond', serif !important;
+        margin: 0;
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        color: var(--dark);
+    }
 
 .btn-row {
     display: flex;
@@ -145,8 +153,9 @@ textarea.form-control {
     background: var(--dark);
     color: white;
     padding: 13px 40px;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.75rem;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
     letter-spacing: 2px;
     text-transform: uppercase;
     border: none;
@@ -163,8 +172,9 @@ textarea.form-control {
     color: var(--dark);
     border: 1px solid #ddd;
     padding: 13px 28px;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.75rem;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
     letter-spacing: 2px;
     text-transform: uppercase;
     text-decoration: none;
