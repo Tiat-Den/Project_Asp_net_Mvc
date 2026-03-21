@@ -19,24 +19,25 @@ namespace Bai_Cuoi_Ky.Controllers
         }
 
         // === XỬ LÝ FORM ĐĂNG KÝ ===
-        [HttpPost]
-        public async Task<IActionResult> Register(string Email, string Username, string Password, string ConfirmPassword)
+        [HttpPost] 
+        public async Task<IActionResult> Register(string Email, string Username, string Password, string ConfirmPassword) 
         {
-            if (Password != ConfirmPassword) return BadRequest("Mật khẩu nhập lại không khớp!");
+            if (Password != ConfirmPassword) return BadRequest("Mật khẩu không khớp!");
 
-            var user = new IdentityUser { UserName = Username, Email = Email };
+            var user = new IdentityUser { UserName = Username, Email = Email }; 
             var result = await _userManager.CreateAsync(user, Password);
 
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
+            if (result.Succeeded) 
+            { 
+                await _userManager.AddToRoleAsync(user, "KhachHang");
+
+                await _signInManager.SignInAsync(user, isPersistent: false); 
                 return Ok();
             }
 
-            // Lấy lỗi đầu tiên từ hệ thống Identity (ví dụ: Password quá ngắn)
             var error = result.Errors.FirstOrDefault()?.Description ?? "Lỗi đăng ký!";
-            return BadRequest(error);
-        }
+            return BadRequest(error); 
+        } 
 
         // === XỬ LÝ FORM ĐĂNG NHẬP ===
         [HttpPost]

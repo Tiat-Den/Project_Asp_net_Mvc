@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bảng Điều Khiển Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body { background-color: #f4f6f9; }
+        .sidebar { min-height: 100vh; background-color: #343a40; color: white; }
+        .sidebar a { color: #c2c7d0; text-decoration: none; padding: 10px 20px; display: block; }
+        .sidebar a:hover, .sidebar a.active { background-color: #007bff; color: white; }
+        .main-content { padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <div class="sidebar flex-column p-0 col-2">
+            <h4 class="text-center py-3 border-bottom border-secondary">ADMIN PANEL</h4>
+            <a href="/Admin/Index" class="active"><i class="fas fa-tachometer-alt me-2"></i> Tổng quan</a>
+            <a href="/Product/Index"><i class="fas fa-box me-2"></i> Quản lý sản phẩm</a>
+            <a href="/Category/Index"><i class="fas fa-list me-2"></i> Quản lý danh mục</a>
+            <a href="/Order/Index"><i class="fas fa-shopping-cart me-2"></i> Quản lý đơn hàng</a>
+            <a href="/RoleManager/Index"><i class="fas fa-users me-2"></i> Quản lý tài khoản</a>
+            <hr class="border-secondary" />
+            <a href="/Home/Index" class="text-warning"><i class="fas fa-home me-2"></i> Về trang khách</a>
+            <a href="/Account/Logout" class="text-danger"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a>
+        </div>
+
+        <div class="col-10 main-content">
+            <nav class="navbar navbar-light bg-white shadow-sm mb-4 rounded px-3">
+                <span class="navbar-brand mb-0 h1">Xin chào, Quản trị viên!</span>
+            </nav>
+
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

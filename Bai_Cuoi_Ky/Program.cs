@@ -46,6 +46,12 @@ namespace Bai_Cuoi_Ky
                 app.UseHsts();
             }
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                Bai_Cuoi_Ky.Data.RoleSeeder.SeedRolesAsync(services).Wait();
+            }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

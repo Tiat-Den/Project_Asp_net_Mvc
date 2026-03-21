@@ -2,6 +2,8 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <html lang="vi">
 <head>
@@ -39,6 +41,10 @@
             <div class="header-actions">
                 @if (SignInManager.IsSignedIn(User))
                 {
+                    @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
+                    {
+                        <a class="nav-link text-danger font-weight-bold" href="/Admin/Index">TRANG QUẢN TRỊ</a>
+                    }
                     var currentUser = await UserManager.GetUserAsync(User);
 
                     <div class="user-menu-container">
