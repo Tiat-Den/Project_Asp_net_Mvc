@@ -116,7 +116,7 @@ footer.border-top {
 .logo-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.6rem;
-    font-weight: 600;
+    font-weight: 800;
     color: var(--red);
     letter-spacing: 1px;
     line-height: 1.1;
@@ -124,11 +124,13 @@ footer.border-top {
 }
 
 .logo-sub {
-    font-size: 0.56rem;
+    font-size: 0.7rem;
     letter-spacing: 3px;
     color: var(--red);
     text-transform: uppercase;
     display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 800;
 }
 
 /* Search */
@@ -146,7 +148,7 @@ footer.border-top {
         flex: 1;
         border: none;
         outline: none;
-        font-family: 'Jost', sans-serif;
+        font-family: 'Cormorant Garamond', serif;
         font-size: 0.88rem;
         color: var(--dark);
         background: transparent;
@@ -178,8 +180,9 @@ footer.border-top {
     padding: 8px 16px;
     border: 1.5px solid var(--dark);
     background: white;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.76rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 800;
     color: var(--dark);
     cursor: pointer;
     text-decoration: none;
@@ -231,13 +234,15 @@ footer.border-top {
     padding: 14px 16px;
     font-size: 0.75rem;
     letter-spacing: 1.2px;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 800;
     text-transform: uppercase;
     color: var(--dark) !important;
     text-decoration: none !important;
     position: relative;
     transition: color 0.2s;
     white-space: nowrap;
+    font-family: 'Cormorant Garamond', serif;
 }
 
     .nav-link-item::after {
@@ -284,42 +289,50 @@ footer.border-top {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.8rem;
     color: white;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .footer-brand-sub {
-    font-size: 0.56rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 800;
     letter-spacing: 3px;
     color: rgba(255,255,255,0.4);
     text-transform: uppercase;
 }
 
 .footer-brand p {
-    font-size: 0.82rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 800;
     line-height: 1.7;
     margin-top: 12px;
 }
 
 .footer-col h4 {
-    font-size: 0.7rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 800;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: white;
+    color: white !important;
     margin-bottom: 16px;
-    font-weight: 500;
+    font-weight: 800;
 }
 
 .footer-col a {
+    font-family: 'Cormorant Garamond', serif;
     display: block;
-    color: rgba(255,255,255,0.6);
-    font-size: 0.82rem;
+    color: white !important;
+    font-size: 1rem;
+    font-weight: 800;
     text-decoration: none;
     margin-bottom: 8px;
     transition: color 0.2s;
 }
 
     .footer-col a:hover {
-        color: var(--gold);
+        color: var(--gold) !important;
     }
 
 .footer-bottom {
@@ -329,7 +342,8 @@ footer.border-top {
     border-top: 1px solid rgba(255,255,255,0.1);
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
+    font-size: 1rem;
+    font-weight: 800;
 }
 
 /* =========================================

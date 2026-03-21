@@ -4,6 +4,7 @@ using Bai_Cuoi_Ky.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bai_Cuoi_Ky.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260321042843_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,9 +87,6 @@ namespace Bai_Cuoi_Ky.Migrations
                     b.Property<decimal?>("DiscountPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -125,7 +125,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             CategoryId = 1,
                             Description = "Đang cập nhật",
                             DiscountPrice = 3000000m,
-                            Gender = "nu",
                             ImageUrl = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no1.jpg",
                             ImageUrl2 = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no2.jpg",
                             IsAvailable = true,
@@ -140,7 +139,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             CategoryId = 2,
                             Description = "Đang cập nhật",
                             DiscountPrice = 2500000m,
-                            Gender = "nu",
                             ImageUrl = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan1.jpg",
                             ImageUrl2 = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg",
                             IsAvailable = true,
@@ -155,7 +153,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             CategoryId = 3,
                             Description = "Đang cập nhật",
                             DiscountPrice = 2000000m,
-                            Gender = "cap-doi",
                             ImageUrl = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom1.jpg",
                             ImageUrl2 = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom2.jpg",
                             IsAvailable = true,
@@ -169,7 +166,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             Id = 4,
                             CategoryId = 4,
                             Description = "Đang cập nhật",
-                            Gender = "nu",
                             ImageUrl = "/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da1.jpg",
                             ImageUrl2 = "/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da2.jpg",
                             IsAvailable = true,
@@ -183,7 +179,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             Id = 5,
                             CategoryId = 5,
                             Description = "Đang cập nhật",
-                            Gender = "cap-doi",
                             ImageUrl = "/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love1.jpg",
                             ImageUrl2 = "/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love2.jpg",
                             IsAvailable = true,
@@ -197,7 +192,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             Id = 6,
                             CategoryId = 6,
                             Description = "Đang cập nhật",
-                            Gender = "nu",
                             ImageUrl = "/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu1.jpg",
                             ImageUrl2 = "/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu2.jpg",
                             IsAvailable = true,

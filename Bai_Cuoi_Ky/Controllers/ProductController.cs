@@ -1,4 +1,4 @@
-using Bai_Cuoi_Ky.Data; 
+﻿using Bai_Cuoi_Ky.Data; 
 using Bai_Cuoi_Ky.Models;
 using Microsoft.AspNetCore.Mvc; 
 using Microsoft.AspNetCore.Mvc.Rendering; 
@@ -15,7 +15,9 @@ namespace Bai_Cuoi_Ky.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? categoryId, string search)
+        public async Task<IActionResult> Index(int? categoryId, string search,
+     List<string> material = null, List<string> gender = null,
+     List<string> price = null, string sort = null)
         {
             var products = _context.Products.Include(p => p.Category).AsQueryable();
 
@@ -25,10 +27,38 @@ namespace Bai_Cuoi_Ky.Controllers
             if (!string.IsNullOrEmpty(search))
                 products = products.Where(p => p.Name.Contains(search));
 
+            // Lọc chất liệu
+            if (material != null && material.Any())
+                products = products.Where(p => material.Contains(p.Material));
+
+            // Lọc giới tính
+            if (gender != null && gender.Any())
+                products = products.Where(p => gender.Contains(p.Gender));
+
+            // Sắp xếp
+            products = sort switch
+            {
+                "price-asc" => products.OrderBy(p => p.Price),
+                "price-desc" => products.OrderByDescending(p => p.Price),
+                _ => products
+            };
+
+            // Lọc giá (phải ToList trước)
+            var productList = await products.ToListAsync();
+            if (price != null && price.Any())
+            {
+                productList = productList.Where(p => price.Any(range => {
+                    var parts = range.Split('-');
+                    var min = decimal.Parse(parts[0]);
+                    var max = decimal.Parse(parts[1]);
+                    return p.Price >= min && p.Price <= max;
+                })).ToList();
+            }
+
             ViewBag.CurrentCategory = categoryId;
             ViewBag.Search = search;
 
-            return View(await products.ToListAsync());
+            return View(productList);
         }
 
         public async Task<IActionResult> Details(int? id)
