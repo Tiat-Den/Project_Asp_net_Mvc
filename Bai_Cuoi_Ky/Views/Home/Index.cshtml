@@ -22,13 +22,13 @@
             <h1 class="slide-title">BST Mới Nhất<br /><span>Trang Sức DKH</span></h1>
             <a asp-controller="Product" asp-action="Index" class="slide-btn">Xem Ngay</a>
         </div>
-    </div>
+    </div>  
     <button class="slider-prev" onclick="changeSlide(-1)">‹</button>
     <button class="slider-next" onclick="changeSlide(1)">›</button>
 </div>
 
 <div class="section">
-    <div class="section-header"><h2 class="section-title">Xu Hướng Tìm Kiếm</h2></div>
+    <div class="section-header"><h2 class="section-title" style="background:var(--gray);">Xu Hướng Tìm Kiếm</h2></div>
     <div class="cat-grid">
         <a asp-controller="Product" asp-action="Index" asp-route-categoryId="1" class="cat-card">
             <div class="cat-img"><img src="/images/Categories/Vong-Lac.jpg" alt="Vòng - Lắc" /></div>
@@ -73,7 +73,10 @@
                     <div class="p-body">
                         <div class="p-cat">@(item.Category?.Name ?? "Trang sức")</div>
                         <div class="p-name">@item.Name</div>
-                        <div class="p-price">@item.Price.ToString("N0")₫</div>
+                        <div class="price-cart-row">
+                            <span class="p-price">@item.Price.ToString("N0")₫</span>
+                            <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
+                        </div>
                     </div>
                     <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>
                 </div>
@@ -83,7 +86,7 @@
 </div>
 
 <div class="section">
-    <div class="section-header"><h2 class="section-title">Sản Phẩm Mới Nhất</h2></div>
+    <div class="section-header"><h2 class="section-title" style="background:var(--gray);">Sản Phẩm Mới Nhất</h2></div>
     <div class="product-grid">
         @foreach (var item in Model.OrderByDescending(p => p.Id).Take(4))
         {
@@ -96,7 +99,10 @@
                 <div class="p-body">
                     <div class="p-cat">@(item.Category?.Name ?? "New Arrival")</div>
                     <div class="p-name">@item.Name</div>
-                    <div class="p-price">@item.Price.ToString("N0")₫</div>
+                    <div class="price-cart-row">
+                        <span class="p-price">@item.Price.ToString("N0")₫</span>
+                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
+                    </div>
                 </div>
                 <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>
             </div>
@@ -133,6 +139,9 @@
                             <div class="price-row">
                                 <span class="p-price">@item.Price.ToString("N0")₫</span>
                                 <span class="p-price-old-2">@item.DiscountPrice?.ToString("N0")₫</span>
+                            </div>
+                            <div class="price-cart-row" style="margin-top:8px;">
+                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
                             </div>
                         </div>
                         <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>

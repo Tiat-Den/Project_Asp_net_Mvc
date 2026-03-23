@@ -726,3 +726,42 @@ body {
     .bg-warning .card-title, .bg-warning .card-text {
         color: #ffffff !important; /* Chữ màu trắng trên nền vàng */
     }
+/* ===== NÚT GIỎ HÀNG TRONG CARD ===== */
+.price-cart-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+a.btn-cart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    background: #1a1410;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: background 0.2s;
+}
+
+    a.btn-cart:hover {
+        background: #c9a84c;
+        color: white;
+        text-decoration: none;
+    }
+
+    a.btn-cart:focus,
+    a.btn-cart:visited {
+        background: #1a1410;
+        color: white;
+        text-decoration: none;
+        outline: none;
+    }

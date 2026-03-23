@@ -507,12 +507,15 @@
                         <div class="card-body">
                             <div class="card-category">@item.Material</div>
                             <div class="card-name">@item.Name</div>
-                            <div>
-                                <span class="price-main">@item.Price.ToString("N0")₫</span>
-                                @if (item.DiscountPrice.HasValue)
-                                {
-                                    <span class="price-original">@item.DiscountPrice.Value.ToString("N0")₫</span>
-                                }
+                            <div class="price-cart-row">
+                                <div>
+                                    <span class="price-main">@item.Price.ToString("N0")₫</span>
+                                    @if (item.DiscountPrice.HasValue)
+                                    {
+                                        <span class="price-original">@item.DiscountPrice.Value.ToString("N0")₫</span>
+                                    }
+                                </div>
+                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
                             </div>
                         </div>
 
