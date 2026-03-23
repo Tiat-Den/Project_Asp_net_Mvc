@@ -2,6 +2,18 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@using System.Text.Json
+
+@{
+    int cartCount = 0;
+    var sessionData = Context.Session.GetString("Cart");
+    if (!string.IsNullOrEmpty(sessionData))
+    {
+        var cart = JsonSerializer.Deserialize<List<CartItem>>(sessionData);
+        cartCount = cart?.Sum(x => x.Quantity) ?? 0;
+    }
+}
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -87,14 +99,14 @@
                         </a>
                     </div>
                 }
-                <a href="#" class="header-btn dark-btn">
+                <a href="/Cart/Index" class="header-btn dark-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                          stroke="#1a1410" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="20" cy="21" r="1"></circle>
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                     </svg>
-                    <span style="color:#000000;">0</span>
+                    <span style="color:#000000;">@cartCount</span>
                 </a>
             </div>
         </div>

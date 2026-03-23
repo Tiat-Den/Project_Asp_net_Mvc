@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Bai_Cuoi_Ky.Models.Product>
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0"><i class="fas fa-box me-2 text-primary"></i> Quản lý sản phẩm</h3>
+        <span class="text-muted" style="font-size: 0.95rem;">
+            Tổng số: <strong class="text-danger fs-5">@ViewBag.TotalProducts</strong> sản phẩm trong hệ thống
+        </span>
+    </div>
+    <a href="/Product/Create" class="btn btn-primary fw-bold shadow-sm">
+        <i class="fas fa-plus"></i> Thêm sản phẩm mới
+    </a>
+</div>
+
+<div class="table-responsive shadow-sm">
+    <table class="table table-bordered table-hover align-middle text-center mb-0 bg-white">
+        <thead class="table-dark">
+            <tr>
+                <th class="py-3" style="width: 80px;">Mã SP</th>
+                <th class="text-start py-3">Hình ảnh & Tên</th>
+                <th class="py-3">Danh mục</th>
+                <th class="py-3">Giá bán</th>
+                <th class="py-3">Tồn kho</th>
+                <th class="py-3">Trạng thái</th>
+                <th class="py-3" style="width: 120px;">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-bold text-muted">#@item.Id</td>
+                        <td class="text-start">
+                            <div class="d-flex align-items-center">
+                                <img src="@item.ImageUrl" alt="@item.Name" style="width: 50px; height: 50px; object-fit: cover;" class="rounded me-3 border" onerror="this.src='https://via.placeholder.com/50'" />
+                                <div>
+                                    <div class="fw-bold text-dark" style="font-size: 1.05rem;">@item.Name</div>
+                                    <small class="text-muted">@item.Material</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary p-2">@(item.Category?.Name ?? "Không có")</span>
+                        </td>
+                        <td class="text-danger fw-bold fs-6">@item.Price.ToString("N0")đ</td>
+                        <td>
+                            @if (item.Stock > 10)
+                            {
+                                <span class="fw-bold text-success">@item.Stock</span>
+                            }
+                            else if (item.Stock > 0)
+                            {
+                                <span class="fw-bold text-warning">@item.Stock</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Hết hàng</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="badge bg-success bg-opacity-75">Đang bán</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Ngừng bán</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="/Product/Edit/@item.Id" class="btn btn-warning btn-sm text-dark shadow-sm" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="/Product/Delete/@item.Id" class="btn btn-danger btn-sm shadow-sm ms-1" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center py-5 text-muted">
+                        <i class="fas fa-box-open fa-3x mb-3 text-light"></i>
+                        <br />
+                        Chưa có sản phẩm nào trong hệ thống. Hãy nhấn "Thêm sản phẩm mới".
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

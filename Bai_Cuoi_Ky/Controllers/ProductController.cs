@@ -1,5 +1,6 @@
-﻿using Bai_Cuoi_Ky.Data; 
+using Bai_Cuoi_Ky.Data; 
 using Bai_Cuoi_Ky.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc; 
 using Microsoft.AspNetCore.Mvc.Rendering; 
 using Microsoft.EntityFrameworkCore; 
@@ -74,6 +75,7 @@ namespace Bai_Cuoi_Ky.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(_context.Categories, "Id", "Name");
@@ -82,6 +84,7 @@ namespace Bai_Cuoi_Ky.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Product product, IFormFile? ImageFile1, IFormFile? ImageFile2)
         {
             ModelState.Remove("Category");
@@ -112,6 +115,7 @@ namespace Bai_Cuoi_Ky.Controllers
             return $"data:{contentType};base64,{base64}";
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -125,6 +129,7 @@ namespace Bai_Cuoi_Ky.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, Product product)
         {
             if (id != product.Id) return NotFound(); 
@@ -152,6 +157,7 @@ namespace Bai_Cuoi_Ky.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -167,6 +173,7 @@ namespace Bai_Cuoi_Ky.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -176,6 +183,15 @@ namespace Bai_Cuoi_Ky.Controllers
                 await _context.SaveChangesAsync(); 
             }
             return RedirectToAction(nameof(Index)); 
+        }
+
+        public async Task<IActionResult> IndexAdmin()
+        {
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+
+            ViewBag.TotalProducts = products.Count;
+
+            return View(products);
         }
     }
 }

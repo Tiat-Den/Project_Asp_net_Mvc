@@ -32,6 +32,13 @@ namespace Bai_Cuoi_Ky
                     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
                 });
 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -56,6 +63,8 @@ namespace Bai_Cuoi_Ky
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

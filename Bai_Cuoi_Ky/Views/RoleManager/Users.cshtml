@@ -1,0 +1,102 @@
+@model IEnumerable<Bai_Cuoi_Ky.Controllers.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý Tài khoản (Người dùng)";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var allRoles = ViewBag.AllRoles as List<string>;
+}
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 py-2">Danh sách Tài khoản</h5>
+    </div>
+    <div class="card-body">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tài khoản (Email)</th>
+                        <th>Quyền hiện tại</th>
+                        <th class="text-center" style="width: 250px;">Phân quyền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@user.Email</td>
+                            <td>
+                                @if (user.Roles.Any())
+                                {
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <div class="d-inline-flex align-items-center badge bg-primary me-2 mb-1 p-2">
+                                            <span class="me-2">@role</span>
+                                            <form asp-action="RemoveRole" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn gỡ quyền này?');">
+                                                <input type="hidden" name="userId" value="@user.UserId" />
+                                                <input type="hidden" name="roleName" value="@role" />
+                                                <button type="submit" class="btn-close btn-close-white" style="font-size: 0.5rem;"></button>
+                                            </form>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">Chưa có quyền</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addRoleModal-@user.UserId">
+                                    <i class="fas fa-plus"></i> Thêm Phân Quyền
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal Thêm Quyền Cho User -->
+                        <div class="modal fade" id="addRoleModal-@user.UserId" tabindex="-1" aria-labelledby="addRoleModalLabel-@user.UserId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addRoleModalLabel-@user.UserId">Thêm quyền cho @user.Email</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form asp-action="AssignRole" method="post">
+                                        <div class="modal-body text-start">
+                                            <input type="hidden" name="userId" value="@user.UserId" />
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold">Chọn quyền để cấp</label>
+                                                <select name="roleName" class="form-select" required>
+                                                    <option value="">-- Chọn quyền --</option>
+                                                    @foreach (var r in allRoles)
+                                                    {
+                                                        if (!user.Roles.Contains(r))
+                                                        {
+                                                            <option value="@r">@r</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                <div class="form-text mt-2">Chỉ hiển thị các quyền mà tài khoản chưa có.</div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary">Xác nhận Thêm</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

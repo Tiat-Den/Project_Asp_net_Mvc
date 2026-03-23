@@ -1,0 +1,124 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewData["Title"] = "Quản lý phân quyền";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0 py-2">Thêm Quyền Mới</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="CreateRole" method="post">
+                    <div class="mb-3">
+                        <label for="roleName" class="form-label">Tên phân quyền</label>
+                        <input type="text" class="form-control" id="roleName" name="roleName" placeholder="Ví dụ: NhanVien" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-plus"></i> Tạo Quyền</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0 py-2">Danh sách Phân quyền</h5>
+            </div>
+            <div class="card-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tên Quyền</th>
+                                <th class="text-center" style="width: 150px;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var role in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-primary">@role.Name</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#editModal-@role.Id">
+                                            <i class="fas fa-edit"></i> Sửa
+                                        </button>
+                                        <button class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal-@role.Id">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal Sửa -->
+                                <div class="modal fade" id="editModal-@role.Id" tabindex="-1" aria-labelledby="editModalLabel-@role.Id" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel-@role.Id">Sửa Quyền</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form asp-action="EditRole" method="post">
+                                                <div class="modal-body text-start">
+                                                    <input type="hidden" name="id" value="@role.Id" />
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Tên quyền cấp mới</label>
+                                                        <input type="text" class="form-control" name="roleName" value="@role.Name" required />
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal Xóa -->
+                                <div class="modal fade" id="deleteModal-@role.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@role.Id" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title" id="deleteModalLabel-@role.Id">Xác nhận xóa</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-start">
+                                                <p>Bạn có chắc chắn muốn xóa quyền <strong>@role.Name</strong> không?</p>
+                                                <p class="text-danger"><small>Lưu ý: Không thể xóa quyền nếu có người dùng đang sở hữu quyền này.</small></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form asp-action="DeleteRole" method="post">
+                                                    <input type="hidden" name="id" value="@role.Id" />
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                    <button type="submit" class="btn btn-danger">Xóa Quyền</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

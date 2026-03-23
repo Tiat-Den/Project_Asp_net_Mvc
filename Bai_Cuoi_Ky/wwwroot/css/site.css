@@ -681,3 +681,48 @@ footer.border-top {
         background-color: #f9f9f9;
         color: #c9a84c;
     }
+
+/* ADMIN DASHBOARD*/
+
+/* CSS cho Admin Panel */
+body {
+    background-color: #f4f6f9; /* Màu nền xám nhạt cho phần main content */
+}
+
+.sidebar {
+    background-color: #343a40; /* Màu nền tối cho sidebar */
+    min-height: 100vh;
+}
+
+    .sidebar h4 {
+        color: #ffffff;
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .sidebar a {
+        color: #c2c7d0; /* Màu chữ xám nhạt */
+        text-decoration: none;
+        display: block;
+        padding: 12px 20px;
+        font-size: 1rem;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .sidebar a i {
+            width: 25px; /* Căn chỉnh icon cho đều */
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #007bff; /* Màu xanh nước biển khi hover hoặc active */
+            color: #ffffff;
+        }
+
+/* Tùy chỉnh màu vàng của Bootstrap cho giống ảnh hơn */
+.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+    .bg-warning .card-title, .bg-warning .card-text {
+        color: #ffffff !important; /* Chữ màu trắng trên nền vàng */
+    }
