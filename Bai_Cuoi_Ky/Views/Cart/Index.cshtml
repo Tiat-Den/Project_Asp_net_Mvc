@@ -15,7 +15,7 @@
                     <tr>
                         <th class="py-3">Sản phẩm</th>
                         <th class="py-3">Đơn giá</th>
-                        <th class="py-3" style="width: 120px;">Số lượng</th>
+                        <th class="py-3" style="width: 160px;">Số lượng</th>
                         <th class="py-3">Thành tiền</th>
                         <th class="py-3">Thao tác</th>
                     </tr>
@@ -32,7 +32,11 @@
                             </td>
                             <td class="text-danger fw-bold">@item.Price.ToString("N0")đ</td>
                             <td>
-                                <input type="number" value="@item.Quantity" class="form-control text-center mx-auto" min="1" readonly />
+                                <div class="input-group input-group-sm justify-content-center">
+                                    <a href="/Cart/UpdateQuantity?id=@item.ProductId&amount=-1" class="btn btn-outline-secondary px-3">-</a>
+                                    <input type="text" value="@item.Quantity" class="form-control text-center" style="max-width: 50px;" readonly />
+                                    <a href="/Cart/UpdateQuantity?id=@item.ProductId&amount=1" class="btn btn-outline-secondary px-3">+</a>
+                                </div>
                             </td>
                             <td class="text-danger fw-bold">@item.Total.ToString("N0")đ</td>
                             <td>
@@ -52,9 +56,19 @@
             </a>
             <div class="text-end">
                 <h4 class="mb-3">Tổng thanh toán: <span class="text-danger fw-bold fs-3 ms-2">@Model.Sum(x => x.Total).ToString("N0")đ</span></h4>
-                <a href="/Checkout/Index" class="btn btn-success btn-lg fw-bold px-5">
-                    Thanh toán ngay <i class="fas fa-arrow-right ms-2"></i>
-                </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="/Checkout/Index" class="btn btn-success btn-lg fw-bold px-5">
+                        Thanh toán ngay <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-success btn-lg fw-bold px-5" onclick="triggerHeaderLogin()">
+                        Thanh toán ngay <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                }
             </div>
         </div>
     }
@@ -67,3 +81,25 @@
         </div>
     }
 </div>
+
+<script>
+        function triggerHeaderLogin() {
+        // 1. Tìm ô input ẩn trong form đăng nhập (thường nằm trong _Layout)
+        var hiddenReturnUrl = document.querySelector('#form-login input[name="ReturnUrl"]');
+
+        if (hiddenReturnUrl) {
+            // Gán trang đích là Checkout để sau khi login Ajax xong nó biết đường mà đi
+            hiddenReturnUrl.value = "/Checkout/Index";
+        }
+
+        var loginBtn = document.getElementById("btnLoginHeader");
+
+        if (loginBtn) {
+            // 2. Nếu nút này là nút mở Modal (có data-bs-toggle), nó sẽ mở modal
+            // Nếu nút này là link chuyển trang, nó sẽ chuyển sang /Account/Login
+            loginBtn.click();
+        } else {
+            window.location.href = "/Account/Login?ReturnUrl=/Checkout/Index";
+        }
+    }
+</script>

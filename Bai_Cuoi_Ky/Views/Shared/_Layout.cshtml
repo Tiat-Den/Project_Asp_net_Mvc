@@ -26,7 +26,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Bai_Cuoi_Ky.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Styles", required: false)
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 </head>
 <body>
 
@@ -70,8 +74,7 @@
 
                         <div class="user-dropdown">
                             <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
-                            <a href="#">Đơn hàng của tôi</a>
-                            <a href="#">Sản phẩm yêu thích</a>
+                            <a asp-controller="Order" asp-action="Index">Đơn hàng của tôi</a>
                             <a asp-controller="Account" asp-action="Logout" style="border-top: 1px solid #eee; color: red;">Đăng xuất</a>
                         </div>
                     </div>
@@ -89,7 +92,7 @@
                             Đăng Ký
                         </a>
 
-                        <a href="javascript:void(0);" onclick="openAuthModal('login')" class="header-btn" style="color:#000000 !important;">
+                        <a href="javascript:void(0);" id="btnLoginHeader" onclick="openAuthModal('login')" class="header-btn" style="color:#000000 !important;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                                 <polyline points="10 17 15 12 10 7"></polyline>
@@ -100,17 +103,62 @@
                     </div>
                 }
                 <a href="/Cart/Index" class="header-btn dark-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="16" height="16" 
+                    viewBox="0 0 24 24"
+                    fill="none"
                          stroke="#1a1410" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="20" cy="21" r="1"></circle>
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                     </svg>
-                    <span style="color:#000000;">@cartCount</span>
+                    <span style="color:#000000;" id="cart-count-header">@cartCount</span>
                 </a>
             </div>
         </div>
     </header>
+
+    <!-- script cho icon giỏ hàng -->
+    <script>
+        $(document).ready(function () {
+            // Lắng nghe sự kiện click trên toàn bộ document để tránh lỗi không nhận element
+            $(document).off("click", ".ajax-add-to-cart").on("click", ".ajax-add-to-cart", function (e) {
+                e.preventDefault(); // CHẶN TUYỆT ĐỐI KHÔNG CHO NHẢY TRANG
+                e.stopPropagation();
+
+                var productId = $(this).data("id");
+                var $btn = $(this);
+
+                // Vô hiệu hóa nút tạm thời để tránh bấm liên tục
+                $btn.prop('disabled', true);
+
+                $.post('/Cart/AddToCart', { id: productId, quantity: 1 }, function (response) {
+                    if (response.success) {
+                        // Cập nhật con số trên Header
+                        $("#cart-count-header").text(response.totalItems);
+
+                        // Thông báo bằng SweetAlert2
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: 'Đã thêm sản phẩm vào giỏ hàng!',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showCloseButton: true
+                        });
+                    }
+                }).fail(function (xhr) {
+                    console.error("Lỗi 405 hoặc lỗi hệ thống: ", xhr.status);
+                    alert("Lỗi " + xhr.status + ": Kiểm tra lại phương thức POST trong Controller!");
+                }).always(function () {
+                    $btn.prop('disabled', false);
+                });
+            });
+        });
+    </script>
 
     <!-- NAVBAR DANH MỤC -->
     <nav class="main-nav">
@@ -227,7 +275,7 @@
                 <div style="text-align:center; margin-top: 15px;">
                     <p style="font-size: 0.85rem; color: #888;">Hoặc đăng nhập bằng</p>
                     <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
-                        <a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google" class="btn-google">
+                        <a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")" class="btn-google">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="google-icon" />
                             Google
                         </a>
@@ -261,27 +309,41 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-            // XỬ LÝ ĐĂNG NHẬP
-            $("#form-login").on("submit", function (e) {
-                e.preventDefault(); // Chặn tuyệt đối việc load lại trang
+        // XỬ LÝ ĐĂNG NHẬP
+        $("#form-login").on("submit", function (e) {
+            e.preventDefault();
 
-                var form = $(this);
-                var summary = $("#login-summary");
-                summary.text("Đang kiểm tra..."); // Hiển thị trạng thái chờ
+            var form = $(this);
+            var summary = $("#login-summary");
+            summary.text("Đang kiểm tra...");
 
-                $.post(form.attr("action"), form.serialize())
-                    .done(function (response) {
-                        // Nếu đúng, mới cho chuyển trang
-                        window.location.href = "/Home/Index";
-                    })
-                    .fail(function (xhr) {
-                        // Nếu sai, ở lại trang và hiện lỗi vào div
-                        summary.text(xhr.responseText || "Sai tài khoản hoặc mật khẩu!");
-                    });
+            $.post(form.attr("action"), form.serialize())
+                .done(function (response) {
+                    // 1. Ưu tiên lấy ReturnUrl từ ô input ẩn trong Form (nếu có)
+                    var returnUrl = form.find('input[name="ReturnUrl"]').val();
 
-                return false; // Thêm dòng này để chắc chắn không nhảy trang
-            });
+                    // 2. Nếu không có trong Form, thử lấy trên thanh địa chỉ (URL)
+                    if (!returnUrl) {
+                        var urlParams = new URLSearchParams(window.location.search);
+                        returnUrl = urlParams.get('ReturnUrl');
+                    }
+
+                    // 3. Điều hướng:
+                    if (returnUrl && returnUrl.trim() !== "") {
+                        // Nếu có trang đích cụ thể (ví dụ /Checkout/Index) thì nhảy tới đó
+                        window.location.href = returnUrl;
+                    } else {
+                        // Nếu không có gì cả, chỉ cần F5 lại trang hiện tại là xong
+                        // Cách này giúp giữ nguyên vị trí ông đang đứng
+                        window.location.reload();
+                    }
+                })
+                .fail(function (xhr) {
+                    summary.text(xhr.responseText || "Sai tài khoản hoặc mật khẩu!");
+                });
+
+            return false;
+        });
 
             // XỬ LÝ ĐĂNG KÝ
             $("#form-register").on("submit", function (e) {
@@ -301,7 +363,6 @@
 
                 return false;
             });
-        });
 
         // Hàm con mắt mật khẩu (giữ nguyên cái này)
         function toggleAuthPassword(inputId, iconSpan) {

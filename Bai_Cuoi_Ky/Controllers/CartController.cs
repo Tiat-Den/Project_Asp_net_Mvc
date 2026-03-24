@@ -20,17 +20,18 @@ namespace Bai_Cuoi_Ky.Controllers
             return View(cart);
         }
 
-        public async Task<IActionResult> AddToCart(int id, int quantity = 1)
+        [HttpPost]
+        public IActionResult AddToCart(int id, int quantity = 1)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return NotFound();
+            var product = _context.Products.Find(id);
+            if (product == null) return Json(new { success = false });
 
             var cart = GetCartItems();
-            var cartItem = cart.FirstOrDefault(c => c.ProductId == id);
+            var item = cart.FirstOrDefault(c => c.ProductId == id);
 
-            if (cartItem != null)
+            if (item != null)
             {
-                cartItem.Quantity += quantity;
+                item.Quantity += quantity;
             }
             else
             {
@@ -39,13 +40,19 @@ namespace Bai_Cuoi_Ky.Controllers
                     ProductId = product.Id,
                     ProductName = product.Name,
                     Price = product.Price,
-                    ImageUrl = product.ImageUrl ?? "",
-                    Quantity = quantity
+                    Quantity = quantity,
+                    ImageUrl = product.ImageUrl
                 });
             }
 
             SaveCartSession(cart);
-            return RedirectToAction("Index");
+
+            // PHẢI TRẢ VỀ JSON THẾ NÀY THÌ AJAX MỚI HỨNG ĐƯỢC
+            return Json(new
+            {
+                success = true,
+                totalItems = cart.Sum(x => x.Quantity)
+            });
         }
 
         public IActionResult Remove(int id)
@@ -73,6 +80,21 @@ namespace Bai_Cuoi_Ky.Controllers
         {
             var sessionData = JsonSerializer.Serialize(cart);
             HttpContext.Session.SetString("Cart", sessionData);
+        }
+
+        public IActionResult UpdateQuantity(int id, int amount)
+        {
+            var cart = GetCartItems();
+            var item = cart.FirstOrDefault(c => c.ProductId == id);
+
+            if (item != null)
+            {
+                item.Quantity += amount;
+                if (item.Quantity <= 0) cart.Remove(item);
+            }
+
+            SaveCartSession(cart);
+            return RedirectToAction("Index");
         }
     }
 }

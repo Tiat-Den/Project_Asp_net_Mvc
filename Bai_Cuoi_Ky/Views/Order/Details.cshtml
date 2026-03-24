@@ -2,120 +2,176 @@
 
 @{
     ViewData["Title"] = "Chi tiết đơn hàng #" + Model.Id;
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    bool isAdminOrStaff = User.IsInRole("Admin") || User.IsInRole("NhanVien");
+    if (isAdminOrStaff)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold"><i class="fas fa-file-invoice me-2"></i>Chi tiết đơn hàng #@Model.Id</h4>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
+        @{
+            bool isPending = (Model.Status == "ChoXuLy" || Model.Status == "Pending");
+
+            bool canEdit = isAdminOrStaff || isPending; // Admin thì luôn sửa được, Khách thì chỉ sửa được khi Pending
+        }
+
         <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white border-bottom">
-                <h5 class="mb-0 py-2">Sản phẩm trong đơn hàng</h5>
+            <div class="card-header bg-white border-bottom"><h6 class="mb-0 fw-bold">Trạng thái đơn hàng</h6></div>
+            <div class="card-body d-flex align-items-center justify-content-between">
+                @if (isAdminOrStaff)
+                {
+                    <form asp-action="UpdateStatus" method="post" class="d-flex align-items-center m-0">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <select name="status" class="form-select me-2" style="max-width: 200px;">
+                            <option value="ChoXuLy" selected="@(Model.Status == "ChoXuLy")">Chờ xử lý</option>
+                            <option value="HoanThanh" selected="@(Model.Status == "HoanThanh")">Hoàn thành</option>
+                            <option value="DaHuy" selected="@(Model.Status == "DaHuy")">Đã hủy</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm" style="width: 120px;">Cập nhật</button>
+                    </form>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6">@Model.Status</span>
+                }
+
+                @if (!isAdminOrStaff && isPending)
+
+                {
+                    <form asp-action="CancelOrder" method="post" onsubmit="return confirm('Ông có chắc chắn muốn HỦY đơn hàng này không?');">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i> Hủy đơn hàng</button>
+                    </form>
+                }
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="ps-3">Sản phẩm</th>
-                                <th class="text-center">Số lượng</th>
-                                <th class="text-end">Đơn giá</th>
-                                <th class="text-end pe-3">Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var detail in Model.OrderDetails)
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-bottom"><h6 class="mb-0 fw-bold">Thông tin giao hàng</h6></div>
+            <div class="card-body">
+                @if (canEdit)
+                {
+                    <form asp-action="EditOrder" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small">Họ tên</label>
+                                <input type="text" class="form-control" name="customerName" value="@Model.CustomerName" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small">Số điện thoại</label>
+                                <input type="text" class="form-control" name="phoneNumber" value="@Model.PhoneNumber" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Email</label>
+                            <input type="email" class="form-control" name="email" value="@Model.Email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Địa chỉ</label>
+                            <textarea class="form-control" name="address" rows="2" required>@Model.Address</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Ghi chú</label>
+                            <textarea class="form-control" name="notes" rows="2">@Model.Notes</textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Lưu thông tin</button>
+
+                            @if (isAdminOrStaff)
                             {
-                                <tr>
-                                    <td class="ps-3 text-primary fw-bold">
-                                        @(detail.Product?.Name ?? "Sản phẩm không xác định")
-                                    </td>
-                                    <td class="text-center">@detail.Quantity</td>
-                                    <td class="text-end">@detail.UnitPrice.ToString("N0") VNĐ</td>
-                                    <td class="text-end pe-3">@((detail.Quantity * detail.UnitPrice).ToString("N0")) VNĐ</td>
-                                </tr>
+                                <button type="button" class="btn btn-danger" onclick="if(confirm('Xóa vĩnh viễn khỏi Database?')) document.getElementById('deleteForm').submit();">
+                                    <i class="fas fa-trash"></i> Xóa đơn hàng
+                                </button>
                             }
-                        </tbody>
-                        <tfoot class="table-light">
-                            <tr>
-                                <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
-                                <td class="text-end pe-3 fw-bold text-danger fs-5">@Model.TotalAmount.ToString("N0") VNĐ</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                        </div>
+                    </form>
+
+                    @if (isAdminOrStaff)
+                    {
+                        <form id="deleteForm" asp-action="DeleteOrder" method="post" style="display: none;">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                        </form>
+                    }
+                }
+                else
+                {
+                    <p><strong>Người nhận:</strong> @Model.CustomerName</p>
+                    <p><strong>Điện thoại:</strong> @Model.PhoneNumber</p>
+                    <p><strong>Địa chỉ:</strong> @Model.Address</p>
+                    <p><strong>Ghi chú:</strong> @Model.Notes</p>
+                    <div class="alert alert-warning mb-0 mt-3 p-2 small">
+                        Đơn hàng đã được xử lý, không thể thay đổi thông tin. Vui lòng liên hệ CSKH nếu cần hỗ trợ.
+                    </div>
+                }
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white border-bottom">
-                <h5 class="mb-0 py-2">Thông tin khách hàng</h5>
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+            <div class="card-header bg-white border-bottom"><h6 class="mb-0 fw-bold">Sản phẩm đã mua</h6></div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <div class="d-flex align-items-center">
+                                <img src="@item.Product.ImageUrl" style="width: 50px; height: 50px; object-fit: cover;" class="rounded border me-3" />
+                                <div>
+                                    <h6 class="mb-0 text-truncate" style="max-width: 200px;">@item.Product.Name</h6>
+                                    <small class="text-muted">SL: @item.Quantity x @item.UnitPrice.ToString("N0")đ</small>
+                                </div>
+                            </div>
+                            <span class="fw-bold">@((item.Quantity * item.UnitPrice).ToString("N0"))đ</span>
+                        </li>
+                    }
+                </ul>
             </div>
-            <div class="card-body">
-                <p><strong><i class="fas fa-user text-muted me-2"></i></strong> @Model.CustomerName</p>
-                <p><strong><i class="fas fa-phone-alt text-muted me-2"></i></strong> @Model.PhoneNumber</p>
-                <p><strong><i class="fas fa-envelope text-muted me-2"></i></strong> @Model.Email</p>
-                <p><strong><i class="fas fa-map-marker-alt text-muted me-2"></i></strong> @Model.Address</p>
-                <p><strong><i class="far fa-calendar-alt text-muted me-2"></i></strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
-            </div>
-        </div>
-
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white border-bottom">
-                <h5 class="mb-0 py-2">Cập nhật trạng thái</h5>
-            </div>
-            <div class="card-body">
-                @if (TempData["SuccessMessage"] != null)
-                {
-                    <div class="alert alert-success alert-dismissible fade show p-2 text-center" role="alert">
-                        @TempData["SuccessMessage"]
-                        <button type="button" class="btn-close py-1" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                }
-
-                <div class="mb-3 text-center">
-                    <p class="mb-2">Trạng thái hiện tại:</p>
-                    @if (Model.Status == "ChoXuLy")
-                    {
-                        <span class="badge bg-warning text-dark fs-6 px-3 py-2">Chờ xử lý</span>
-                    }
-                    else if (Model.Status == "HoanThanh")
-                    {
-                        <span class="badge bg-success fs-6 px-3 py-2">Hoàn thành</span>
-                    }
-                    else if (Model.Status == "DaHuy")
-                    {
-                        <span class="badge bg-danger fs-6 px-3 py-2">Đã hủy</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary fs-6 px-3 py-2">@Model.Status</span>
-                    }
+            <div class="card-footer bg-light p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Phương thức TT:</span>
+                    <span class="badge @(Model.PaymentMethod == "QR" ? "bg-info text-dark" : "bg-secondary")">@Model.PaymentMethod</span>
                 </div>
-
-                <form asp-action="UpdateStatus" method="post" class="d-grid gap-2">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    
-                    @if (Model.Status == "ChoXuLy")
-                    {
-                        <button type="submit" name="status" value="HoanThanh" class="btn btn-success">
-                            <i class="fas fa-check-circle"></i> Xác nhận Hoàn thành
-                        </button>
-                        <button type="submit" name="status" value="DaHuy" class="btn btn-outline-danger">
-                            <i class="fas fa-times-circle"></i> Hủy đơn hàng
-                        </button>
-                    }
-                    else if (Model.Status == "HoanThanh" || Model.Status == "DaHuy")
-                    {
-                        <button type="submit" name="status" value="ChoXuLy" class="btn btn-outline-warning">
-                            <i class="fas fa-undo"></i> Đặt lại thành Chờ xử lý
-                        </button>
-                    }
-                </form>
-                
-                <div class="mt-4 text-center">
-                    <a asp-action="Index" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Quay lại danh sách</a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold fs-5">TỔNG TIỀN:</span>
+                    <span class="fw-bold fs-4 text-danger">@Model.TotalAmount.ToString("N0")đ</span>
                 </div>
             </div>
         </div>

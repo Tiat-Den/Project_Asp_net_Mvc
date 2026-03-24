@@ -765,3 +765,31 @@ a.btn-cart {
         text-decoration: none;
         outline: none;
     }
+
+    /*icon giỏ hàng */
+
+    .btn-outline-custom2 {
+    background-color: #1a1410; /* Màu nền đen hơi nâu giống hình */
+    border: none;
+    border-radius: 8px;       /* Bo góc nhẹ nhàng */
+    width: 45px;              /* Độ rộng nút */
+    height: 45px;             /* Độ cao nút */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-outline-custom2:hover {
+    background-color: #333;   /* Hiệu ứng khi di chuột vào */
+    transform: scale(1.05);   /* Phóng to nhẹ khi hover */
+}
+
+/* Chỉnh kích thước icon bên trong */
+.btn-outline-custom2 svg, 
+.btn-outline-custom2 i {
+    font-size: 20px;
+    color: white;
+}

@@ -1,26 +1,34 @@
-﻿using Bai_Cuoi_Ky.Models;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
-public class OrderDetail
+namespace Bai_Cuoi_Ky.Models
 {
-    [Key]
-    public int Id { get; set; }
+    public class OrderDetail
+    {
+        [Key]
+        public int Id { get; set; }
 
-    [Required]
-    public int OrderId { get; set; }
-    [ForeignKey("OrderId")]
-    public virtual Order Order { get; set; }
+        [Required]
+        public int OrderId { get; set; }
+        [ForeignKey("OrderId")]
+        public virtual Order Order { get; set; }
 
-    [Required]
-    public int ProductId { get; set; }
-    [ForeignKey("ProductId")]
-    public virtual Product Product { get; set; }
+        [Required]
+        public int ProductId { get; set; }
+        [ForeignKey("ProductId")]
+        public virtual Product Product { get; set; }
 
-    [Display(Name = "Số lượng")]
-    public int Quantity { get; set; }
+        [Required]
+        [Display(Name = "Số lượng")]
+        public int Quantity { get; set; }
 
-    [Display(Name = "Giá tại thời điểm mua")]
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal UnitPrice { get; set; }
+        [Required]
+        [Display(Name = "Đơn giá")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal UnitPrice { get; set; }
+
+        // Thuộc tính phụ trợ (Không lưu vào DB) để tính nhanh thành tiền của 1 dòng
+        [NotMapped]
+        public decimal SubTotal => Quantity * UnitPrice;
+    }
 }

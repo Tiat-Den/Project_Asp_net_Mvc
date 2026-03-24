@@ -9,13 +9,27 @@
     <style>
         body {
             background-color: #f4f6f9;
+            overflow-x: hidden; /* Ngăn scroll ngang khi trượt panel */
         }
 
+        /* Tùy chỉnh thanh Sidebar */
         .sidebar {
             min-height: 100vh;
             background-color: #343a40;
             color: white;
+            width: 260px; /* Cố định chiều rộng thay vì dùng col-2 */
+            min-width: 260px;
+            transition: all 0.3s ease-in-out; /* Hiệu ứng trượt mượt mà */
+            white-space: nowrap; /* Tránh chữ bị rớt dòng khi thu nhỏ */
+            overflow-x: hidden;
+            z-index: 1000;
         }
+
+            /* Class để ẩn sidebar */
+            .sidebar.collapsed {
+                width: 0;
+                min-width: 0;
+            }
 
             .sidebar a {
                 color: #c2c7d0;
@@ -23,6 +37,7 @@
                 padding: 12px 20px;
                 display: block;
                 font-size: 1.05rem;
+                transition: all 0.2s;
             }
 
                 .sidebar a:hover, .sidebar a.active {
@@ -32,9 +47,31 @@
                     padding-left: 16px;
                 }
 
+        /* Khu vực nội dung chính */
         .main-content {
-            padding: 20px;
+            padding: 18px;
+            flex-grow: 1; /* Chiếm toàn bộ không gian còn lại */
+            width: 100%;
+            transition: all 0.3s ease-in-out;
         }
+
+        /* Ô vuông nút ẩn/hiện Panel */
+        .toggle-btn {
+            width: 40px;
+            height: 40px;
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+            .toggle-btn:hover {
+                background-color: #007bff;
+            }
     </style>
 </head>
 <body>
@@ -43,16 +80,18 @@
         var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
     }
 
-    <div class="d-flex">
-        <div class="sidebar flex-column p-0 col-2">
+    <div class="d-flex w-100">
+
+        <div class="sidebar flex-column p-0" id="adminSidebar">
             @if (User.IsInRole("Admin"))
             {
                 <h4 class="text-center py-4 border-bottom border-secondary fw-bold mb-0">ADMIN PANEL</h4>
-            } else
+            }
+            else
             {
                 <h4 class="text-center py-4 border-bottom border-secondary fw-bold mb-0">NHÂN VIÊN PANEL</h4>
-
             }
+
             <a href="/Admin/Index" class="@(currentController == "Admin" && currentAction == "Index" ? "active" : "")">
                 <i class="fas fa-tachometer-alt me-2"></i> Tổng quan
             </a>
@@ -77,7 +116,7 @@
 
                 <a href="/RoleManager/Index" class="@(currentController == "RoleManager" && currentAction == "Index" ? "active" : "")">
                     <i class="fas fa-user-shield me-2"></i> Quản lý phân quyền
-            </a>
+                </a>
             }
 
             <hr class="border-secondary my-3" />
@@ -89,16 +128,22 @@
                 <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
             </a>
         </div>
+        <button type="button" id="sidebarToggle" class="toggle-btn me-3">
+            <i class="fas fa-bars"></i>
+        </button>
 
-        <div class="col-10 main-content">
-            <nav class="navbar navbar-light bg-white shadow-sm mb-4 rounded px-3 py-2">
+        <div class="main-content">
+            <nav class="navbar navbar-light bg-white shadow-sm mb-4 rounded px-3 py-2 d-flex align-items-center justify-content-start">
+
+                
+
                 @if (User.IsInRole("Admin"))
                 {
                     <span class="navbar-brand mb-0 h5 fw-bold text-primary">Xin chào, Quản trị viên!</span>
-                } else
+                }
+                else
                 {
                     <span class="navbar-brand mb-0 h5 fw-bold text-primary">Xin chào, @User.Identity.Name</span>
-
                 }
             </nav>
 
@@ -108,6 +153,15 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#sidebarToggle").click(function () {
+                $("#adminSidebar").toggleClass("collapsed");
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

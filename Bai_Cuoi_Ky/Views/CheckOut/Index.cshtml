@@ -1,0 +1,140 @@
+﻿@model List<Bai_Cuoi_Ky.Models.CartItem>
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        @* CỘT TRÁI: THÔNG TIN GIAO HÀNG *@
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="fw-bold mb-4 text-primary"><i class="fas fa-id-card me-2"></i> Thông tin giao hàng</h4>
+
+                <form action="/Checkout/ProcessCheckout" method="post">
+                    @* 1. Họ tên *@
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Họ tên người nhận</label>
+                        <input type="text" name="customerName" class="form-control" placeholder="Nhập tên người nhận..." required>
+                    </div>
+
+                    @* 2. Email *@
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Địa chỉ Email</label>
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="example@gmail.com"
+                               value="@(User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.Email) : "")"
+                               required>
+                        <div class="form-text">Chúng tôi sẽ gửi thông báo đơn hàng qua email này.</div>
+                    </div>
+
+                    @* 3. Số điện thoại *@
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Số điện thoại</label>
+                        <input type="text" name="phoneNumber" class="form-control" placeholder="Nhập số điện thoại..." required>
+                    </div>
+
+                    @* 4. Địa chỉ *@
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Địa chỉ nhận hàng</label>
+                        <textarea name="address" class="form-control" rows="3" placeholder="Số nhà, tên đường, phường/xã..." required></textarea>
+                    </div>
+
+                    @* 5. Ghi chú *@
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Ghi chú đơn hàng (Tùy chọn)</label>
+                        <textarea name="notes" class="form-control" rows="2" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."></textarea>
+                    </div>
+
+                    @* 6. Phương thức thanh toán *@
+                    <div class="mt-4 p-3 bg-light rounded shadow-sm border">
+                        <p class="fw-bold mb-3"><i class="fas fa-credit-card me-2"></i> Phương thức thanh toán:</p>
+
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="paymentCOD" value="COD" checked>
+                            <label class="form-check-label fw-bold text-success" for="paymentCOD">
+                                Thanh toán khi nhận hàng (COD)
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="paymentQR" value="QR">
+                            <label class="form-check-label fw-bold text-primary" for="paymentQR">
+                                Thanh toán qua mã QR (Chuyển khoản)
+                            </label>
+                        </div>
+
+                        @* Khung QR Code ẩn hiện *@
+                        <div id="qrCodeContainer" class="text-center p-3 border rounded bg-white mt-3 d-none">
+                            <p class="small text-muted mb-2">Quét mã dưới đây để thanh toán</p>
+                            <img src="~/images/QR-Code/QR_PTD.jpg" alt="QR Code" class="img-fluid shadow-sm" style="max-width: 250px; border: 5px solid #fff;">
+                            <div class="mt-2 small">
+                                <p class="mb-0"><strong>Chủ TK:</strong> PHAM TIEN DAT</p>
+                                <p class="mb-0"><strong>STK:</strong> 393905052005 - MB Bank</p>
+                                <p class="mb-1 text-danger font-italic">Nội dung: Thanh toan Don hang @DateTime.Now.ToString("yyyyMMddHHmm")</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold mt-4 shadow-sm">HOÀN TẤT ĐẶT HÀNG</button>
+                </form>
+            </div>
+        </div>
+
+        @* CỘT PHẢI: TÓM TẮT ĐƠN HÀNG *@
+        <div class="col-md-5">
+            <div class="card shadow-sm border-0 p-4 bg-white sticky-top" style="top: 20px;">
+                <h4 class="fw-bold mb-4">Đơn hàng của bạn </h4>
+                <div class="checkout-items mb-3" style="max-height: 400px; overflow-y: auto;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <img src="@item.ImageUrl" style="width: 50px; height: 50px; object-fit: cover;" class="rounded border me-3" />
+                                <div>
+                                    <div class="fw-bold text-truncate" style="max-width: 180px;">@item.ProductName</div>
+                                    <small class="text-muted">Số lượng: @item.Quantity</small>
+                                </div>
+                            </div>
+                            <span class="fw-bold">@item.Total.ToString("N0")đ</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <span class="fs-6 text-muted">Tạm tính:</span>
+                    <span class="fs-6 fw-bold">@Model.Sum(x => x.Total).ToString("N0")đ</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="fs-6 text-muted">Phí vận chuyển:</span>
+                    <span class="fs-6 text-success fw-bold">Miễn phí</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span class="fs-4 fw-bold">Tổng tiền:</span>
+                    <span class="fs-3 fw-bold text-danger">@Model.Sum(x => x.Total).ToString("N0")đ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Xử lý ẩn/hiện QR Code khi chọn phương thức thanh toán
+            $('input[name="paymentMethod"]').change(function () {
+                if ($('#paymentQR').is(':checked')) {
+                    $('#qrCodeContainer').removeClass('d-none').hide().slideDown();
+                } else {
+                    $('#qrCodeContainer').slideUp(function () {
+                        $(this).addClass('d-none');
+                    });
+                }
+            });
+        });
+    </script>
+}

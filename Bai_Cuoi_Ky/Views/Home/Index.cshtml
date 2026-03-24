@@ -75,7 +75,11 @@
                         <div class="p-name">@item.Name</div>
                         <div class="price-cart-row">
                             <span class="p-price">@item.Price.ToString("N0")₫</span>
-                            <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
+                            <button type="button"
+                                    class="btn-outline-custom2 ajax-add-to-cart"
+                                    data-id="@item.Id">
+                                🛒
+                            </button>
                         </div>
                     </div>
                     <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>
@@ -101,7 +105,11 @@
                     <div class="p-name">@item.Name</div>
                     <div class="price-cart-row">
                         <span class="p-price">@item.Price.ToString("N0")₫</span>
-                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
+                        <button type="button"
+                                class="btn-outline-custom2 ajax-add-to-cart"
+                                data-id="@item.Id">
+                            🛒
+                        </button>
                     </div>
                 </div>
                 <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>
@@ -140,9 +148,11 @@
                                 <span class="p-price">@item.Price.ToString("N0")₫</span>
                                 <span class="p-price-old-2">@item.DiscountPrice?.ToString("N0")₫</span>
                             </div>
-                            <div class="price-cart-row" style="margin-top:8px;">
-                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn-cart" title="Thêm vào giỏ">🛒</a>
-                            </div>
+                            <button type="button"
+                                    class="btn-outline-custom2 ajax-add-to-cart"
+                                    data-id="@item.Id">
+                                🛒
+                            </button>
                         </div>
                         <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>
                     </div>

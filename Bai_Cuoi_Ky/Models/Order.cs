@@ -1,48 +1,56 @@
-﻿using System; // Thư viện cơ bản
-using System.Collections.Generic; // Thư viện danh sách
-using System.ComponentModel.DataAnnotations; // Thư viện ràng buộc dữ liệu
-using System.ComponentModel.DataAnnotations.Schema; // Thư viện cấu hình SQL
-using Microsoft.AspNetCore.Identity; // Gọi thư viện để sử dụng IdentityUser
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
-namespace Bai_Cuoi_Ky.Models // Khai báo không gian tên
+namespace Bai_Cuoi_Ky.Models
 {
-    public class Order // Khai báo class Order
+    public class Order
     {
-        [Key] // Đánh dấu Khóa chính
-        public int Id { get; set; } // Cột Id tự tăng
+        [Key]
+        public int Id { get; set; }
 
-        [Display(Name = "Ngày đặt hàng")] // Nhãn hiển thị
-        public DateTime OrderDate { get; set; } = DateTime.Now; // Cột lưu ngày đặt, mặc định là ngày hiện tại
+        [Display(Name = "Ngày đặt hàng")]
+        public DateTime OrderDate { get; set; } = DateTime.Now;
 
-        [Required] // Bắt buộc nhập
-        [Display(Name = "Họ tên khách hàng")] // Nhãn hiển thị
-        public string CustomerName { get; set; } // Cột lưu tên khách
+        [Required(ErrorMessage = "Vui lòng nhập họ tên")]
+        [Display(Name = "Họ tên người nhận")]
+        public string CustomerName { get; set; }
 
-        [Required] // Bắt buộc nhập
-        [EmailAddress] // Ràng buộc định dạng Email
-        public string Email { get; set; } // Cột lưu Email
+        [Required(ErrorMessage = "Vui lòng nhập email")]
+        [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
+        public string Email { get; set; }
 
-        [Required] // Bắt buộc nhập
-        [Display(Name = "Số điện thoại")] // Nhãn hiển thị
-        public string PhoneNumber { get; set; } // Cột lưu số điện thoại
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
+        [Display(Name = "Số điện thoại")]
+        public string PhoneNumber { get; set; }
 
-        [Required] // Bắt buộc nhập
-        [Display(Name = "Địa chỉ nhận hàng")] // Nhãn hiển thị
-        public string Address { get; set; } // Cột lưu địa chỉ
+        [Required(ErrorMessage = "Vui lòng nhập địa chỉ")]
+        [Display(Name = "Địa chỉ nhận hàng")]
+        public string Address { get; set; }
 
-        [Display(Name = "Tổng tiền")] // Nhãn hiển thị
-        [Column(TypeName = "decimal(18,2)")] // Ép kiểu dữ liệu tiền tệ trong SQL
-        public decimal TotalAmount { get; set; } // Cột lưu tổng tiền
+        // MỚI: Cột lưu phương thức thanh toán (COD hoặc QR)
+        [Required]
+        [Display(Name = "Phương thức thanh toán")]
+        public string PaymentMethod { get; set; }
 
-        [Display(Name = "Trạng thái")] // Nhãn hiển thị
-        public string Status { get; set; } = "Pending"; // Cột trạng thái đơn, mặc định là Pending
+        [Display(Name = "Tổng tiền")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal TotalAmount { get; set; }
 
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>(); // Danh sách chi tiết đơn hàng
+        [Display(Name = "Trạng thái đơn hàng")]
+        public string Status { get; set; } = "Pending"; // Pending, Confirmed, Shipping, Success, Cancelled
 
-        [Display(Name = "Tài khoản khách hàng")] // Nhãn hiển thị
-        public string? UserId { get; set; } // Đổi kiểu dữ liệu sang string (chuỗi) để khớp với Id của IdentityUser
+        [Display(Name = "Ghi chú")]
+        public string? Notes { get; set; } // Để dấu ? vì ghi chú có thể để trống (null)
 
-        [ForeignKey("UserId")] // Định nghĩa UserId là Khóa ngoại
-        public virtual IdentityUser User { get; set; } // Liên kết tới bảng AspNetUsers mặc định của hệ thống
+        // Liên kết 1-nhiều với OrderDetail
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+        // Liên kết với IdentityUser (Tài khoản người dùng)
+        public string? UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual IdentityUser? User { get; set; }
     }
 }
