@@ -373,9 +373,15 @@
             }
 
             <!-- NÚT HÀNH ĐỘNG -->
+            <!-- NÚT HÀNH ĐỘNG -->
             <div class="btn-group">
                 <a class="btn-primary-custom" asp-controller="Product" asp-action="Index">← Quay Lại</a>
-                <a class="btn-outline-custom" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">Chỉnh Sửa</a>
+                <a class="btn-outline-custom"
+                   asp-controller="Cart"
+                   asp-action="AddToCart"
+                   asp-route-id="@Model.Id">
+                    🛒 Thêm Vào Giỏ
+                </a>
             </div>
         </div>
     </div>
