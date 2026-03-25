@@ -4,6 +4,7 @@ using Bai_Cuoi_Ky.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bai_Cuoi_Ky.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325105706_AddIsFavoriteToProduct")]
+    partial class AddIsFavoriteToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,9 +139,6 @@ namespace Bai_Cuoi_Ky.Migrations
                     b.Property<bool>("IsFavorite")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsNewArrival")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Material")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -172,7 +172,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Lac-tay-bac-nu-chuoi-da-CZ-dang-day-rut-that-no2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "Bạc",
                             Name = "Lắc tay bạc nữ Tennis chuỗi đá CZ dạng dây rút thắt nơ LILI_869163",
                             Price = 2578000m,
@@ -189,7 +188,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Nhan-bac-nu-dinh-kim-cuong-Moissanite-Aidan2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "Bạc",
                             Name = "Nhẫn bạc nữ đính kim cương Moissanite Aidan LILI_335168",
                             Price = 2181000m,
@@ -206,7 +204,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Day-chuyen-doi-bac-dinh-da-CZ-hinh-ca-voi-va-buom2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "Bạc",
                             Name = "Dây chuyền đôi bạc đính đá CZ hình cá voi và bướm Brenna LILI_123985",
                             Price = 520000m,
@@ -222,7 +219,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Bong-tai-bac-nu-hinh-that-no-dinh-da2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "Bạc",
                             Name = "Bông tai bạc nữ đính đá CZ hình chiếc nơ sang trọng LILI_698154",
                             Price = 1918000m,
@@ -238,7 +234,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Lac-tay-bac-cap-doi-tinh-yeu-Forever-Love2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "Bạc",
                             Name = "Lắc tay bạc cặp đôi tình yêu Forever Love LILI_986852",
                             Price = 3458000m,
@@ -254,7 +249,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Bo-trang-suc-bac-nu-dinh-da-Garnet-CZ-hoa-hong-tinh-yeu2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "Bạc",
                             Name = "Bộ trang sức bạc nữ đính đá Garnet, CZ hoa hồng tình yêu LILI_727966",
                             Price = 1408000m,
@@ -269,7 +263,6 @@ namespace Bai_Cuoi_Ky.Migrations
                             ImageUrl2 = "/images/Products/Tu-hop-dung-do-trang-suc-phu-kien-dep-go-oc-cho2.jpg",
                             IsAvailable = true,
                             IsFavorite = false,
-                            IsNewArrival = false,
                             Material = "",
                             Name = "Tủ hộp đựng đồ trang sức phụ kiện có khóa gỗ óc chó Holly LILI_161276",
                             Price = 1809000m,

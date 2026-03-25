@@ -793,3 +793,56 @@ a.btn-cart {
     font-size: 20px;
     color: white;
 }
+/* ===== SALE BADGE ===== */
+.sale-badge-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #c0392b;
+    color: white;
+    width: 56px;
+    padding: 8px 6px;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+    z-index: 10;
+}
+
+.sale-tag {
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.sale-pct {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    font-family: 'Cormorant Garamond', serif;
+}
+/* ===== NÚT XEM TẤT CẢ ===== */
+a.btn-view-all {
+    display: inline-block !important;
+    padding: 14px 48px !important;
+    background: transparent !important;
+    border: 1px solid #1a1410 !important;
+    color: #1a1410 !important;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    border-radius: 6px !important;
+    margin-bottom: 20px !important;
+    transition: all 0.3s !important;
+}
+
+    a.btn-view-all:hover {
+        background: #1a1410 !important;
+        color: white !important;
+        text-decoration: none !important;
+    }

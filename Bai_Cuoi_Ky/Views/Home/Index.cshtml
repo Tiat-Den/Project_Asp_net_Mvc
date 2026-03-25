@@ -45,11 +45,7 @@
         <a asp-controller="Product" asp-action="Index" asp-route-categoryId="4" class="cat-card">
             <div class="cat-img"><img src="/images/categories/Bong-tai.jpg" alt="Bông Tai" /></div>
             <div class="cat-name">Bông Tai</div>
-        </a>
-        <a asp-controller="Product" asp-action="Index" asp-route-categoryId="5" class="cat-card">
-            <div class="cat-img"><img src="/images/Categories/Trang-suc-doi.jpg" alt="Trang Sức Đôi" /></div>
-            <div class="cat-name">Trang Sức Đôi</div>
-        </a>
+        </a>        
         <a asp-controller="Product" asp-action="Index" asp-route-categoryId="6" class="cat-card">
             <div class="cat-img"><img src="/images/Categories/Trang-suc-bo.jpg" alt="Trang Sức Bộ" /></div>
             <div class="cat-name">Trang Sức Bộ</div>
@@ -86,6 +82,11 @@
                 </div>
             }
         </div>
+        <div style="text-align:center; margin-top: 32px;">
+            <a asp-controller="Product" asp-action="Favorite" class="btn-view-all">
+    XEM TẤT CẢ SẢN PHẨM YÊU THÍCH
+</a>
+        </div>
     </div>
 </div>
 
@@ -115,6 +116,11 @@
                 <div class="p-actions"><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">Xem Chi Tiết →</a></div>
             </div>
         }
+    </div>
+    <div style="text-align:center; margin-top: 32px;">
+        <a asp-controller="Product" asp-action="NewArrivals" class="btn-view-all">
+            XEM TẤT CẢ SẢN PHẨM MỚI NHẤT
+        </a>
     </div>
 </div>
 
@@ -162,6 +168,11 @@
             {
                 <div style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px;">Hiện chưa có sản phẩm khuyến mãi.</div>
             }
+        </div>
+        <div style="text-align:center; margin-top: 32px;">
+            <a asp-controller="Product" asp-action="Sale" class="btn-view-all">
+                XEM TẤT CẢ SẢN PHẨM KHUYẾN MÃI
+            </a>
         </div>
     </div>
 </div>
