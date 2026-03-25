@@ -185,6 +185,112 @@ namespace Bai_Cuoi_Ky.Controllers
             return RedirectToAction(nameof(Index)); 
         }
 
+        public async Task<IActionResult> Favorite(string search,
+    List<string> material = null, List<string> price = null, string sort = null)
+        {
+            var products = _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.IsFavorite && p.IsAvailable)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+                products = products.Where(p => p.Name.Contains(search));
+
+            if (material != null && material.Any())
+                products = products.Where(p => material.Contains(p.Material));
+
+            products = sort switch
+            {
+                "price-asc" => products.OrderBy(p => p.Price),
+                "price-desc" => products.OrderByDescending(p => p.Price),
+                _ => products
+            };
+
+            var productList = await products.ToListAsync();
+            if (price != null && price.Any())
+            {
+                productList = productList.Where(p => price.Any(range => {
+                    var parts = range.Split('-');
+                    var min = decimal.Parse(parts[0]);
+                    var max = decimal.Parse(parts[1]);
+                    return p.Price >= min && p.Price <= max;
+                })).ToList();
+            }
+
+            ViewBag.Search = search;
+            return View(productList);
+        }
+        public async Task<IActionResult> NewArrivals(string search,
+    List<string> material = null, List<string> price = null, string sort = null)
+        {
+            var products = _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.IsAvailable && p.IsNewArrival)
+                .OrderByDescending(p => p.Id)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+                products = products.Where(p => p.Name.Contains(search));
+
+            if (material != null && material.Any())
+                products = products.Where(p => material.Contains(p.Material));
+
+            products = sort switch
+            {
+                "price-asc" => products.OrderBy(p => p.Price),
+                "price-desc" => products.OrderByDescending(p => p.Price),
+                _ => products.OrderByDescending(p => p.Id)
+            };
+
+            var productList = await products.ToListAsync();
+            if (price != null && price.Any())
+            {
+                productList = productList.Where(p => price.Any(range => {
+                    var parts = range.Split('-');
+                    var min = decimal.Parse(parts[0]);
+                    var max = decimal.Parse(parts[1]);
+                    return p.Price >= min && p.Price <= max;
+                })).ToList();
+            }
+
+            ViewBag.Search = search;
+            return View(productList);
+        }
+        public async Task<IActionResult> Sale(string search,
+    List<string> material = null, List<string> price = null, string sort = null)
+        {
+            var products = _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.IsAvailable && p.DiscountPrice.HasValue && p.DiscountPrice > p.Price)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+                products = products.Where(p => p.Name.Contains(search));
+
+            if (material != null && material.Any())
+                products = products.Where(p => material.Contains(p.Material));
+
+            products = sort switch
+            {
+                "price-asc" => products.OrderBy(p => p.Price),
+                "price-desc" => products.OrderByDescending(p => p.Price),
+                _ => products
+            };
+
+            var productList = await products.ToListAsync();
+            if (price != null && price.Any())
+            {
+                productList = productList.Where(p => price.Any(range => {
+                    var parts = range.Split('-');
+                    var min = decimal.Parse(parts[0]);
+                    var max = decimal.Parse(parts[1]);
+                    return p.Price >= min && p.Price <= max;
+                })).ToList();
+            }
+
+            ViewBag.Search = search;
+            return View(productList);
+        }
         public async Task<IActionResult> IndexAdmin()
         {
             var products = await _context.Products.Include(p => p.Category).ToListAsync();

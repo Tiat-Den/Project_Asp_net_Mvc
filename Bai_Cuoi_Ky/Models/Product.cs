@@ -46,7 +46,8 @@ namespace Bai_Cuoi_Ky.Models
 
         [Display(Name = "Còn hàng")]
         public bool IsAvailable { get; set; } = true;
+        public bool IsFavorite { get; set; } = false;
+        public bool IsNewArrival { get; set; } = false;
 
-       
     }
 }

@@ -1,4 +1,4 @@
-@model IEnumerable<Bai_Cuoi_Ky.Models.Product>
+﻿@model IEnumerable<Bai_Cuoi_Ky.Models.Product>
 @{
     ViewData["Title"] = "Danh Sách Sản Phẩm";
 }
@@ -6,19 +6,15 @@
 <link rel="stylesheet" href="~/css/product_Css/index.css" />
 
 <style>
-    
+
 </style>
 <div class="page-header">
-    <h1>Bộ Sưu Tập</h1>
-    @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
-    {
-        <a asp-action="Create" class="btn-add-product">+ Thêm Sản Phẩm</a>
-    }
+    <h1>SẢN PHẨM MỚI</h1>
 </div>
 <div class="page-layout">
 
     <!-- SIDEBAR BỘ LỌC -->
-    <form method="get" action="@Url.Action("Index", "Product")">
+    <form method="get" action="@Url.Action("NewArrivals", "Product")">
         <input type="hidden" name="categoryId" value="@ViewBag.CurrentCategory" />
         <aside class="sidebar">
             <div class="sidebar-title">
@@ -181,8 +177,8 @@
                 }
             </div>
         }
-   
-    
-</div>
+
+
+    </div>
 </div>
 
