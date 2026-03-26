@@ -66,7 +66,10 @@ namespace Bai_Cuoi_Ky.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
             if (order == null) return NotFound();
 
             // Danh sách các trạng thái hợp lệ 
@@ -74,10 +77,37 @@ namespace Bai_Cuoi_Ky.Controllers
 
             if (validStatuses.Contains(status))
             {
+                if (status == "HoanThanh" && order.Status != "HoanThanh")
+                {
+                    foreach (var item in order.OrderDetails)
+                    {
+                        var product = await _context.Products.FindAsync(item.ProductId);
+                        if (product != null)
+                        {
+                            product.Stock -= item.Quantity; 
+                            if (product.Stock < 0) product.Stock = 0;
+                            _context.Update(product);
+                        }
+                    }
+                }
+                else if (status == "DaHuy" && order.Status == "HoanThanh")
+                {
+                    foreach (var item in order.OrderDetails)
+                    {
+                        var product = await _context.Products.FindAsync(item.ProductId);
+                        if (product != null)
+                        {
+                            product.Stock += item.Quantity; 
+                            _context.Update(product);
+                        }
+                    }
+                }
+
                 order.Status = status;
                 _context.Update(order);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Cập nhật trạng thái đơn hàng #{id} thành công!";
+
+                TempData["SuccessMessage"] = $"Cập nhật trạng thái đơn hàng #{id} thành công và đã đồng bộ tồn kho!";
             }
 
             return RedirectToAction(nameof(Details), new { id = id });

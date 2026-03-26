@@ -17,8 +17,8 @@ namespace Bai_Cuoi_Ky.Controllers
         }
 
         public async Task<IActionResult> Index(int? categoryId, string search,
-     List<string> material = null, List<string> gender = null,
-     List<string> price = null, string sort = null)
+    List<string> material = null, List<string> gender = null,
+    List<string> price = null, string sort = null, int page = 1) 
         {
             var products = _context.Products.Include(p => p.Category).AsQueryable();
 
@@ -44,8 +44,9 @@ namespace Bai_Cuoi_Ky.Controllers
                 _ => products
             };
 
-            // Lọc giá (phải ToList trước)
+            // Ép về List để lọc giá trong bộ nhớ (RAM)
             var productList = await products.ToListAsync();
+
             if (price != null && price.Any())
             {
                 productList = productList.Where(p => price.Any(range => {
@@ -56,10 +57,24 @@ namespace Bai_Cuoi_Ky.Controllers
                 })).ToList();
             }
 
+            int pageSize = 9; // Số lượng sản phẩm muốn hiển thị trên 1 trang
+            int totalItems = productList.Count; // Tổng số sản phẩm sau khi đã qua mọi bộ lọc
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize); // Tính tổng số trang
+
+            // Cắt lấy đúng số sản phẩm của trang hiện tại
+            var pagedList = productList
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Ném thông số phân trang sang View
             ViewBag.CurrentCategory = categoryId;
             ViewBag.Search = search;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
 
-            return View(productList);
+            // Trả về danh sách đã được CẮT 
+            return View(pagedList);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -291,13 +306,32 @@ namespace Bai_Cuoi_Ky.Controllers
             ViewBag.Search = search;
             return View(productList);
         }
-        public async Task<IActionResult> IndexAdmin()
+        public async Task<IActionResult> IndexAdmin(int page = 1)
         {
-            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            int pageSize = 10; // Số lượng sản phẩm hiển thị trên 1 trang
 
-            ViewBag.TotalProducts = products.Count;
+            // 1. Tạo câu truy vấn 
+            var query = _context.Products.Include(p => p.Category).AsQueryable();
 
-            return View(products);
+            // 2. Đếm tổng số sản phẩm thực tế trong Database
+            int totalItems = await query.CountAsync();
+
+            // 3. Tính tổng số trang
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            // 4. Lọc và cắt đúng số sản phẩm của trang hiện tại
+            var pagedProducts = await query
+                .OrderByDescending(p => p.Id) 
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // 5. Ném các thông số cần thiết sang View
+            ViewBag.TotalProducts = totalItems;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(pagedProducts);
         }
     }
 }

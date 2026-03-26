@@ -16,7 +16,7 @@
     </a>
 </div>
 
-<div class="table-responsive shadow-sm">
+<div class="table-responsive shadow-sm mb-4">
     <table class="table table-bordered table-hover align-middle text-center mb-0 bg-white">
         <thead class="table-dark">
             <tr>
@@ -97,3 +97,58 @@
         </tbody>
     </table>
 </div>
+
+@if (ViewBag.TotalPages != null && ViewBag.TotalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4 mb-5">
+        <ul class="pagination justify-content-center shadow-sm" style="border-radius: 8px;">
+
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link text-primary fw-bold" href="javascript:void(0)" onclick="goToPage(@(ViewBag.CurrentPage - 1))">
+                        <i class="fas fa-chevron-left me-1"></i> Trước
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link text-muted"><i class="fas fa-chevron-left me-1"></i> Trước</span>
+                </li>
+            }
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link fw-bold @(i == ViewBag.CurrentPage ? "bg-primary border-primary text-white" : "text-dark")"
+                       href="javascript:void(0)" onclick="goToPage(@i)">@i</a>
+                </li>
+            }
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link text-primary fw-bold" href="javascript:void(0)" onclick="goToPage(@(ViewBag.CurrentPage + 1))">
+                        Sau <i class="fas fa-chevron-right ms-1"></i>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link text-muted">Sau <i class="fas fa-chevron-right ms-1"></i></span>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+<script>
+    function goToPage(page) {
+        // Gom các tham số hiện có trên URL (nếu có)
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('page', page);
+        window.location.search = urlParams.toString();
+    }
+</script>

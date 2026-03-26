@@ -5,9 +5,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant Garamond:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/product_Css/index.css" />
 
-<style>
-    
-</style>
 <div class="page-header">
     <h1>Bộ Sưu Tập</h1>
     @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
@@ -17,7 +14,6 @@
 </div>
 <div class="page-layout">
 
-    <!-- SIDEBAR BỘ LỌC -->
     <form method="get" action="@Url.Action("Index", "Product")">
         <input type="hidden" name="categoryId" value="@ViewBag.CurrentCategory" />
         <aside class="sidebar">
@@ -37,7 +33,6 @@
                 @catName
             </div>
 
-            <!-- CHẤT LIỆU -->
             <div class="filter-group">
                 <div class="filter-group-title">Chất Liệu</div>
                 <label class="filter-checkbox">
@@ -51,7 +46,6 @@
                 </label>
             </div>
 
-            <!-- GIỚI TÍNH -->
             <div class="filter-group">
                 <div class="filter-group-title">Giới Tính</div>
                 <label class="filter-radio">
@@ -68,7 +62,6 @@
                 </label>
             </div>
 
-            <!-- MỨC GIÁ -->
             <div class="filter-group">
                 <div class="filter-group-title">Mức Giá</div>
                 <label class="filter-checkbox">
@@ -88,7 +81,6 @@
                 </label>
             </div>
 
-            <!-- SẮP XẾP -->
             <div class="filter-group">
                 <div class="filter-group-title">Sắp Xếp</div>
                 <label class="filter-radio">
@@ -102,7 +94,6 @@
                 </label>
             </div>
 
-            <!-- TÌM KIẾM -->
             <div class="filter-group">
                 <div class="filter-group-title">Tìm Kiếm</div>
                 <input type="text" name="search" placeholder="Tên sản phẩm..."
@@ -115,8 +106,7 @@
         </aside>
     </form>
 
-    <!-- DANH SÁCH SẢN PHẨM -->
-    <div>
+    <div style="width: 100%;">
         @if (!Model.Any())
         {
             <div class="empty-state">
@@ -180,9 +170,47 @@
                     </div>
                 }
             </div>
+
+            @if (ViewBag.TotalPages != null && ViewBag.TotalPages > 1)
+            {
+                <div class="pagination-container">
+                    <ul class="pagination">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)" onclick="goToPage(@(ViewBag.CurrentPage - 1))">« Trước</a>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="javascript:void(0)" onclick="goToPage(@i)">@i</a>
+                            </li>
+                        }
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)" onclick="goToPage(@(ViewBag.CurrentPage + 1))">Sau »</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
         }
-   
-    
-</div>
+    </div>
 </div>
 
+<script>
+    function goToPage(page) {
+        // Lấy URL hiện tại (đã bao gồm các thông số filter người dùng chọn)
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Đặt lại tham số page
+        urlParams.set('page', page);
+
+        // Load lại trang với URL mới
+        window.location.search = urlParams.toString();
+    }
+</script>

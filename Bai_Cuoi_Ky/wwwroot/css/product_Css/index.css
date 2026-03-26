@@ -358,3 +358,63 @@ body {
         border-color: var(--gold);
         color: var(--gold);
     }
+
+
+    /*PHÂN TRANG*/
+.pagination-container {
+    display: flex;
+    justify-content: center; /* Ép ra giữa màn hình */
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 12px; /* Khoảng cách giữa các nút */
+}
+
+    .pagination .page-item {
+        margin: 0;
+    }
+
+    .pagination .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 45px;
+        height: 45px;
+        padding: 0 16px;
+        color: #1a1410;
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        text-decoration: none;
+        font-family: 'Cormorant Garamond', serif; /* Font chữ sang trọng của web ông */
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 8px; /* Bo góc mềm mại */
+        transition: all 0.3s ease;
+    }
+
+        /* Hiệu ứng khi rê chuột vào (Hover) */
+        .pagination .page-link:hover {
+            background-color: #fdfaf6;
+            border-color: #c9a84c;
+            color: #c9a84c;
+            transform: translateY(-3px); /* Nhảy nhẹ lên một chút */
+            box-shadow: 0 5px 15px rgba(201, 168, 76, 0.2); /* Đổ bóng màu vàng gold */
+        }
+
+    /* Nút của trang hiện tại (Active) */
+    .pagination .page-item.active .page-link {
+        background-color: #c9a84c;
+        border-color: #c9a84c;
+        color: #ffffff;
+        cursor: default;
+        transform: none;
+        box-shadow: 0 4px 10px rgba(201, 168, 76, 0.4);
+    }
