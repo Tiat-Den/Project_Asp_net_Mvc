@@ -11,7 +11,7 @@
         <div class="slide-overlay"></div>
         <div class="slide-content">
             <h1 class="slide-title">Top Sản Phẩm<br /><span>Yêu Thích</span></h1>
-            <a asp-controller="Product" asp-action="Index" class="slide-btn">Khám Phá Ngay</a>
+            <a asp-controller="Product" asp-action="Favorite" class="slide-btn">Khám Phá Ngay</a>
         </div>
     </div>
 
@@ -20,7 +20,7 @@
         <div class="slide-overlay"></div>
         <div class="slide-content">
             <h1 class="slide-title">BST Mới Nhất<br /><span>Trang Sức DKH</span></h1>
-            <a asp-controller="Product" asp-action="Index" class="slide-btn">Xem Ngay</a>
+            <a asp-controller="Product" asp-action="NewArrivals" class="slide-btn">Khám Phá Ngay</a>
         </div>
     </div>  
     <button class="slider-prev" onclick="changeSlide(-1)">‹</button>
@@ -96,7 +96,9 @@
         @foreach (var item in Model.OrderByDescending(p => p.Id).Take(4))
         {
             <div class="p-card">
-                <div class="p-badge new-badge">NEW</div>
+                <div class="new-badge-wrap">
+                    <span class="new-tag">MỚI</span>
+                </div>
                 <div class="p-img-wrap">
                     <img class="p-img-main" src="@item.ImageUrl" alt="@item.Name" />
                     <img class="p-img-hover" src="@(string.IsNullOrEmpty(item.ImageUrl2) ? item.ImageUrl : item.ImageUrl2)" alt="@item.Name" />

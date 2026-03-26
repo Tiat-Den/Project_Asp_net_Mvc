@@ -57,7 +57,7 @@ namespace Bai_Cuoi_Ky.Controllers
                 })).ToList();
             }
 
-            int pageSize = 9; // Số lượng sản phẩm muốn hiển thị trên 1 trang
+            int pageSize = 12; // Số lượng sản phẩm muốn hiển thị trên 1 trang
             int totalItems = productList.Count; // Tổng số sản phẩm sau khi đã qua mọi bộ lọc
             int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize); // Tính tổng số trang
 

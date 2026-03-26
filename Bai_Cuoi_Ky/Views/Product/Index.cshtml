@@ -5,6 +5,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant Garamond:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/product_Css/index.css" />
 
+<!-- HERO SLIDER -->
+<div class="hero-slider">
+    <div class="slide slide-1 active">
+        <img class="slide-bg" src="/images/Favorite/banner4.jpg" alt="Banner 1" />
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Bộ Sưu Tập<br /><span>Trang Sức DKH</span></h1>
+            <a asp-controller="Product" asp-action="Index" class="slide-btn">Khám Phá Ngay</a>
+        </div>
+    </div>
+    <div class="slide slide-2">
+        <img class="slide-bg" src="/images/Favorite/banner3.jpg" alt="Banner 2" />
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Tinh Tế<br /><span>Sang Trọng</span></h1>
+            <a asp-controller="Product" asp-action="Index" class="slide-btn">Xem Ngay</a>
+        </div>
+    </div>
+    <button class="slider-prev" onclick="changeSlide(-1)">‹</button>
+    <button class="slider-next" onclick="changeSlide(1)">›</button>
+</div>
+
 <div class="page-header">
     <h1>Bộ Sưu Tập</h1>
     @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
@@ -213,4 +235,12 @@
         // Load lại trang với URL mới
         window.location.search = urlParams.toString();
     }
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    function changeSlide(dir) {
+        slides[current].classList.remove('active');
+        current = (current + dir + slides.length) % slides.length;
+        slides[current].classList.add('active');
+    }
+    setInterval(() => changeSlide(1), 5000);
 </script>
