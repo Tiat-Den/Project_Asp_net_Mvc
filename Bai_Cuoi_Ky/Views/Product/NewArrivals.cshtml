@@ -4,10 +4,47 @@
 }
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant Garamond:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/product_Css/index.css" />
-
 <style>
+    .new-badge-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #c9a84c;
+        color: white;
+        width: 56px;
+        padding: 8px 6px;
+        text-align: center;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        z-index: 10;
+    }
 
+    .new-tag {
+        display: block;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-family: 'Cormorant Garamond', serif;
+    }
 </style>
+<!-- HERO SLIDER -->
+<div class="hero-slider">
+    <div class="slide slide-1 active">
+        <img class="slide-bg" src="/images/NewProducts/newbanner.jpg" alt="Banner 1" />
+        <div class="slide-overlay"></div>
+        <div class="slide-content" style="text-align:center; position:absolute; right:8%; max-width:520px;">
+            <h1 class="slide-title" style="font-size:3.5rem; font-weight:700; letter-spacing:4px;">
+                SẢN PHẨM MỚI
+            </h1>
+            <div style="width:60px; height:1px; background:white; margin:16px auto;"></div>
+            <p style="color:rgba(255,255,255,0.85); font-family:'Cormorant Garamond',serif; font-size:1.15rem; line-height:1.8; letter-spacing:0.5px;">
+                Cùng khám phá bộ sưu tập sản phẩm mới đẹp cao cấp của DKH với những thiết kế độc đáo đầy tính sáng tạo.
+                Đừng ngạc nhiên khi nhiều ánh mắt hướng về bạn khi đeo em nó nhé!
+            </p>
+        </div>
+    </div>
+</div>
+
 <div class="page-header">
     <h1>SẢN PHẨM MỚI</h1>
 </div>
@@ -129,6 +166,9 @@
                         {
                             <span class="card-badge out-of-stock">Hết hàng</span>
                         }
+                        <div class="new-badge-wrap">
+                            <span class="new-tag">MỚI</span>
+                        </div>
                         @if (item.DiscountPrice.HasValue && item.DiscountPrice.Value > item.Price)
                         {
                             int percent = (int)((item.DiscountPrice.Value - item.Price) / item.DiscountPrice.Value * 100);

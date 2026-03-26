@@ -230,10 +230,11 @@
 
 /* ===== CATEGORY GRID ===== */
 .cat-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    display: flex;
+    justify-content: center; 
     gap: 16px;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .cat-card {
@@ -241,6 +242,8 @@
     cursor: pointer;
     transition: transform 0.25s;
     text-decoration: none;
+    width: 180px; 
+    flex-shrink: 0;
 }
 
 .cat-card:hover {
@@ -542,4 +545,26 @@
     .cat-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+/*Tag sản phẩm mới*/
+.new-badge-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #c9a84c;
+    color: white;
+    width: 56px;
+    padding: 8px 6px;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+    z-index: 10;
+}
+
+.new-tag {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
 }
