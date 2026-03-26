@@ -2,7 +2,20 @@
 
 @{
     ViewData["Title"] = "Quản lý phân quyền";
+
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+
+
+    // Ép thứ tự sắp xếp: Admin (1) -> NhanVien (2) -> KhachHang (3) -> Còn lại (4)
+
+    var sortedRoles = Model.OrderBy(r =>
+
+        r.Name == "Admin" ? 1 :
+
+        r.Name == "NhanVien" ? 2 :
+
+        r.Name == "KhachHang" ? 3 : 4).ToList();
 }
 
 <div class="row">
@@ -30,6 +43,7 @@
             </div>
             <div class="card-body">
                 @if (TempData["SuccessMessage"] != null)
+
                 {
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         @TempData["SuccessMessage"]
@@ -37,6 +51,7 @@
                     </div>
                 }
                 @if (TempData["ErrorMessage"] != null)
+
                 {
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         @TempData["ErrorMessage"]
@@ -53,7 +68,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var role in Model)
+                            @foreach (var role in sortedRoles)
+
                             {
                                 <tr>
                                     <td class="fw-bold text-primary">@role.Name</td>
@@ -67,7 +83,6 @@
                                     </td>
                                 </tr>
 
-                                <!-- Modal Sửa -->
                                 <div class="modal fade" id="editModal-@role.Id" tabindex="-1" aria-labelledby="editModalLabel-@role.Id" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -92,7 +107,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Modal Xóa -->
                                 <div class="modal fade" id="deleteModal-@role.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@role.Id" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

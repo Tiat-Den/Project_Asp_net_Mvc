@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold" style="font-family: 'Cormorant Garamond', serif; color: #1a1410;">Liên Hệ Với Chúng Tôi</h2>
+        <p class="text-muted">DKH Premium Jewelry luôn sẵn sàng lắng nghe và hỗ trợ bạn.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="bg-white p-4 shadow-sm h-100" style="border-radius: 12px;">
+                <h5 class="fw-bold mb-4" style="color: #c9a84c;">Thông Tin Trực Tiếp</h5>
+
+                <div class="d-flex align-items-start mb-3">
+                    <i class="fas fa-map-marker-alt fs-5 mt-1 me-3 text-dark"></i>
+                    <div>
+                        <strong>Địa chỉ :</strong><br />
+                        BR-VT, TP. Hồ Chí Minh
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-3">
+                    <i class="fas fa-phone-alt fs-5 mt-1 me-3 text-dark"></i>
+                    <div>
+                        <strong>Hotline CSKH:</strong><br />
+                        <a class="text-dark text-decoration-none">0123 456 789</a>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-3">
+                    <i class="fas fa-envelope fs-5 mt-1 me-3 text-dark"></i>
+                    <div>
+                        <strong>Email:</strong><br />
+                        <a class="text-dark text-decoration-none">support@dkhjewelry.com</a>
+                    </div>
+                </div>
+
+                <hr />
+                <p class="mb-0"><strong>Giờ mở cửa:</strong> 08:00 - 22:00 (Tất cả các ngày trong tuần)</p>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="bg-white p-4 shadow-sm h-100" style="border-radius: 12px;">
+                <h5 class="fw-bold mb-4" style="color: #c9a84c;">Gửi Tin Nhắn</h5>
+                @if (TempData["SuccessMsg"] != null)
+                {
+                    <div class="alert alert-success mt-3 text-center">@TempData["SuccessMsg"]</div>
+                }
+                @if (TempData["ErrorMsg"] != null)
+                {
+                    <div class="alert alert-danger mt-3 text-center">@TempData["ErrorMsg"]</div>
+                }
+
+                <form action="/Home/SubmitContact" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Họ và tên</label>
+                        <input type="text" name="customerName" class="form-control" placeholder="Nhập tên của bạn" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Email của bạn (Để nhận phản hồi)</label>
+                        <input type="email" name="customerEmail" class="form-control" placeholder="Nhập địa chỉ Email hợp lệ..." required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nội dung tin nhắn</label>
+                        <textarea name="messageContent" class="form-control" rows="4" placeholder="Bạn cần hỗ trợ gì?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn text-white w-100 fw-bold" style="background-color: #1a1410; padding: 10px;">
+                        Gửi Yêu Cầu
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

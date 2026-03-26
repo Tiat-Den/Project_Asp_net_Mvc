@@ -2,8 +2,24 @@
 
 @{
     ViewData["Title"] = "Quản lý Tài khoản (Người dùng)";
+
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
     var allRoles = ViewBag.AllRoles as List<string>;
+
+
+
+    // Ép thứ tự sắp xếp tài khoản dựa trên quyền cao nhất mà họ đang giữ
+
+    var sortedUsers = Model.OrderBy(u =>
+
+        u.Roles != null && u.Roles.Contains("Admin") ? 1 :
+
+        u.Roles != null && u.Roles.Contains("NhanVien") ? 2 :
+
+        u.Roles != null && u.Roles.Contains("KhachHang") ? 3 : 4
+
+    ).ToList();
 }
 
 <div class="card shadow-sm border-0 mb-4">
@@ -12,9 +28,18 @@
     </div>
     <div class="card-body">
         @if (TempData["SuccessMessage"] != null)
+
         {
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
@@ -25,18 +50,21 @@
                     <tr>
                         <th>Tài khoản (Email)</th>
                         <th>Quyền hiện tại</th>
-                        <th class="text-center" style="width: 250px;">Phân quyền</th>
+                        <th class="text-center" style="width: 300px;">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var user in Model)
+                    @foreach (var user in sortedUsers)
+
                     {
                         <tr>
                             <td class="fw-bold">@user.Email</td>
                             <td>
                                 @if (user.Roles.Any())
+
                                 {
                                     @foreach (var role in user.Roles)
+
                                     {
                                         <div class="d-inline-flex align-items-center badge bg-primary me-2 mb-1 p-2">
                                             <span class="me-2">@role</span>
@@ -48,19 +76,23 @@
                                         </div>
                                     }
                                 }
+
                                 else
+
                                 {
                                     <span class="text-muted fst-italic">Chưa có quyền</span>
                                 }
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addRoleModal-@user.UserId">
-                                    <i class="fas fa-plus"></i> Thêm Phân Quyền
+                                <button class="btn btn-sm btn-success mb-1" data-bs-toggle="modal" data-bs-target="#addRoleModal-@user.UserId">
+                                    <i class="fas fa-plus"></i> Thêm Quyền
+                                </button>
+                                <button class="btn btn-sm btn-warning mb-1 ms-1" data-bs-toggle="modal" data-bs-target="#editUserModal-@user.UserId">
+                                    <i class="fas fa-edit"></i> Sửa
                                 </button>
                             </td>
                         </tr>
 
-                        <!-- Modal Thêm Quyền Cho User -->
                         <div class="modal fade" id="addRoleModal-@user.UserId" tabindex="-1" aria-labelledby="addRoleModalLabel-@user.UserId" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -76,11 +108,15 @@
                                                 <select name="roleName" class="form-select" required>
                                                     <option value="">-- Chọn quyền --</option>
                                                     @foreach (var r in allRoles)
+
                                                     {
+
                                                         if (!user.Roles.Contains(r))
+
                                                         {
                                                             <option value="@r">@r</option>
                                                         }
+
                                                     }
                                                 </select>
                                                 <div class="form-text mt-2">Chỉ hiển thị các quyền mà tài khoản chưa có.</div>
@@ -89,6 +125,40 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                             <button type="submit" class="btn btn-primary">Xác nhận Thêm</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="editUserModal-@user.UserId" tabindex="-1" aria-labelledby="editUserModalLabel-@user.UserId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-warning">
+                                        <h5 class="modal-title" id="editUserModalLabel-@user.UserId"><i class="fas fa-user-edit"></i> Đặt lại mật khẩu</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form asp-action="ResetUserPassword" method="post">
+                                        <div class="modal-body text-start">
+                                            <input type="hidden" name="userId" value="@user.UserId" />
+
+                                            <div class="mb-3">
+                                                <label class="form-label text-muted">Tài khoản Email</label>
+                                                <input type="text" class="form-control bg-light" value="@user.Email" readonly />
+                                            </div>
+
+                                            <hr />
+                                            <h6 class="fw-bold text-danger mb-3">Thông tin bảo mật</h6>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold">Nhập mật khẩu mới</label>
+                                                <input type="password" class="form-control" name="newPassword" placeholder="Nhập ít nhất 6 ký tự..." required minlength="6" />
+                                                <div class="form-text">Mật khẩu mới sẽ ghi đè lên mật khẩu cũ của người dùng này.</div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-danger">Lưu Mật Khẩu Mới</button>
                                         </div>
                                     </form>
                                 </div>

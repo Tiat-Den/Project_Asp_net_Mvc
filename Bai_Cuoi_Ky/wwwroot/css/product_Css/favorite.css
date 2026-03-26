@@ -1,0 +1,78 @@
+.new-badge-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #c9a84c;
+    color: white;
+    width: 56px;
+    padding: 8px 6px;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+    z-index: 10;
+}
+
+.new-tag {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* CSS THANH PHÂN TRANG (PAGINATION) */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 12px;
+}
+
+    .pagination .page-item {
+        margin: 0;
+    }
+
+    .pagination .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 45px;
+        height: 45px;
+        padding: 0 16px;
+        color: #1a1410;
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        text-decoration: none;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #fdfaf6;
+            border-color: #c9a84c;
+            color: #c9a84c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(201, 168, 76, 0.2);
+        }
+
+    .pagination .page-item.active .page-link {
+        background-color: #c9a84c;
+        border-color: #c9a84c;
+        color: #ffffff;
+        cursor: default;
+        transform: none;
+        box-shadow: 0 4px 10px rgba(201, 168, 76, 0.4);
+    }

@@ -136,6 +136,29 @@ namespace Bai_Cuoi_Ky.Controllers
             }
             return RedirectToAction("Users");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetUserPassword(string userId, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            // Xóa mật khẩu cũ
+            var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+            if (removePasswordResult.Succeeded)
+            {
+                // Gắn mật khẩu mới
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
+                if (addPasswordResult.Succeeded)
+                {
+                    TempData["SuccessMessage"] = $"Đã đặt lại mật khẩu cho tài khoản {user.Email} thành công!";
+                    return RedirectToAction(nameof(Index)); 
+                }
+            }
+
+            TempData["ErrorMessage"] = "Có lỗi xảy ra khi đặt lại mật khẩu.";
+            return RedirectToAction(nameof(Index));
+        }
     }
     
     public class UserRolesViewModel
