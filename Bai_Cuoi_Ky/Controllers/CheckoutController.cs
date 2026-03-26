@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Bai_Cuoi_Ky.Data;
 using Bai_Cuoi_Ky.Models;
 using System.Text.Json;
@@ -196,13 +196,18 @@ namespace Bai_Cuoi_Ky.Controllers
                 Console.WriteLine("Lỗi khi gửi email: " + ex.Message);
             }
 
-            HttpContext.Session.Remove("Cart"); 
+            HttpContext.Session.Remove(GetCartSessionKey()); 
             return View("Success");
+        }
+
+        private string GetCartSessionKey()
+        {
+            return User.Identity.IsAuthenticated ? $"Cart_{User.Identity.Name}" : "Cart";
         }
 
         private List<CartItem> GetCartItems()
         {
-            var sessionData = HttpContext.Session.GetString("Cart");
+            var sessionData = HttpContext.Session.GetString(GetCartSessionKey());
             return string.IsNullOrEmpty(sessionData) ? new List<CartItem>() : JsonSerializer.Deserialize<List<CartItem>>(sessionData);
         }
     }

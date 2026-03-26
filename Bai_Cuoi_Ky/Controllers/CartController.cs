@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Bai_Cuoi_Ky.Data;
 using Bai_Cuoi_Ky.Models;
 using System.Text.Json;
@@ -69,9 +69,14 @@ namespace Bai_Cuoi_Ky.Controllers
             return RedirectToAction("Index");
         }
 
+        private string GetCartSessionKey()
+        {
+            return User.Identity.IsAuthenticated ? $"Cart_{User.Identity.Name}" : "Cart";
+        }
+
         private List<CartItem> GetCartItems()
         {
-            var sessionData = HttpContext.Session.GetString("Cart");
+            var sessionData = HttpContext.Session.GetString(GetCartSessionKey());
             if (string.IsNullOrEmpty(sessionData)) return new List<CartItem>();
             return JsonSerializer.Deserialize<List<CartItem>>(sessionData);
         }
@@ -79,7 +84,7 @@ namespace Bai_Cuoi_Ky.Controllers
         private void SaveCartSession(List<CartItem> cart)
         {
             var sessionData = JsonSerializer.Serialize(cart);
-            HttpContext.Session.SetString("Cart", sessionData);
+            HttpContext.Session.SetString(GetCartSessionKey(), sessionData);
         }
 
         public IActionResult UpdateQuantity(int id, int amount)

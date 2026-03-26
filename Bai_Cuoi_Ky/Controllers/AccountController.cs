@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity; 
+using Microsoft.AspNetCore.Identity; 
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Security.Claims;
@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Bai_Cuoi_Ky.Models;
+using System.Text.Json;
 
 namespace Bai_Cuoi_Ky.Controllers 
 {
@@ -34,6 +36,7 @@ namespace Bai_Cuoi_Ky.Controllers
                 await _userManager.AddToRoleAsync(user, "KhachHang");
 
                 await _signInManager.SignInAsync(user, isPersistent: false); 
+                MergeCart(user.UserName);
                 return Ok();
             }
 
@@ -73,6 +76,7 @@ namespace Bai_Cuoi_Ky.Controllers
                     new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? "")
                 };
                 await _signInManager.SignInWithClaimsAsync(user, isRemember, customClaims);
+                MergeCart(user.UserName);
 
                 return Ok(); // Trả về mã thành công 200
             }
@@ -117,6 +121,8 @@ namespace Bai_Cuoi_Ky.Controllers
 
             if (result.Succeeded)
             {
+                var loggedInUser = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                if (loggedInUser != null) MergeCart(loggedInUser.UserName);
                 return LocalRedirect(returnUrl);
             }
             else
@@ -133,6 +139,7 @@ namespace Bai_Cuoi_Ky.Controllers
 
                     await _userManager.AddLoginAsync(user, info);
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    MergeCart(user.UserName);
                     return LocalRedirect(returnUrl);
                 }
             }
@@ -320,6 +327,37 @@ namespace Bai_Cuoi_Ky.Controllers
             ViewBag.Email = Email;
             ViewBag.Token = Token;
             return View();
+        }
+
+        private void MergeCart(string username)
+        {
+            var anonymousCartJson = HttpContext.Session.GetString("Cart");
+            if (string.IsNullOrEmpty(anonymousCartJson)) return;
+
+            var anonymousCart = JsonSerializer.Deserialize<List<CartItem>>(anonymousCartJson) ?? new List<CartItem>();
+            if (!anonymousCart.Any()) return;
+
+            var userSessionKey = $"Cart_{username}";
+            var userCartJson = HttpContext.Session.GetString(userSessionKey);
+            var userCart = string.IsNullOrEmpty(userCartJson) 
+                ? new List<CartItem>() 
+                : JsonSerializer.Deserialize<List<CartItem>>(userCartJson) ?? new List<CartItem>();
+
+            foreach (var item in anonymousCart)
+            {
+                var existingItem = userCart.FirstOrDefault(c => c.ProductId == item.ProductId);
+                if (existingItem != null)
+                {
+                    existingItem.Quantity += item.Quantity;
+                }
+                else
+                {
+                    userCart.Add(item);
+                }
+            }
+
+            HttpContext.Session.SetString(userSessionKey, JsonSerializer.Serialize(userCart));
+            HttpContext.Session.Remove("Cart"); 
         }
     } 
 }
