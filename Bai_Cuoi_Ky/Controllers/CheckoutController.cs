@@ -113,28 +113,21 @@ namespace Bai_Cuoi_Ky.Controllers
                 }
 
                 // 2. TẠO KHU VỰC HIỂN THỊ MÃ QR (Chỉ tạo khi khách chọn QR)
-                string qrCodeSection = ""; 
-                if (order.PaymentMethod == "QR") 
-                { 
-                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "QR-Code", "QR_PTD.jpg");
-                    byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath); 
-                    string base64String = Convert.ToBase64String(imageBytes); 
-                    string qrUrl = $"data:image/jpeg;base64,{base64String}"; 
+                string qrCodeSection = "";
+                if (order.PaymentMethod == "QR")
+                {
+                    string qrUrl = $"https://img.vietqr.io/image/mbbank-393905052005-compact.jpg?amount={order.TotalAmount}&addInfo=Thanh toan don hang {order.Id}&accountName=PHAM TIEN DAT";
 
-                    qrCodeSection = $@" 
-    <div style='margin-top: 25px; text-align: center; border: 2px dashed #007bff; padding: 20px; border-radius: 8px; background-color: #f8fbff;'> 
-        <h3 style='color: #007bff; margin-top: 0;'>MÃ QR THANH TOÁN CHUYỂN KHOẢN</h3> 
-        <p style='color: #555; font-size: 15px;'>Vui lòng quét mã dưới đây bằng App Ngân hàng để thanh toán cho đơn hàng <strong>#{order.Id}</strong></p> 
-        
-        <img src='{qrUrl}' alt='QR Code' style='width: 250px; border: 5px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 10px;' /> 
-        
-        <div style='margin-top: 15px; font-size: 16px; line-height: 1.5;'> =
-            <p style='margin: 0;'><strong>Chủ tài khoản:</strong> PHAM TIEN DAT</p> 
-            <p style='margin: 0;'><strong>Số tài khoản:</strong> 393905052005 - MB Bank</p> 
-            <p style='margin: 0;'><strong>Số tiền:</strong> <span style='color: red; font-weight: bold;'>{order.TotalAmount.ToString("N0")} VNĐ</span></p> 
-            <p style='margin: 0; color: #d9534f;'><strong>Nội dung CK:</strong> Thanh toan don hang {order.Id}</p> 
-        </div> 
-    </div>"; 
+                    qrCodeSection = $@"
+    <div style='margin-top: 25px; text-align: center; border: 2px dashed #007bff; padding: 20px; border-radius: 8px; background-color: #f8fbff;'>
+        <h3 style='color: #007bff; margin-top: 0;'>MÃ QR THANH TOÁN</h3>
+        <p style='color: #555; font-size: 15px;'>Quét mã dưới đây bằng App Ngân hàng (Đã tự động điền số tiền)</p>
+        <img src='{qrUrl}' alt='QR Code' style='width: 250px; border: 5px solid white; border-radius: 10px;' />
+        <div style='margin-top: 15px;'>
+            <p><strong>Số tiền:</strong> <span style='color: red; font-weight: bold;'>{order.TotalAmount.ToString("N0")} VNĐ</span></p>
+            <p><strong>Nội dung:</strong> Thanh toan don hang {order.Id}</p>
+        </div>
+    </div>";
                 }
 
                 // 3. GỘP TẤT CẢ VÀO BODY (Trình bày dạng bảng HTML chuẩn cho Email)

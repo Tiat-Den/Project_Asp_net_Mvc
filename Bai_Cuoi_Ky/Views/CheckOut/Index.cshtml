@@ -34,7 +34,12 @@
                     @* 3. Số điện thoại *@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Số điện thoại</label>
-                        <input type="text" name="phoneNumber" class="form-control" placeholder="Nhập số điện thoại..." required>
+                        <input type="text" 
+                            name="phoneNumber" 
+                            class="form-control" 
+                            placeholder="Nhập số điện thoại..."
+                            value="@(User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.MobilePhone) : "")"
+                            required>
                     </div>
 
                     @* 4. Địa chỉ *@
@@ -70,7 +75,8 @@
                         @* Khung QR Code ẩn hiện *@
                         <div id="qrCodeContainer" class="text-center p-3 border rounded bg-white mt-3 d-none">
                             <p class="small text-muted mb-2">Quét mã dưới đây để thanh toán</p>
-                            <img src="~/images/QR-Code/QR_PTD.jpg" alt="QR Code" class="img-fluid shadow-sm" style="max-width: 250px; border: 5px solid #fff;">
+                            <img src="https://img.vietqr.io/image/mbbank-393905052005-compact.jpg?amount=TONG_TIEN&addInfo=Thanh%20toan%20Don%20hang%20@DateTime.Now.ToString('yyyyMMddHHmm')&accountName=PHAM%20TIEN%20DAT"
+                                 alt="QR Code" class="img-fluid shadow-sm" style="max-width: 250px; border: 5px solid #fff;">
                             <div class="mt-2 small">
                                 <p class="mb-0"><strong>Chủ TK:</strong> PHAM TIEN DAT</p>
                                 <p class="mb-0"><strong>STK:</strong> 393905052005 - MB Bank</p>
@@ -78,7 +84,6 @@
                             </div>
                         </div>
                     </div>
-
                     <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold mt-4 shadow-sm">HOÀN TẤT ĐẶT HÀNG</button>
                 </form>
             </div>
@@ -86,7 +91,7 @@
 
         @* CỘT PHẢI: TÓM TẮT ĐƠN HÀNG *@
         <div class="col-md-5">
-            <div class="card shadow-sm border-0 p-4 bg-white sticky-top" style="top: 20px;">
+            <div class="card shadow-sm border-0 p-4 bg-white sticky-top" style="top: 100px;">
                 <h4 class="fw-bold mb-4">Đơn hàng của bạn </h4>
                 <div class="checkout-items mb-3" style="max-height: 400px; overflow-y: auto;">
                     @foreach (var item in Model)

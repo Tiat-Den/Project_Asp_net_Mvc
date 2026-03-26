@@ -36,7 +36,7 @@
 
    
     <!-- HEADER -->
-    <header class="site-header">
+    <header class="site-header" >
         <div class="header-inner">
             <a href="/" class="logo">
                 <div>
@@ -75,7 +75,7 @@
                         <div class="user-dropdown">
                             <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
                             <a asp-controller="Order" asp-action="Index">Đơn hàng của tôi</a>
-                            <a asp-controller="Account" asp-action="Logout" style="border-top: 1px solid #eee; color: red;">Đăng xuất</a>
+                            <a asp-controller="Account" asp-action="Logout" class="text-danger ">Đăng xuất</a>
                         </div>
                     </div>
                 }
@@ -377,6 +377,35 @@
 
     <script>
         // ===== CHAT BOX =====
+       document.addEventListener("DOMContentLoaded", function () {
+            const chatMessages = document.getElementById('chat-messages');
+            const chatBox = document.getElementById('ai-chat-box');
+    
+            // Lấy lại lịch sử tin nhắn
+            const savedHistory = sessionStorage.getItem("dkh_chat_history");
+            if (savedHistory) {
+                chatMessages.innerHTML = savedHistory;
+                chatMessages.scrollTop = chatMessages.scrollHeight; 
+            }
+
+            const isChatOpen = sessionStorage.getItem("dkh_chat_isOpen");
+            if (isChatOpen === "true") {
+                chatBox.classList.remove('chat-hidden');
+                chatBox.classList.add('chat-active');
+            }
+        });
+
+        // 2. HÀM TIỆN ÍCH LƯU TRẠNG THÁI VÀO BỘ NHỚ
+        function saveChatState() {
+            const chatMessages = document.getElementById('chat-messages');
+            const chatBox = document.getElementById('ai-chat-box');
+    
+            // Lưu HTML của khung chat
+            sessionStorage.setItem("dkh_chat_history", chatMessages.innerHTML);
+            // Lưu trạng thái ẩn/hiện
+            sessionStorage.setItem("dkh_chat_isOpen", chatBox.classList.contains('chat-active'));
+        }
+
         function toggleChat() {
             const chatBox = document.getElementById('ai-chat-box');
             if (chatBox.classList.contains('chat-hidden')) {
@@ -386,6 +415,7 @@
                 chatBox.classList.remove('chat-active');
                 chatBox.classList.add('chat-hidden');
             }
+            saveChatState(); // Bổ sung: Lưu lại trạng thái vừa đóng/mở
         }
 
         function handleEnter(e) {
@@ -399,9 +429,12 @@
 
             const chatMessages = document.getElementById('chat-messages');
 
+            // In tin nhắn của user
             chatMessages.innerHTML += `<div class="msg user-msg">${message}</div>`;
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+            saveChatState(); // Bổ sung: Lưu lịch sử sau khi khách chat
 
             const typingId = 'typing-' + Date.now();
             chatMessages.innerHTML += `<div id="${typingId}" class="msg typing">...</div>`;
@@ -416,13 +449,17 @@
 
                 const data = await response.json();
 
+                // Xóa chữ typing và in tin nhắn của Bot
                 document.getElementById(typingId).remove();
                 chatMessages.innerHTML += `<div class="msg bot-msg">${data.reply}</div>`;
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
+                saveChatState(); // Bổ sung: Lưu lịch sử sau khi Bot trả lời xong
+
             } catch (error) {
                 document.getElementById(typingId).remove();
                 chatMessages.innerHTML += `<div class="msg bot-msg" style="color:red;">Lỗi kết nối đến AI!</div>`;
+                saveChatState(); // Bổ sung: Lưu lịch sử nếu có lỗi
             }
         }
 

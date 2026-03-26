@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Bai_Cuoi_Ky.Controllers 
 {
@@ -65,8 +67,16 @@ namespace Bai_Cuoi_Ky.Controllers
 
             if (result.Succeeded)
             {
+                var user = await _userManager.FindByNameAsync(loginUsername);
+                var customClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? "")
+                };
+                await _signInManager.SignInWithClaimsAsync(user, isRemember, customClaims);
+
                 return Ok(); // Trả về mã thành công 200
             }
+
 
             return BadRequest("Sai tài khoản hoặc mật khẩu!");
         }

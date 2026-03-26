@@ -29,8 +29,7 @@ namespace Bai_Cuoi_Ky.Controllers
                 .Where(o => o.Status == "HoanThanh")
                 .SumAsync(o => o.TotalAmount);
 
-            int newOrders = await _context.Orders
-                .CountAsync(o => o.OrderDate.Date == DateTime.Today);
+            int totalOrder = await _context.Orders.CountAsync();
 
             int totalProducts = await _context.Products.CountAsync();
 
@@ -43,7 +42,7 @@ namespace Bai_Cuoi_Ky.Controllers
                 .ToListAsync();
 
             ViewBag.TotalRevenue = totalRevenue.ToString("N0");
-            ViewBag.NewOrders = newOrders;
+            ViewBag.TotalOrder = totalOrder;
             ViewBag.TotalProducts = totalProducts;
             ViewBag.TotalCustomers = totalCustomers;
             ViewBag.PendingOrdersCount = pendingOrders.Count;
