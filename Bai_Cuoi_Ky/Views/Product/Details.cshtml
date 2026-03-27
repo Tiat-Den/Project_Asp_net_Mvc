@@ -3,7 +3,7 @@
     ViewData["Title"] = Model.Name + " - Chi Tiết Sản Phẩm";
 }
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="~/css/product_Css/detail.css" />
+<link rel="stylesheet" href="~/css/product_Css/detail.css?v=2" />
 
 <style>
 
@@ -119,10 +119,9 @@
             {
                 <div class="detail-section">
                     <div class="detail-label">Mô tả sản phẩm</div>
-                    <div class="detail-value">@Model.Description</div>
+                    <div class="detail-value">@Html.Raw(Model.Description?.Replace("\n", "<br/>"))</div>
                 </div>
             }
-
             <!-- NÚT HÀNH ĐỘNG -->
             <div class="btn-group">
                 <a class="btn-primary-custom" asp-controller="Product" asp-action="Index">← Quay Lại</a>
