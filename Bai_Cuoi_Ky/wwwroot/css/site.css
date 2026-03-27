@@ -643,6 +643,8 @@ footer.border-top {
 .user-dropdown {
     display: none;
     position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 800;
     top: 100%;
     right: 0;
     background-color: #ffffff;

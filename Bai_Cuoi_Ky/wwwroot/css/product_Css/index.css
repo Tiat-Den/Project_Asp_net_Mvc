@@ -422,7 +422,7 @@ body {
 .hero-slider {
     position: relative;
     overflow: hidden;
-    height: 420px;
+    height: 300px !important;
     background: #1a0a05;
 }
 

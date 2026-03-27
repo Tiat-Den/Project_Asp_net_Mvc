@@ -4,31 +4,46 @@
 }
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant Garamond:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/product_Css/index.css" />
+<style>
+    .hero-slider {
+        height: 500px !important;
+    }
 
+    .slide-bg {
+        height: 500px !important;
+        object-fit: cover;
+        width: 100%;
+    }
+</style>
 <!-- HERO SLIDER -->
+@{
+    var categoryId = ViewBag.CurrentCategory as int?;
+
+    var bannerConfig = categoryId switch
+    {
+        1 => (img: "/images/Products/banner_vonglac.jpg", title: "Vòng &amp; Lắc", subtitle: "Tinh Tế - Thanh Lịch"),
+        2 => (img: "/images/Products/banner_nhan.jpg", title: "Nhẫn", subtitle: "Đẳng Cấp - Sang Trọng"),
+        3 => (img: "/images/Products/banner_daychuyen.jpg", title: "Dây Chuyền", subtitle: "Duyên Dáng - Quyến Rũ"),
+        4 => (img: "/images/Products/banner_bongtai.jpg", title: "Bông Tai", subtitle: "Nổi Bật - Cuốn Hút"),
+        6 => (img: "/images/Products/banner_trangsucbo.jpg", title: "Trang Sức Bộ", subtitle: "Hoàn Hảo - Đồng Điệu"),
+        7 => (img: "/images/Products/banner_phukien.jpg", title: "Phụ Kiện", subtitle: "Phong Cách - Cá Tính"),
+        _ => (img: "/images/Products/bannersanpham.jpg", title: "Bộ Sưu Tập", subtitle: "Trang Sức DKH")
+    };
+}
+
 <div class="hero-slider">
     <div class="slide slide-1 active">
-        <img class="slide-bg" src="/images/Favorite/banner4.jpg" alt="Banner 1" />
+        <img class="slide-bg" src="@bannerConfig.img" alt="Banner" />
         <div class="slide-overlay"></div>
         <div class="slide-content">
-            <h1 class="slide-title">Bộ Sưu Tập<br /><span>Trang Sức DKH</span></h1>
-            <a asp-controller="Product" asp-action="Index" class="slide-btn">Khám Phá Ngay</a>
+            <h1 class="slide-title">@Html.Raw(bannerConfig.title)<br /><span>@bannerConfig.subtitle</span></h1>
+            
         </div>
     </div>
-    <div class="slide slide-2">
-        <img class="slide-bg" src="/images/Favorite/banner3.jpg" alt="Banner 2" />
-        <div class="slide-overlay"></div>
-        <div class="slide-content">
-            <h1 class="slide-title">Tinh Tế<br /><span>Sang Trọng</span></h1>
-            <a asp-controller="Product" asp-action="Index" class="slide-btn">Xem Ngay</a>
-        </div>
-    </div>
-    <button class="slider-prev" onclick="changeSlide(-1)">‹</button>
-    <button class="slider-next" onclick="changeSlide(1)">›</button>
 </div>
 
 <div class="page-header">
-    <h1>Bộ Sưu Tập</h1>
+    <h1>TẤT CẢ SẢN PHẨM</h1>
     @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
     {
         <a asp-action="Create" class="btn-add-product">+ Thêm Sản Phẩm</a>
