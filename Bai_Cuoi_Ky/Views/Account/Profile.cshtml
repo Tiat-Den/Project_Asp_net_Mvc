@@ -5,35 +5,186 @@
     ViewData["Title"] = "Thông tin tài khoản";
 }
 
-<div style="max-width: 800px; margin: 50px auto; padding: 20px; font-family: Arial, sans-serif;">
-    <h2 style="text-align: center; margin-bottom: 30px; color: #1a1410; text-transform: uppercase; letter-spacing: 2px;">THÔNG TIN TÀI KHOẢN</h2>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-    <div style="background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #eaeaea; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-        <div style="margin-bottom: 25px;">
-            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">TÊN ĐĂNG NHẬP</label>
-            <input type="text" value="@Model.UserName" readonly style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa; color: #555; box-sizing: border-box; outline: none;" />
+<style>
+    .profile-card {
+        max-width: 600px;
+        margin: 60px auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        overflow: hidden;
+        border-top: 5px solid #c9a84c; /* Viền vàng gold đặc trưng */
+    }
+
+    .profile-header {
+        background-color: #fdfaf6;
+        padding: 40px 20px 30px;
+        text-align: center;
+        border-bottom: 1px solid #f0e6d2;
+    }
+
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background-color: #1a1410;
+        color: #c9a84c;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin: 0 auto 15px;
+        border: 4px solid #fff;
+        box-shadow: 0 5px 15px rgba(201,168,76,0.25);
+    }
+
+    .profile-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: #1a1410;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .profile-subtitle {
+        color: #888;
+        font-size: 0.95rem;
+    }
+
+    .profile-body {
+        padding: 40px;
+    }
+
+    .info-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .info-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #1a1410;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .info-input {
+        width: 100%;
+        padding: 14px 15px 14px 45px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        background-color: #fcfcfc;
+        color: #444;
+        font-size: 1.05rem;
+        transition: all 0.3s;
+        outline: none;
+    }
+
+        .info-input:focus {
+            border-color: #c9a84c;
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+            background-color: #fff;
+        }
+
+    .info-icon {
+        position: absolute;
+        left: 16px;
+        top: 42px;
+        color: #c9a84c;
+        font-size: 1.1rem;
+    }
+
+    .pwd-change-link {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #c9a84c;
+        font-size: 0.85rem;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.2s;
+    }
+
+        .pwd-change-link:hover {
+            color: #1a1410;
+            text-decoration: underline;
+        }
+
+    .btn-gold {
+        background-color: #1a1410;
+        color: #c9a84c;
+        border: 1px solid #1a1410;
+        padding: 14px 30px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-decoration: none;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+        .btn-gold:hover {
+            background-color: #c9a84c;
+            color: #fff;
+            border-color: #c9a84c;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(201,168,76,0.3);
+        }
+</style>
+
+<div class="profile-card">
+    <div class="profile-header">
+        <div class="avatar-circle">
+            <i class="fas fa-user-tie"></i>
+        </div>
+        <h2 class="profile-title">Tài Khoản Của Tôi</h2>
+        <div class="profile-subtitle">Quản lý thông tin bảo mật và cá nhân</div>
+    </div>
+
+    <div class="profile-body">
+
+        <div class="info-group">
+            <label class="info-label">Tên Đăng Nhập</label>
+            <i class="fas fa-user info-icon"></i>
+            <input type="text" value="@Model.UserName" readonly class="info-input" />
         </div>
 
-        <div style="margin-bottom: 25px;">
-            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">EMAIL</label>
-            <input type="email" value="@Model.Email" readonly style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa; color: #555; box-sizing: border-box; outline: none;" />
+        <div class="info-group">
+            <label class="info-label">Địa Chỉ Email</label>
+            <i class="fas fa-envelope info-icon"></i>
+            <input type="email" value="@Model.Email" readonly class="info-input" />
         </div>
 
-        <div style="margin-bottom: 25px;">
-            <label style="font-weight: bold; color: #333; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px;">
-                MẬT KHẨU
-                <a asp-controller="Account" asp-action="ChangePassword" style="color: #c9a84c; text-decoration: none; font-size: 13px; font-weight: normal;">Thay đổi mật khẩu</a>
+        <div class="info-group">
+            <label class="info-label">
+                Mật Khẩu
+                <a asp-controller="Account" asp-action="ChangePassword" class="pwd-change-link">Đổi mật khẩu <i class="fas fa-chevron-right ms-1" style="font-size:0.7rem;"></i></a>
             </label>
-            <input type="password" value="********" readonly style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa; color: #555; box-sizing: border-box; outline: none;" />
+            <i class="fas fa-lock info-icon"></i>
+            <input type="password" value="********" readonly class="info-input" />
         </div>
 
-        <div style="margin-bottom: 30px;">
-            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">SỐ ĐIỆN THOẠI</label>
-            <input type="text" value="@(Model.PhoneNumber ?? "Chưa cập nhật")" readonly style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa; color: #999; box-sizing: border-box; outline: none; font-style: italic;" />
+        <div class="info-group">
+            <label class="info-label">Số Điện Thoại</label>
+            <i class="fas fa-phone-alt info-icon"></i>
+            <input type="text" value="@(Model.PhoneNumber ?? "Chưa cập nhật")" readonly class="info-input" style="@(Model.PhoneNumber == null ? "font-style: italic; color: #999;" : "")" />
         </div>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <a asp-controller="Account" asp-action="EditProfile" style="display: inline-block; background-color: #1a1410; color: white; padding: 14px 40px; text-decoration: none; border-radius: 4px; font-weight: bold; cursor: pointer; letter-spacing: 1px; transition: background-color 0.2s;">CHỈNH SỬA THÔNG TIN</a>
-        </div>
+        <a asp-controller="Account" asp-action="EditProfile" class="btn-gold">
+            <i class="fas fa-pen-nib me-2"></i> Chỉnh Sửa Thông Tin
+        </a>
+
     </div>
 </div>

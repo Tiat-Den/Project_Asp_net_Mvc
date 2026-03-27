@@ -170,23 +170,42 @@ namespace Bai_Cuoi_Ky.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(string PhoneNumber)
+        public async Task<IActionResult> EditProfile(string UserName, string Email, string PhoneNumber)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            if (user == null) return NotFound();
+
+            if (user.UserName != UserName)
             {
-                return RedirectToAction("Index", "Home");
+                var checkUser = await _userManager.FindByNameAsync(UserName);
+                if (checkUser != null)
+                {
+                    TempData["ErrorMessage"] = "Tên đăng nhập này đã có người sử dụng!";
+                    return View(user);
+                }
+                await _userManager.SetUserNameAsync(user, UserName);
             }
 
-            user.PhoneNumber = PhoneNumber;
-            var result = await _userManager.UpdateAsync(user);
-
-            if (result.Succeeded)
+            if (user.Email != Email)
             {
-                return RedirectToAction("Profile");
+                var checkEmail = await _userManager.FindByEmailAsync(Email);
+                if (checkEmail != null)
+                {
+                    TempData["ErrorMessage"] = "Email này đã được đăng ký cho tài khoản khác!";
+                    return View(user);
+                }
+                await _userManager.SetEmailAsync(user, Email);
             }
 
-            return View(user);
+            if (user.PhoneNumber != PhoneNumber)
+            {
+                await _userManager.SetPhoneNumberAsync(user, PhoneNumber);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+
+            TempData["SuccessMessage"] = "Cập nhật thông tin tài khoản thành công!";
+            return RedirectToAction("Profile"); 
         }
 
         // THAY ĐỔI MK 
