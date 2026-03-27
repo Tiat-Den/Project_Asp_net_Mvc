@@ -11,7 +11,7 @@ using Bai_Cuoi_Ky.Models;
 namespace Bai_Cuoi_Ky.Controllers
 {
     [Authorize(Roles = "Admin, NhanVien")]
-        public class AdminController : Controller
+    public class AdminController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
@@ -25,28 +25,46 @@ namespace Bai_Cuoi_Ky.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            // 1. Thống kê tổng
             decimal totalRevenue = await _context.Orders
-                .Where(o => o.Status == "HoanThanh")
+                .Where(o => o.Status == "HoanThanh" || o.Status == "DaGiao")
                 .SumAsync(o => o.TotalAmount);
 
             int totalOrder = await _context.Orders.CountAsync();
-
             int totalProducts = await _context.Products.CountAsync();
-
             var khachHangList = await _userManager.GetUsersInRoleAsync("KhachHang");
             int totalCustomers = khachHangList.Count;
 
-            var chuaXuLyOrders = await _context.Orders
-                .Where(o => o.Status == "ChoXuLy")
-                .OrderByDescending(o => o.OrderDate)
-                .ToListAsync();
+            // ==========================================
+            // 2. CHIA LÀM 3 BẢNG RÕ RÀNG
+            // ==========================================
 
+            // Mảng 1: Bọn Chưa Xử Lý (Gồm ChuaXuLy và Pending)
+            var chuaXuLyStatuses = new[] { "ChuaXuLy", "Pending" };
+            var bangChuaXuLy = await _context.Orders
+                .Where(o => chuaXuLyStatuses.Contains(o.Status))
+                .OrderByDescending(o => o.OrderDate).ToListAsync();
+
+            // Mảng 2: Bọn Chờ Xử Lý (Chỉ có ChoXuLy)
+            var choXuLyStatuses = new[] { "ChoXuLy" };
+            var bangChoXuLy = await _context.Orders
+                .Where(o => choXuLyStatuses.Contains(o.Status))
+                .OrderByDescending(o => o.OrderDate).ToListAsync();
+
+            // Mảng 3: Bọn Đã Xử Lý (Các trạng thái còn lại)
+            var bangDaXuLy = await _context.Orders
+                .Where(o => !chuaXuLyStatuses.Contains(o.Status) && !choXuLyStatuses.Contains(o.Status))
+                .OrderByDescending(o => o.OrderDate).Take(10).ToListAsync();
+
+            // Đẩy sang View
             ViewBag.TotalRevenue = totalRevenue.ToString("N0");
             ViewBag.TotalOrder = totalOrder;
             ViewBag.TotalProducts = totalProducts;
             ViewBag.TotalCustomers = totalCustomers;
-            ViewBag.ChuaXuLyOrdersCount = chuaXuLyOrders.Count;
-            ViewBag.ChuaXuLyOrders = chuaXuLyOrders;
+
+            ViewBag.BangChuaXuLy = bangChuaXuLy;
+            ViewBag.BangChoXuLy = bangChoXuLy;
+            ViewBag.BangDaXuLy = bangDaXuLy;
 
             return View();
         }

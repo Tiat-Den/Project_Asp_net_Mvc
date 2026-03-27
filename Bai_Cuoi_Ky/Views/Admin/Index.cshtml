@@ -41,12 +41,12 @@
     </div>
 </div>
 
-<div class="card shadow-sm border-0">
+<div class="card shadow-sm border-0 mb-4">
     <div class="card-header bg-white border-bottom">
-        <h5 class="mb-0 py-2" style="font-size: 1.1rem;">Đơn hàng chờ xử lý</h5>
+        <h5 class="mb-0 py-2" style="font-size: 1.1rem; color: #6c757d; font-weight: bold;"><i class="fas fa-inbox me-2"></i>Đơn hàng chưa xử lý (Mới)</h5>
     </div>
     <div class="card-body">
-        @if (ViewBag.ChuaXuLyOrdersCount != null && ViewBag.ChuaXuLyOrdersCount > 0)
+        @if (ViewBag.BangChuaXuLy != null && ViewBag.BangChuaXuLy.Count > 0)
         {
             <div class="table-responsive">
                 <table class="table table-hover table-bordered mt-3 align-middle">
@@ -61,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var order in ViewBag.ChuaXuLyOrders)
+                        @foreach (var order in ViewBag.BangChuaXuLy)
                         {
                             <tr>
                                 <td class="text-center fw-bold">#@order.Id</td>
@@ -69,15 +69,11 @@
                                 <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
                                 <td class="text-end text-danger fw-bold">@order.TotalAmount.ToString("N0") VNĐ</td>
                                 <td class="text-center">
-                                    <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                                    <span class="badge bg-secondary px-3 py-2">Chưa xử lý</span>
                                 </td>
                                 <td class="text-center">
-                                    <a href="/Order/Details/@order.Id" class="btn btn-sm btn-info text-white">
-                                        <i class="fas fa-eye"></i> Xem
-                                    </a>
-                                    <a href="/Order/Approve/@order.Id" class="btn btn-sm btn-success">
-                                        <i class="fas fa-check"></i> Duyệt
-                                    </a>
+                                    <a href="/Order/Details/@order.Id" class="btn btn-sm btn-info text-white"><i class="fas fa-eye"></i> Xem</a>
+                                    <a href="/Order/Approve/@order.Id" class="btn btn-sm btn-success"><i class="fas fa-check"></i> Duyệt</a>
                                 </td>
                             </tr>
                         }
@@ -87,7 +83,130 @@
         }
         else
         {
-            <p class="text-secondary mb-0 text-center py-4">Chưa có đơn hàng nào cần xử lý hôm nay.</p>
+            <p class="text-secondary mb-0 text-center py-4">Không có đơn hàng mới nào.</p>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 py-2" style="font-size: 1.1rem; color: #dc3545; font-weight: bold;"><i class="fas fa-clock me-2"></i>Đơn hàng chờ xử lý</h5>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.BangChoXuLy != null && ViewBag.BangChoXuLy.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mt-3 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center">Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Ngày đặt</th>
+                            <th class="text-end">Tổng tiền</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in ViewBag.BangChoXuLy)
+                        {
+                            <tr>
+                                <td class="text-center fw-bold">#@order.Id</td>
+                                <td>@order.CustomerName</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-end text-danger fw-bold">@order.TotalAmount.ToString("N0") VNĐ</td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning text-dark px-3 py-2">Chờ xử lý</span>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/Order/Details/@order.Id" class="btn btn-sm btn-info text-white"><i class="fas fa-eye"></i> Xem</a>
+                                    <a href="/Order/Approve/@order.Id" class="btn btn-sm btn-success"><i class="fas fa-check"></i> Duyệt</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-secondary mb-0 text-center py-4">Đã giải quyết xong các đơn chờ.</p>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 py-2" style="font-size: 1.1rem; color: #198754; font-weight: bold;"><i class="fas fa-check-circle me-2"></i>Đơn hàng đã xử lý</h5>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.BangDaXuLy != null && ViewBag.BangDaXuLy.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mt-3 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center">Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Ngày đặt</th>
+                            <th class="text-end">Tổng tiền</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in ViewBag.BangDaXuLy)
+                        {
+                            string statusText = "";
+                            string badgeClass = "";
+
+                            switch (order.Status.ToString())
+                            {
+                                case "DangXacNhan":
+                                    statusText = "Đang xác nhận";
+                                    badgeClass = "bg-info text-dark";
+                                    break;
+                                case "DangGiao":
+                                case "DangGiaoHang":
+                                    statusText = "Đang giao hàng";
+                                    badgeClass = "bg-primary";
+                                    break;
+                                case "DaGiao":
+                                case "HoanThanh":
+                                    statusText = "Hoàn thành";
+                                    badgeClass = "bg-success";
+                                    break;
+                                case "DaHuy":
+                                case "Huy":
+                                    statusText = "Đã hủy";
+                                    badgeClass = "bg-danger";
+                                    break;
+                                default:
+                                    statusText = order.Status.ToString();
+                                    badgeClass = "bg-secondary";
+                                    break;
+                            }
+
+                            <tr>
+                                <td class="text-center fw-bold text-secondary">#@order.Id</td>
+                                <td>@order.CustomerName</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-end text-danger fw-bold">@order.TotalAmount.ToString("N0") VNĐ</td>
+                                <td class="text-center">
+                                    <span class="badge @badgeClass px-3 py-2">@statusText</span>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/Order/Details/@order.Id" class="btn btn-sm btn-outline-dark"><i class="fas fa-eye"></i> Chi tiết</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-secondary mb-0 text-center py-4">Chưa có đơn hàng nào được xử lý gần đây.</p>
         }
     </div>
 </div>
