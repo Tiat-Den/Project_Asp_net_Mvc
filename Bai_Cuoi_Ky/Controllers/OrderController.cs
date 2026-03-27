@@ -73,7 +73,7 @@ namespace Bai_Cuoi_Ky.Controllers
             if (order == null) return NotFound();
 
             // Danh sách các trạng thái hợp lệ 
-            var validStatuses = new[] { "Pending", "ChoXuLy", "HoanThanh", "DaHuy" };
+            var validStatuses = new[] { "ChuaXuLy", "ChoXuLy", "HoanThanh", "DaHuy" };
 
             if (validStatuses.Contains(status))
             {
@@ -119,7 +119,7 @@ namespace Bai_Cuoi_Ky.Controllers
         {
             var order = await _context.Orders.FindAsync(id);
 
-            if (order != null && (order.Status == "ChoXuLy" || order.Status == "Pending"))
+            if (order != null && (order.Status == "ChoXuLy" || order.Status == "ChuaXuLy"))
             {
                 order.Status = "HoanThanh";
                 _context.Update(order);
@@ -143,7 +143,7 @@ namespace Bai_Cuoi_Ky.Controllers
             if (!isAdminOrStaff && order.UserId != currentUserId)
                 return Unauthorized();
 
-            if (!isAdminOrStaff && order.Status != "ChoXuLy" && order.Status != "Pending")
+            if (!isAdminOrStaff && order.Status != "ChoXuLy" && order.Status != "ChuaXuLy")
             {
                 TempData["ErrorMessage"] = "Đơn hàng đã được xử lý, bạn không thể tự thay đổi thông tin!";
                 return RedirectToAction(nameof(Details), new { id = id });
@@ -173,7 +173,7 @@ namespace Bai_Cuoi_Ky.Controllers
 
             if (order.UserId != currentUserId) return Unauthorized();
 
-            if (order.Status != "ChoXuLy" && order.Status != "Pending")
+            if (order.Status != "ChoXuLy" && order.Status != "ChuaXuLy")
             {
                 TempData["ErrorMessage"] = "Đơn hàng đã được xử lý, không thể hủy!";
                 return RedirectToAction(nameof(Details), new { id = id });

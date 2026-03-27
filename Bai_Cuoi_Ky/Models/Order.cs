@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -40,7 +40,7 @@ namespace Bai_Cuoi_Ky.Models
         public decimal TotalAmount { get; set; }
 
         [Display(Name = "Trạng thái đơn hàng")]
-        public string Status { get; set; } = "Pending"; // Pending, Confirmed, Shipping, Success, Cancelled
+        public string Status { get; set; } = "ChuaXuLy"; // ChuaXuLy, Confirmed, Shipping, Success, Cancelled
 
         [Display(Name = "Ghi chú")]
         public string? Notes { get; set; } // Để dấu ? vì ghi chú có thể để trống (null)

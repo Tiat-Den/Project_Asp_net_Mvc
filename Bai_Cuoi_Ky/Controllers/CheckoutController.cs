@@ -46,7 +46,7 @@ namespace Bai_Cuoi_Ky.Controllers
                 Notes = notes,
                 TotalAmount = cart.Sum(x => x.Total),
                 OrderDate = DateTime.Now,
-                Status = "Pending",
+                Status = "ChuaXuLy",
                 OrderDetails = cart.Select(x => new OrderDetail
                 {
                     ProductId = x.ProductId,

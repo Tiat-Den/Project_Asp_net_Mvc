@@ -1,4 +1,4 @@
-﻿using Bai_Cuoi_Ky.Data;
+using Bai_Cuoi_Ky.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +36,7 @@ namespace Bai_Cuoi_Ky.Controllers
             var khachHangList = await _userManager.GetUsersInRoleAsync("KhachHang");
             int totalCustomers = khachHangList.Count;
 
-            var pendingOrders = await _context.Orders
+            var chuaXuLyOrders = await _context.Orders
                 .Where(o => o.Status == "ChoXuLy")
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
@@ -45,8 +45,8 @@ namespace Bai_Cuoi_Ky.Controllers
             ViewBag.TotalOrder = totalOrder;
             ViewBag.TotalProducts = totalProducts;
             ViewBag.TotalCustomers = totalCustomers;
-            ViewBag.PendingOrdersCount = pendingOrders.Count;
-            ViewBag.PendingOrders = pendingOrders;
+            ViewBag.ChuaXuLyOrdersCount = chuaXuLyOrders.Count;
+            ViewBag.ChuaXuLyOrders = chuaXuLyOrders;
 
             return View();
         }

@@ -41,9 +41,9 @@
 <div class="row">
     <div class="col-md-7">
         @{
-            bool isPending = (Model.Status == "ChoXuLy" || Model.Status == "Pending");
+            bool isChuaXuLy = (Model.Status == "ChoXuLy" || Model.Status == "ChuaXuLy");
 
-            bool canEdit = isAdminOrStaff || isPending; // Admin thì luôn sửa được, Khách thì chỉ sửa được khi Pending
+            bool canEdit = isAdminOrStaff || isChuaXuLy; // Admin thì luôn sửa được, Khách thì chỉ sửa được khi ChuaXuLy
         }
 
         <div class="card shadow-sm border-0 mb-4">
@@ -63,13 +63,54 @@
                 }
                 else
                 {
-                    <span class="badge bg-secondary fs-6">@Model.Status</span>
+
+                    string statusText = "";
+                    string badgeClass = "";
+
+                    switch (Model.Status.ToString())
+                    {
+                        case "ChuaXuLy":
+                            statusText = "Chưa xử lý";
+                            badgeClass = "bg-secondary"; 
+                            break;
+                        case "ChoXuLy":
+                            statusText = "Chờ xử lý";
+                            badgeClass = "bg-warning text-dark"; 
+                            break;
+                        case "DangXacNhan":
+                            statusText = "Đang xác nhận";
+                            badgeClass = "bg-info text-dark"; 
+                            break;
+                        case "DangGiao":
+                        case "DangGiaoHang":
+                            statusText = "Đang giao hàng";
+                            badgeClass = "bg-primary"; 
+                            break;
+                        case "DaGiao":
+                        case "HoanThanh":
+                            statusText = "Đã giao hàng";
+                            badgeClass = "bg-success"; 
+                            break;
+                        case "DaHuy":
+                        case "Huy":
+                            statusText = "Đã hủy";
+                            badgeClass = "bg-danger"; 
+                            break;
+                        default:
+                            statusText = Model.Status.ToString(); 
+                            badgeClass = "bg-secondary";
+                            break;
+                    }
+
+                <span class="badge @badgeClass fs-6" style="padding: 8px 12px; font-weight: 500;">
+                    @statusText
+                </span>
                 }
 
-                @if (!isAdminOrStaff && isPending)
+                @if (!isAdminOrStaff && isChuaXuLy)
 
                 {
-                    <form asp-action="CancelOrder" method="post" onsubmit="return confirm('Ông có chắc chắn muốn HỦY đơn hàng này không?');">
+                    <form asp-action="CancelOrder" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn HỦY đơn hàng này không?');">
                         <input type="hidden" name="id" value="@Model.Id" />
                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i> Hủy đơn hàng</button>
                     </form>
