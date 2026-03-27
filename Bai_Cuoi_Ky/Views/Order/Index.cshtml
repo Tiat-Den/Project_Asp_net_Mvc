@@ -12,10 +12,15 @@
         Layout = "~/Views/Shared/_Layout.cshtml"; 
     }
 }
+<style>
+    body, .card, .card *:not(i):not(.fas):not(.far):not(.fab) {
+        font-family: 'Cormorant Garamond', serif !important;
+    }
+</style>
 
 <div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 py-2">Danh sách đơn hàng</h5>
+    <div class="card-header bg-white border-bottom">
+        <h3 class="fw-bold mb-0 py-2 text-center">Danh Sách Đơn Hàng</h3>
     </div>
     <div class="card-body">
         @if (TempData["SuccessMessage"] != null)

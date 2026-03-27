@@ -4,7 +4,11 @@
     ViewData["Title"] = "Quản lý danh mục";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<style>
+    body, .card, .card *:not(i):not(.fas):not(.far):not(.fab) {
+        font-family: 'Cormorant Garamond', serif !important;
+    }
+</style>
 <div class="card shadow-sm border-0 mb-4">
     <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
         <h5 class="mb-0 py-2">Danh sách danh mục</h5>

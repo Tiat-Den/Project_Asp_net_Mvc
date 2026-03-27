@@ -3,10 +3,31 @@
     ViewData["Title"] = "Giỏ hàng của bạn";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .container *:not(i):not(.fas):not(.far):not(.fab) {
+        font-family: 'Cormorant Garamond', serif !important;
+    }
+    /* Icon giỏ hàng màu đen */
+    .fa-shopping-cart {
+        color: #1a1410 !important;
+    }
+
+    /* Nút "Quay lại cửa hàng" và "Thanh toán" màu đen */
+    .btn-primary, .btn-success, .btn-outline-secondary {
+        background-color: #1a1410 !important;
+        border-color: #1a1410 !important;
+        color: white !important;
+    }
+
+        .btn-primary:hover, .btn-success:hover, .btn-outline-secondary:hover {
+            background-color: #c9a84c !important;
+            border-color: #c9a84c !important;
+            color: white !important;
+        }
+</style>
 
 <div class="container mt-5 mb-5">
-    <h3 class="fw-bold mb-4"><i class="fas fa-shopping-cart text-primary me-2"></i> Giỏ hàng của bạn</h3>
-
+    <h3 class="fw-bold mb-4 text-center">Giỏ hàng của bạn</h3>
     @if (Model != null && Model.Count > 0)
     {
         <div class="table-responsive shadow-sm">

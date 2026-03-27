@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 0 !important;
 }
 
 /* ===== GLOBAL ===== */
@@ -297,7 +297,7 @@ footer.border-top {
     font-size: 1rem;
     font-weight: 800;
     letter-spacing: 3px;
-    color: rgba(255,255,255,0.4);
+    color: white !important;
     text-transform: uppercase;
 }
 
@@ -307,6 +307,7 @@ footer.border-top {
     font-weight: 800;
     line-height: 1.7;
     margin-top: 12px;
+    color: white !important;
 }
 
 .footer-col h4 {
@@ -854,4 +855,12 @@ a.nav-link.text-danger.font-weight-bold {
     font-size: 1rem !important;
     letter-spacing: 1.5px !important;
     font-weight: 800 !important;
+}
+html {
+    min-height: unset !important;
+}
+
+.site-footer {
+    margin-bottom: 0 !important;
+    padding-bottom:  100px !important;
 }
